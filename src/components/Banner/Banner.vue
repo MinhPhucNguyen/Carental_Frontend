@@ -1,0 +1,277 @@
+<template>
+  <div id="banner-section">
+    <div class="banner">
+      <!-- Banner Title -->
+      <div class="banner-title">CARENTAL-CÙNG BẠN TRÊN MỌI HÀNH TRÌNH</div>
+
+      <!-- Search Options -->
+      <div class="search-option">
+        <div class="option d-flex justify-content-center shadow">
+          <div
+            class="option-item"
+            :class="{ active: selectedOption === 'self-drive' }"
+            @click="changeSelectedOption('self-drive')"
+          >
+            <i class="fa-solid fa-car-side"></i>
+            <span>Xe tự lái</span>
+          </div>
+          <div
+            class="option-item"
+            :class="{ active: selectedOption === 'have-driver' }"
+            @click="changeSelectedOption('have-driver')"
+          >
+            <i class="fa-solid fa-user"></i>
+            <span>Xe có tài xế</span>
+          </div>
+        </div>
+
+        <!-- Search Form -->
+        <div class="search shadow d-flex">
+          <!-- Address Input -->
+          <div class="search-form-item address">
+            <div class="search-form-title fw-bold">
+              <i class="fa-solid fa-location-dot"></i>
+              <span>Địa chỉ</span>
+            </div>
+            <div class="search-form-choose">
+              <input
+                type="text"
+                class="address-input"
+                placeholder="Nhập địa điểm"
+                v-model="address"
+              />
+            </div>
+          </div>
+
+          <!-- Date Selection -->
+          <div class="search-form-item_divider"></div>
+          <div class="calendar-wrap d-flex">
+            <div class="search-form-item address">
+              <div class="search-form-title fw-bold">
+                <i class="fa-regular fa-calendar"></i>
+                <span>Bắt đầu</span>
+              </div>
+              <div class="search-form-choose">
+                <input
+                  ref="datepicker"
+                  class="form-control datetime-picker"
+                  type="text"
+                  placeholder="Select Start Date"
+                  v-model="selectedDateTime"
+                />
+              </div>
+            </div>
+            <div class="search-form-item_divider"></div>
+            <div class="search-form-item address">
+              <div class="search-form-title fw-bold">
+                <i class="fa-regular fa-calendar"></i>
+                <span>Kết thúc</span>
+              </div>
+              <div class="search-form-choose">
+                <input
+                  ref="datepicker"
+                  class="form-control datetime-picker"
+                  placeholder="Select End Date"
+                  type="text"
+                />
+              </div>
+            </div>
+          </div>
+          <a href="#" class="find-car-btn">Tìm xe</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { ref } from "vue";
+// import FlatPickr from "vue-flatpickr-component";
+import "flatpickr/dist/flatpickr.css";
+
+export default {
+  name: "BannerHome",
+
+  methods: {
+    changeSelectedOption(option) {
+      this.selectedOption = option;
+    },
+  },
+  setup() {
+    const selectedOption = ref("self-drive");
+    const address = ref("Hà Nội");
+    const selectedDateTime = ref(null);
+
+    return {
+      selectedOption,
+      selectedDateTime,
+      address,
+    };
+  },
+};
+</script>
+
+<style scoped>
+#banner-section {
+  margin-bottom: 80px;
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 100px;
+}
+
+.banner {
+  position: relative;
+  height: 660px;
+  width: 100%;
+  background: black;
+  border-radius: 20px;
+  background-image: url("../../assets/images/banner-image/banner_img.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+}
+
+.banner-title {
+  position: absolute;
+  top: 24%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 550px;
+  color: white;
+  font-size: 50px;
+  text-align: center;
+  font-weight: 500;
+  text-shadow: rgb(88, 88, 88) 0 2px 4px;
+}
+
+.search-option {
+  position: absolute;
+  bottom: -60px;
+  width: 100%;
+}
+
+.option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.option-item {
+  background: white;
+  padding: 10px 16px;
+  border-top-left-radius: 20px;
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  color: #8f8e8e;
+  background-color: rgb(240, 240, 240);
+}
+
+.option-item:hover {
+  color: black;
+  transition: all 0.2s ease-in-out;
+}
+
+.option-item span {
+  margin-left: 10px;
+  font-weight: 500;
+}
+
+.search-option .option-item:last-child {
+  border-radius: 0 20px 0 0;
+}
+
+.option-item.active {
+  background: #1cc88a;
+  color: white;
+}
+
+.search-option .search {
+  background-color: white;
+  margin: 0 100px;
+  padding: 22px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-form-title {
+  font-size: 16px;
+  color: #8f8e8e;
+  text-align: left;
+}
+
+.search-form-title i {
+  margin-right: 6px;
+}
+
+.search-form-choose {
+  min-width: 250px;
+  margin-top: 8px;
+}
+
+.datetime-picker {
+  width: 100%;
+}
+
+.search-form-choose .address-input,
+.calendar-input {
+  font-size: 20px;
+  border: none;
+  outline: none;
+  padding-left: 20px 20px 20px 0;
+  color: black;
+  font-weight: bold;
+  outline-color: white;
+  cursor: pointer;
+  outline-color: transparent;
+}
+
+.calendar-input:focus {
+  outline: none;
+}
+
+.search-form-choose {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.search-form-choose .address-input::placeholder {
+  color: #8f8e8e;
+  font-weight: normal;
+}
+
+.search-form-item {
+  width: 300px;
+}
+
+.search .search-form-item_divider {
+  width: 1px;
+  max-height: 76px;
+  display: flex;
+  align-items: center;
+  background: #ccc;
+  margin: 0 30px;
+}
+
+.find-car-btn {
+  width: 140px;
+  background: #1cc88a;
+  border-radius: 10px;
+  display: inline-block;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 20px;
+  margin-right: 0;
+  padding: 0 20px;
+}
+</style>
