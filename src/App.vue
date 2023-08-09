@@ -1,11 +1,11 @@
 <template>
-  <MainNavbar />
+  <main-navbar />
   <main class="main">
     <div class="content-container">
-      <HomePage />
+      <home-page />
     </div>
   </main>
-  <MainFooter />
+  <main-footer />
 </template>
 
 <script>
@@ -24,12 +24,5 @@ export default {
 </script>
 
 <style>
-body #app {
-  font-family: "Bebas Neue", sans-serif;
-  font-family: "Poppins", sans-serif;
-  font-family: "Roboto", sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+
 </style>

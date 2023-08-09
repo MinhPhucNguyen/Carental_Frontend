@@ -57,68 +57,7 @@ export default {
 };
 </script>
 
-<style scoped>
-.navbar {
-  height: 88px;
-}
-
-.navbar .navbar-container {
-  width: 80%;
-  margin: 0 auto;
-  font-size: 10px;
-}
-
-.navbar-brand {
-  letter-spacing: 2px;
-}
-
-.navbar-nav li {
-  margin-left: 28px;
-}
-
-.nav-item .nav-item-border {
-  padding-bottom: 16px;
-  border: 1px solid #8f8e8e;
-  margin-right: 28px;
-}
-
-.nav-link {
-  cursor: pointer;
-}
-
-.nav-item .nav-link {
-  font-size: 15px;
-  font-weight: 500;
-}
-
-.signup-btn,
-.login-btn {
-  width: 100%;
-  background: #1cc88a;
-}
-
-.signup-btn:hover,
-.login-btn:hover {
-  background: #26b480;
-}
-
-.main.content-container {
-  width: 80%;
-  margin: 0 auto;
-  padding-left: 0;
-}
-.content {
-  padding: 0;
-}
-
-.nav-item .nav-link:hover {
-  color: #1cc88a !important;
-  transition: all 0.3s ease-in-out;
-}
-
-.nav-item:hover {
-  border-color: #1cc88a !important;
-  transition: all 0.3s ease-in-out;
-}
+<style lang="scss" scoped>
+@import url("./Navbar.scss");
 
 </style>

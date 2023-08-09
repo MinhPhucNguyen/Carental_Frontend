@@ -1,0 +1,17 @@
+#featured-cars-section {
+  width: 100%;
+  background: #f7f7f7;
+  padding: 60px 0;
+}
+
+.car-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.car-list .car-item {
+  width: 25%;
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
