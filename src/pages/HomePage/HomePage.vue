@@ -1,22 +1,37 @@
 <template>
   <div>
-    <banner-home />
+    <banner-section />
     <promotion-section />
-    <featured-cars />
+    <featured-cars-section />
+    <featured-places-section />
+    <advantages-section />
+    <service-section />
+    <explorer-section />
+    <blog-section />
   </div>
 </template>
 
 <script>
-import BannerHome from "../../components/Banner/Banner.vue";
-import PromotionSection from "../../components/Promotion/Promotion.vue";
-import FeaturedCars from "../../components/FeaturedCars/FeaturedCars.vue";
+import BannerSection from "../../components/HomeComponents/Banner/Banner.vue";
+import PromotionSection from "../../components/HomeComponents/Promotion/Promotion.vue";
+import FeaturedCarsSection from "../../components/HomeComponents/FeaturedCars/FeaturedCars.vue";
+import FeaturedPlacesSection from "../../components/HomeComponents/FeaturedPlaces/FeaturedPlaces.vue";
+import AdvantagesSection from "../../components/HomeComponents/Advantages/Advantages.vue";
+import ServiceSection from "../../components/HomeComponents/ServiceSection/ServiceSection.vue";
+import ExplorerSection from "../../components/HomeComponents/ExplorerSection/ExplorerSection.vue";
+import BlogSection from "../../components/HomeComponents/BlogSection/BlogSection.vue";
 
 export default {
   name: "HomePage",
   components: {
-    BannerHome,
+    BannerSection,
     PromotionSection,
-    FeaturedCars,
+    FeaturedCarsSection,
+    FeaturedPlacesSection,
+    AdvantagesSection,
+    ServiceSection,
+    ExplorerSection,
+    BlogSection,
   },
 };
 </script>

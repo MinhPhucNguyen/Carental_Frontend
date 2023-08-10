@@ -1,0 +1,26 @@
+#featured-places-section {
+  width: 100%;
+  background: white;
+  padding: 60px 0;
+}
+
+.places-item-image:last-child{
+    margin-right: 0;
+}
+
+.places-item-image:last-child{
+    margin-right: 0;
+}
+
+.places-item-image {
+    width: calc(100% / 4);
+    height: 500px;
+}
+
+.places-item-image img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
