@@ -34,22 +34,23 @@
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link text-dark btn" href="">Blog</a>
+            <router-link to="/blog" class="nav-link text-dark btn"
+              >Blog</router-link
+            >
           </li>
           <li class="nav-item">
             <span class="nav-item-border"></span>
           </li>
           <!-- Authentication Links -->
           <div class="authentication-container d-flex">
-            <li id="login-btn" class="nav-item m-0">
-              <a class="nav-link text-dark btn" href="{{ route('login') }}"
-                >Đăng nhập</a
+            <li id="register-btn" class="nav-item m-0">
+              <router-link to="/register" class="nav-link text-dark btn"
+                >Đăng ký</router-link
               >
             </li>
-
-            <li id="register-btn" class="nav-item border border-dark rounded-3">
-              <a class="nav-link text-dark btn" href="{{ route('register') }}"
-                >Đăng ký</a
+            <li id="login-btn" class="nav-item border border-dark rounded-3">
+              <router-link to="/login" class="nav-link text-dark btn"
+                >Đăng nhập</router-link
               >
             </li>
           </div>
