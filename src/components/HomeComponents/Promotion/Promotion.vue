@@ -7,33 +7,33 @@
           <div class="carousel-item active">
             <div class="d-block d-flex w-100">
               <div class="promotion-item-image d-inline-block">
-                <img src="" class="d-block w-100" alt="..." />
+                <img src="../../../assets/images/promotion-image/slider1.jpg" class="d-block w-100" alt="..." />
               </div>
               <div class="promotion-item-image d-inline-block">
-                <img src="" class="d-block w-100" alt="..." />
+                <img src="../../../assets/images/promotion-image/slider2.jpg" class="d-block w-100" alt="..." />
               </div>
               <div class="promotion-item-image d-inline-block">
-                <img src="" class="d-block w-100" alt="..." />
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <div class="d-block d-flex w-100">
-              <div class="promotion-item-image d-inline-block">
-                <img src="" class="d-block w-100" alt="..." />
-              </div>
-              <div class="promotion-item-image d-inline-block">
-                <img src="" class="d-block w-100" alt="..." />
-              </div>
-              <div class="promotion-item-image d-inline-block">
-                <img src="" class="d-block w-100" alt="..." />
+                <img src="../../../assets/images/promotion-image/slider1.jpg" class="d-block w-100" alt="..." />
               </div>
             </div>
           </div>
           <div class="carousel-item">
             <div class="d-block d-flex w-100">
               <div class="promotion-item-image d-inline-block">
-                <img src="" class="d-block w-100" alt="..." />
+                <img src="../../../assets/images/promotion-image/slider2.jpg" class="d-block w-100" alt="..." />
+              </div>
+              <div class="promotion-item-image d-inline-block">
+                <img src="../../../assets/images/promotion-image/slider1.jpg" class="d-block w-100" alt="..." />
+              </div>
+              <div class="promotion-item-image d-inline-block">
+                <img src="../../../assets/images/promotion-image/slider2.jpg" class="d-block w-100" alt="..." />
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="d-block d-flex w-100">
+              <div class="promotion-item-image d-inline-block">
+                <img src="../../../assets/images/promotion-image/slider1.jpg" class="d-block w-100" alt="..." />
               </div>
             </div>
           </div>

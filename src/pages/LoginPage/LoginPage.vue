@@ -10,7 +10,7 @@
             <label
               for="username"
               class="col-md-3 col-form-label text-md-right fw-bold w-100"
-              >Tên đăng nhập</label
+              >Tên Đăng nhập</label
             >
             <div class="col-md-12">
               <input

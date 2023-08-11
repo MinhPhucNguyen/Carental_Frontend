@@ -33,7 +33,7 @@
               <i class="fa-solid fa-location-dot"></i>
               <span>Địa chỉ</span>
             </div>
-            <div class="search-form-choose">
+            <div class="search-form-choose mt-3">
               <input
                 type="text"
                 class="address-input"
@@ -53,11 +53,13 @@
               </div>
               <div class="search-form-choose">
                 <input
-                  ref="datepicker"
-                  class="form-control datetime-picker"
-                  type="text"
+                  type="date"
+                  class="form-control datetime-picker flatpickr border-0"
                   placeholder="Select Start Date"
-                  v-model="selectedDateTime"
+                />
+                <font-awesome-icon
+                  :icon="['fas', 'chevron-down']"
+                  @click.self="openFlatPickr('start-date')"
                 />
               </div>
             </div>
@@ -69,10 +71,13 @@
               </div>
               <div class="search-form-choose">
                 <input
-                  ref="datepicker"
-                  class="form-control datetime-picker"
+                  type="date"
+                  class="form-control datetime-picker flatpickr border-0"
                   placeholder="Select End Date"
-                  type="text"
+                />
+                <font-awesome-icon
+                  :icon="['fas', 'chevron-down']"
+                  @click.self="openFlatPickr('end-date')"
                 />
               </div>
             </div>
@@ -85,22 +90,46 @@
 </template>
 
 <script>
-import { ref } from "vue";
-// import FlatPickr from "vue-flatpickr-component";
-import "flatpickr/dist/flatpickr.css";
+import { onMounted, ref } from "vue";
+import flatpickr from "flatpickr";
+import "flatpickr/dist/themes/material_green.css";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 export default {
   name: "BannerSection",
+  components: {
+    FontAwesomeIcon,
+  },
   setup() {
     //setup() là một hàm của Vue 3, nó được gọi trước khi component được render, có 2 tham số đầu vào là props và context
     const selectedOption = ref("self-drive");
     const address = ref("Hà Nội");
-    const selectedDateTime = ref(null);
+
+    onMounted(() => {
+      //onMounted() được gọi sau khi component được render
+      flatpickr(".flatpickr", {
+        enableTime: true,
+        dateFormat: "d/m/Y    H:i",
+        allowInput: true,
+        defaultDate: new Date(),
+      });
+    });
+
+    const openFlatPickr = (open) => {
+      const flatpickrInput = document.querySelectorAll(".flatpickr");
+      flatpickrInput.forEach((input, index) => {
+        if (open === "start-date" && index === 0) {
+          input._flatpickr.open();
+        } else if (open === "end-date" && index === 1) {
+          input._flatpickr.open();
+        }
+      });
+    };
 
     return {
       selectedOption,
-      selectedDateTime,
       address,
+      openFlatPickr,
     };
   },
   methods: {
@@ -113,4 +142,9 @@ export default {
 
 <style lang="scss" scoped>
 @import "./Banner.scss";
+.flatpickr {
+  font-weight: bold;
+  font-size: 22px;
+  cursor: pointer;
+}
 </style>
