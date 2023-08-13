@@ -1,30 +1,52 @@
 <template>
-  <a href="" class="car-item">
+  <a href="" class="car-item" v-if="carItemProps.status === 1">
     <div class="card">
-      <img src="../../../assets/images/blog-image-header/1690078070.jpg" class="card-img-top" alt="car_image" />
+      <img :src="carItemProps.carImages[0].imagePath" class="card-img-top" alt="car_image" />
       <div class="card-body">
         <div class="d-flex align-items-center">
-          <p class="card-text_transmission">Số tự động</p>
-          <p class="card-text_delivery">Giao xe tận nơi</p>
+          <p class="card-text_transmission">
+            {{ carItemProps.transmission === "0" ? "Số tự động" : "Số sàn" }}
+          </p>
+          <p
+            class="card-text_delivery"
+            v-if="carItemProps.delivery_enable === 1"
+          >
+            Giao xe tận nơi
+          </p>
         </div>
         <h5 class="card-title text-uppercase">
-          TOYOTA <i class="fa-solid fa-shield"></i>
+          <span>
+            {{ carItemProps.carCustomName }}
+          </span>
+          <font-awesome-icon
+            :icon="['fas', 'shield-halved']"
+            style="color: #1cc88a"
+          />
         </h5>
-        <p class="info">
-          <i class="fa-solid fa-suitcase-rolling"></i>
-          <span> 20 trip</span>
-        </p>
-        <div class="car-item-divider"></div>
-        <div
-          class="desc-address-price d-flex justify-content-between align-items-center mt-3"
-        >
+        <div class="info">
           <div class="desc-address d-flex">
             <div class="d-flex align-items-center justify-content-center">
-              <i class="fa-solid fa-location-dot"></i>
+              <font-awesome-icon icon="fa-solid fa-location-dot" />
             </div>
-            <span>Hanoi</span>
+            <span>{{ carItemProps.location }}</span>
           </div>
-          <div class="desc-price">160.00 VNĐ</div>
+        </div>
+        <div class="car-item-divider"></div>
+        <div
+          class="trip-price d-flex justify-content-between align-items-center mt-3"
+        >
+          <div class="trip">
+            <i class="fa-solid fa-suitcase-rolling"></i>
+            <span> {{ carItemProps.numberOfTrip }} </span>trip
+          </div>
+          <div class="desc-price">
+            {{
+              new Intl.NumberFormat("it-IT", {
+                style: "currency",
+                currency: "VND",
+              }).format(carItemProps.price)
+            }}
+          </div>
         </div>
       </div>
     </div>
@@ -33,7 +55,18 @@
 
 <script>
 export default {
-    name: "CarItem",
+  name: "CarItem",
+  props: {
+    carItemProps: {
+      type: Object,
+    },
+    imagePath: {
+      type: String,
+    }
+  },
+  // setup(props) {
+  //   console.log(props.carItemProps.carImages);
+  // },
 };
 </script>
 

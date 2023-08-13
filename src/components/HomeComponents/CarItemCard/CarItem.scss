@@ -1,5 +1,5 @@
 .car-item {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .card {
@@ -21,6 +21,15 @@
 .card-title {
   font-size: 1rem;
   font-weight: 500;
+  display: flex;
+}
+
+.card-title span {
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 8px;
 }
 
 .card-text_delivery,
@@ -43,19 +52,30 @@
 }
 
 .card-body .info {
-  font-size: 12px;
+  margin-bottom: 10px;
 }
 
-.card-body .info i {
-  color: #1cc88a;
-}
-
-.desc-address-price {
+.trip-price {
   font-size: 14px;
+}
+
+.trip i{
+  color:  #1cc88a;
+  margin-right: 4px;
+}
+
+.trip span{
+  margin-right: 2px;
 }
 
 .desc-address span {
   color: #8f8e8e;
+  font-size: 13px;
+}
+
+.desc-address .fa-location-dot {
+  font-size: 13px;
+  margin-right: 6px;
 }
 
 .desc-address i {

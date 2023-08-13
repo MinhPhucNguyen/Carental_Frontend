@@ -2,16 +2,22 @@
   <div id="featured-cars-section">
     <div class="section-container">
       <p class="section-title">Xe dành cho bạn</p>
-      <div class="car-list">
-        <car-item />
-        <car-item />
-        <car-item />
-        <car-item />
-        <car-item />
-        <car-item />
-        <car-item />
-        <car-item />
-        {{ randomCars }}
+      <div class="car-list" v-if="randomCars.length > 0">
+        <car-item
+          v-for="carItem in randomCars"
+          :key="carItem.carId"
+          :carItemProps="carItem"
+        />
+      </div>
+      <div v-else-if="errorMessage">{{ errorMessage }}</div>
+      <div v-else class="w-100 text-center">
+        <div
+          class="spinner-grow"
+          style="width: 3rem; height: 3rem; color: #1cc88a"
+          role="status"
+        >
+          <span class="visually-hidden">Loading...</span>
+        </div>
       </div>
     </div>
   </div>
@@ -29,23 +35,27 @@ export default {
   },
   setup() {
     const randomCars = ref([]);
+    const errorMessage = ref(null);
 
     const getRandomCars = async () => {
       try {
         const response = await axios.get(
           "http://127.0.0.1:8000/api/v2/cars/randomCars"
         );
-
-        console.log(response.data);
-        randomCars.value = response.data;
+        if (response.status === 200) {
+          randomCars.value = response.data.data;
+        } else {
+          throw new Error("Something went wrong");
+        }
       } catch (error) {
-        console.log(error);
+        errorMessage.value = error;
       }
     };
     getRandomCars();
 
     return {
       randomCars,
+      errorMessage,
     };
   },
 };
