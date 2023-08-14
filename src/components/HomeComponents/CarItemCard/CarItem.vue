@@ -1,7 +1,7 @@
 <template>
   <a href="" class="car-item" v-if="carItemProps.status === 1">
     <div class="card">
-      <img :src="carItemProps.carImages[0].imagePath" class="card-img-top" alt="car_image" />
+      <img :src="imagePath" class="card-img-top" alt="car_image" />
       <div class="card-body">
         <div class="d-flex align-items-center">
           <p class="card-text_transmission">

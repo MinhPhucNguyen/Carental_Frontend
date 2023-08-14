@@ -7,6 +7,7 @@
           v-for="carItem in randomCars"
           :key="carItem.carId"
           :carItemProps="carItem"
+          :imagePath="getImagePath(carItem.carImages)"
         />
       </div>
       <div v-else-if="errorMessage">{{ errorMessage }}</div>
@@ -53,9 +54,16 @@ export default {
     };
     getRandomCars();
 
+    const getImagePath = (carImages) => {
+      if(carImages.length > 0){
+        return carImages[0].imagePath;
+      }
+    };
+
     return {
       randomCars,
       errorMessage,
+      getImagePath
     };
   },
 };
