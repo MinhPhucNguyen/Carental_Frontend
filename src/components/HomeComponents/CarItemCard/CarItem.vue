@@ -1,5 +1,16 @@
 <template>
-  <a href="" class="car-item" v-if="carItemProps.status === 1">
+  <router-link
+    :to="`/car/${(
+      carItemProps.brand +
+      ' ' +
+      carItemProps.carOriginalName +
+      carItemProps.yearOfCar
+    )
+      .toLowerCase()
+      .replace(/\s+/g, '-')}/${carItemProps.carId}`"
+    class="car-item"
+    v-if="carItemProps.status === 1"
+  >
     <div class="card">
       <img :src="imagePath" class="card-img-top" alt="car_image" />
       <div class="card-body">
@@ -50,7 +61,7 @@
         </div>
       </div>
     </div>
-  </a>
+  </router-link>
 </template>
 
 <script>
@@ -62,11 +73,8 @@ export default {
     },
     imagePath: {
       type: String,
-    }
+    },
   },
-  // setup(props) {
-  //   console.log(props.carItemProps.carImages);
-  // },
 };
 </script>
 

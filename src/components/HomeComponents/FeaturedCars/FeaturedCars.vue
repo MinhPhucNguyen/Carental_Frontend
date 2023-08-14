@@ -58,6 +58,7 @@ export default {
       if(carImages.length > 0){
         return carImages[0].imagePath;
       }
+      return null;
     };
 
     return {
