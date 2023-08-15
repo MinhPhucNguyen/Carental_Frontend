@@ -16,7 +16,7 @@ const routes = [
     component: AboutPage,
   },
   {
-    path: "/car/:slug/:id",
+    path: "/car/:carname/:id",
     component: CarDetail,
   },
   {
