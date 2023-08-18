@@ -4,46 +4,55 @@
       <p class="section-title">
         CA<span style="color: #1cc88a">R</span>ENTAL Blog
       </p>
-      <div class="blog-section-container">
+      <div class="blog-section-container" v-if="blogList.length > 0">
         <div class="blog-wrap_1">
-          <a href="" class="blog-item">
+          <router-link
+            v-for="blogItem in blogList.slice(0, 2)"
+            :key="blogItem.blog_id"
+            :to="`blog/${blogItem.slug}`"
+            class="blog-item"
+          >
             <div class="blog-item_img">
-              <img
-                src="../../../assets/images/blog-image-header/1690078070.jpg"
-                alt=""
-              />
+              <img :src="blogItem.image" alt="blog-image" />
             </div>
             <div class="blog-item_content">
-              <p class="time-text text-light mb-0">23-07-2023</p>
-              <p class="name-text text-light mb-0">Du lịch 3 miền cùng MIOTO</p>
+              <p class="time-text text-light mb-0">
+                {{ handleDateCreatedAt(blogItem.created_at) }}
+              </p>
+              <p class="name-text text-light mb-0">{{ blogItem.title }}</p>
             </div>
-          </a>
-          <a href="" class="blog-item">
-            <div class="blog-item_img">
-              <img
-                src="../../../assets/images/blog-image-header/1690078070.jpg"
-                alt=""
-              />
-            </div>
-            <div class="blog-item_content">
-              <p class="time-text text-light mb-0">23-07-2023</p>
-              <p class="name-text text-light mb-0">Du lịch 3 miền cùng MIOTO</p>
-            </div>
-          </a>
+          </router-link>
         </div>
         <div class="blog-wrap_2">
-          <a href="" class="blog-item">
+          <router-link
+            :to="`blog/${blogList[blogList.length - 1].slug}`"
+            class="blog-item"
+            v-if="blogList[blogList.length - 1]"
+          >
             <div class="blog-item_img">
-              <img
-                src="../../../assets/images/blog-image-header/1690078070.jpg"
-                alt=""
-              />
+              <img :src="blogList[blogList.length - 1].image" alt="" />
             </div>
             <div class="blog-item_content">
-              <p class="time-text text-light mb-0">23-07-2023</p>
-              <p class="name-text text-light mb-0">Du lịch 3 miền cùng MIOTO</p>
+              <p class="time-text text-light mb-0">
+                {{
+                  handleDateCreatedAt(blogList[blogList.length - 1].created_at)
+                }}
+              </p>
+              <p class="name-text text-light mb-0">
+                {{ blogList[blogList.length - 1].title }}
+              </p>
             </div>
-          </a>
+          </router-link>
+        </div>
+      </div>
+      <div v-else-if="errorMessage">{{ errorMessage }}</div>
+      <div v-else class="w-100 text-center">
+        <div
+          class="spinner-grow"
+          style="width: 3rem; height: 3rem; color: #1cc88a"
+          role="status"
+        >
+          <span class="visually-hidden">Loading...</span>
         </div>
       </div>
     </div>
@@ -51,8 +60,41 @@
 </template>
 
 <script>
+import { ref } from "vue";
+import axios from "axios";
+
 export default {
   name: "BlogSection",
+  setup() {
+    const blogList = ref([]);
+    const errorMessage = ref(null);
+
+    const getBlogList = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/api/v2/blogs");
+        if (response.status === 200) {
+          blogList.value = response.data.all_blogs.slice(0, 3);
+        }
+      } catch (error) {
+        errorMessage.value = error;
+      }
+    };
+    getBlogList();
+
+    const handleDateCreatedAt = (item) => {
+      const date = new Date(item);
+      const day = date.getDate();
+      const month = "0" + (date.getMonth() + 1);
+      const year = date.getFullYear();
+      return `${day}-${month}-${year}`;
+    };
+
+    return {
+      blogList,
+      errorMessage,
+      handleDateCreatedAt,
+    };
+  },
 };
 </script>
 

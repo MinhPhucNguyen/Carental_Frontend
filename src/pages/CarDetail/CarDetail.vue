@@ -32,8 +32,12 @@
           <div class="group-name">
             <h3>{{ carDetail.carCustomName }}</h3>
             <div class="group-action">
-              <div class="wrap-ic"><i class="fa-solid fa-share-nodes"></i></div>
-              <div class="wrap-ic"><i class="fa-solid fa-heart"></i></div>
+              <div class="wrap-ic">
+                <i class="fa-solid fa-share-nodes"></i>
+              </div>
+              <div class="wrap-ic">
+                <i class="fa-solid fa-heart"></i>
+              </div>
             </div>
           </div>
           <div class="group-total">
@@ -61,21 +65,23 @@
           </div>
           <div class="date-time-form">
             <div class="form-item">
-              <label for="">Nhận xe</label>
+              <label for="" @click="checkLog">Nhận xe</label>
               <div class="form-choose">
                 <input
-                  class="calendar-input-time fw-bold border-0"
-                  id="st-time"
+                  type="date"
+                  class="calendar-input fw-bold border-0"
+                  ref="startDateTime"
                 />
               </div>
             </div>
             <div class="line"></div>
             <div class="form-item">
-              <label for="">Trả xe</label>
+              <label for="" ref="traXe">Trả xe</label>
               <div class="form-choose">
                 <input
-                  class="calendar-input-time fw-bold border-0"
-                  id="nd-time"
+                  type="date"
+                  class="calendar-input fw-bold border-0"
+                  ref="endDateTime"
                 />
               </div>
             </div>
@@ -181,7 +187,7 @@
         <div class="line-page mt-4"></div>
         <div class="infor-car-desc">
           <h6>Các tiện nghi khác</h6>
-          <div class="feature w-50">
+          <div class="feature w-75">
             <div v-if="carDetail.features.length > 0">
               <div
                 class="feature-item"
@@ -279,9 +285,13 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { ref, computed, onUpdated } from "vue";
 import axios from "axios";
 import { useRoute } from "vue-router";
+// import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
+import flatpickr from "flatpickr";
+
 export default {
   name: "CarDetail",
   setup() {
@@ -290,6 +300,8 @@ export default {
     const errorMessage = ref("");
     const totalPrice = ref(0);
     const isDescriptionHidden = ref(true);
+    const startDateTime = ref("");
+    const endDateTime = ref("");
 
     //Get car detail
     carID.value = useRoute().params.id;
@@ -331,13 +343,30 @@ export default {
       return priceFormat(totalPrice.value);
     };
 
+    //Ẩn hiện mô tả
+    const toggleDescription = () => {
+      isDescriptionHidden.value = !isDescriptionHidden.value;
+    };
+
     const carDescHTML = computed(() => {
       return carDetail.value.desc;
     });
 
-    const toggleDescription = () => {
-      isDescriptionHidden.value = !isDescriptionHidden.value;
-    };
+    onUpdated(() => {
+      flatpickr(startDateTime.value, {
+        enableTime: true,
+        dateFormat: "d/m/Y    H:i",
+        allowInput: true,
+        defaultDate: new Date(),
+      });
+
+      flatpickr(endDateTime.value, {
+        enableTime: true,
+        dateFormat: "d/m/Y    H:i",
+        allowInput: true,
+        defaultDate: new Date(),
+      });
+    });
 
     return {
       carID,
@@ -349,6 +378,8 @@ export default {
       calulateTotalPrice,
       toggleDescription,
       newCarImageArr,
+      startDateTime,
+      endDateTime,
     };
   },
 };

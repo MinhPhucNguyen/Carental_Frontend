@@ -45,8 +45,6 @@ export default {
         );
         if (response.status === 200) {
           randomCars.value = response.data.data;
-        } else {
-          throw new Error("Something went wrong");
         }
       } catch (error) {
         errorMessage.value = error;
@@ -55,7 +53,7 @@ export default {
     getRandomCars();
 
     const getImagePath = (carImages) => {
-      if(carImages.length > 0){
+      if (carImages.length > 0) {
         return carImages[0].imagePath;
       }
       return null;
@@ -64,7 +62,7 @@ export default {
     return {
       randomCars,
       errorMessage,
-      getImagePath
+      getImagePath,
     };
   },
 };

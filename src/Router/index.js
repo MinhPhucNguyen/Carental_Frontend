@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "../pages/HomePage/HomePage.vue";
 import AboutPage from "../pages/AboutPage/AboutPage.vue";
 import BlogPage from "../pages/BlogPage/BlogPage.vue";
+import BlogDetail from "../pages/BlogDetail/BlogDetail.vue";
 import CarDetail from "../pages/CarDetail/CarDetail.vue";
 import LoginPage from "../pages/LoginPage/LoginPage.vue";
 import RegisterPage from "../pages/RegisterPage/RegisterPage.vue";
@@ -22,6 +23,10 @@ const routes = [
   {
     path: "/blog",
     component: BlogPage,
+  },
+  {
+    path: "/blog/:slug",
+    component: BlogDetail,
   },
   {
     path: "/login",
