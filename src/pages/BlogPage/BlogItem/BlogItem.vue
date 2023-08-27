@@ -1,53 +1,28 @@
 <template>
-  <a href="/" class="blog-item">
+  <router-link :to="`blog/${blog.blog.slug}`" class="blog-item">
     <div class="blog-img">
-      <img src="../../../assets/images/blog-image-header/1690078070.jpg" alt="blog-img" />
+      <img :src="blog.blog.image" alt="blog-img" />
     </div>
-    <h5>blog.title</h5>
-    blog.content
-  </a>
+    <h5>{{ blog.blog.title }}</h5>
+    <div class="disc">
+      <p>
+        {{ blog.getDisc }}
+      </p>
+    </div>
+  </router-link>
 </template>
 
 <script>
 export default {
   name: "BlogItem",
+  props: {
+    blog: {
+      type: Object,
+    },
+  },
 };
 </script>
 
-<style lang="scss" scoped>
-.blog-content-inner .blog-item {
-  width: calc(100% / 3 - 13.33px);
-  text-decoration: none;
-  color: black;
-}
-
-.blog-item .blog-img {
-  width: 100%;
-  height: 300px;
-  padding-bottom: 30px;
-}
-
-.blog-item .blog-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 20px;
-}
-
-.blog-item h5 {
-  max-height: 80px;
-  font-size: 22px;
-  font-weight: 500;
-}
-
-.blog-item p {
-  color: #767676;
-  min-height: 48px;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  text-align: justify;
-  margin-bottom: 40px;
-}
+<style scoped>
+@import "./BlogItem.scss";
 </style>

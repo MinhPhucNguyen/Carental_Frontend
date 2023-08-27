@@ -94,6 +94,17 @@
   font-weight: bold;
 }
 
+.blog-latest-main .disc p {
+  color: #000;
+  min-height: 100px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  text-align: justify;
+  margin-bottom: 20px;
+}
+
 .blog-latest-other {
   display: flex;
   grid-gap: 20px;

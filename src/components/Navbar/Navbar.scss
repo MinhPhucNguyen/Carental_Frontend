@@ -39,6 +39,12 @@
   transition: all 0.3s ease-in-out;
 }
 
+.authentication-container ul{
+  list-style: none;
+  display: flex;
+  padding-left: 0;
+}
+
 .signup-btn,
 .login-btn {
   width: 100%;
