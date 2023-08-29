@@ -115,8 +115,10 @@ export default {
          store
             .dispatch("auth/login", credentials.value)
             .then(() => {
-               router.push({ name: "home" });
                isLoading.value = false;
+               store.getters["auth/getUser"] && store.getters["auth/isAdmin"]
+                  ? router.push({ name: "admin.dashboard" })
+                  : router.push({ name: "home" });
             })
             .catch((e) => {
                errors.value = e.response.data.errors;

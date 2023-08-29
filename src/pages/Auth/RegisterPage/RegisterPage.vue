@@ -14,6 +14,7 @@
                         type="text"
                         class="form-control"
                         id="firstname"
+                        @input="clearError('firstname')"
                      />
                      <small v-if="errors.firstname" class="text-danger">
                         {{ errors.firstname[0] }}
@@ -28,6 +29,7 @@
                         type="text"
                         class="form-control"
                         id="lastname"
+                        @input="clearError('lastname')"
                      />
                      <small v-if="errors.lastname" class="text-danger">
                         {{ errors.lastname[0] }}
@@ -67,9 +69,9 @@
                   <div class="col-md-12">
                      <input
                         v-model="formRegister.username"
-                        id="username"
                         type="text"
                         class="form-control"
+                        @input="clearError('username')"
                      />
                      <small v-if="errors.username" class="text-danger">
                         {{ errors.username[0] }}
@@ -84,9 +86,9 @@
                   <div class="col-md-12">
                      <input
                         v-model="formRegister.phone"
-                        id="phone"
                         type="text"
                         class="form-control"
+                        @input="clearError('phone')"
                      />
                      <small v-if="errors.phone" class="text-danger">
                         {{ errors.phone[0] }}
@@ -101,9 +103,9 @@
                   <div class="col-md-12">
                      <input
                         v-model="formRegister.email"
-                        id="email"
                         type="text"
                         class="form-control"
+                        @input="clearError('email')"
                      />
                      <small v-if="errors.email" class="text-danger">
                         {{ errors.email[0] }}
@@ -118,9 +120,9 @@
                   <div class="col-md-12">
                      <input
                         v-model="formRegister.address"
-                        id="address"
                         type="text"
                         class="form-control"
+                        @input="clearError('address')"
                      />
                      <small v-if="errors.address" class="text-danger">
                         {{ errors.address[0] }}
@@ -135,9 +137,9 @@
                   <div class="col-md-12">
                      <input
                         v-model="formRegister.password"
-                        id="password"
                         type="password"
                         class="form-control"
+                        @input="clearError('password')"
                      />
                      <small v-if="errors.password" class="text-danger">
                         {{ errors.password[0] }}
@@ -154,9 +156,9 @@
                   <div class="col-md-12">
                      <input
                         v-model="formRegister.confirm_password"
-                        id="confirm_password"
                         type="password"
                         class="form-control"
+                        @input="clearError('confirm_password')"
                      />
                      <small v-if="errors.confirm_password" class="text-danger">
                         {{ errors.confirm_password[0] }}
@@ -167,10 +169,18 @@
                   <div class="col-md-12">
                      <button
                         type="submit"
-                        class="btn btn-lg fw-bold text-white mb-4 signup-btn"
+                        class="btn btn-lg fw-bold text-white mb-4 signup-btn d-flex aligns-items-center justify-content-center"
                         name="register-btn"
                      >
-                        Đăng ký
+                        <div
+                           class="spinner-grow text-light"
+                           v-if="isLoading"
+                           style="width: 2rem; height: 2rem; margin-right: 10px"
+                           role="status"
+                        >
+                           <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <span v-else> Đăng ký </span>
                      </button>
                   </div>
                </div>
@@ -183,12 +193,13 @@
 
 <script>
 import { ref } from "vue";
+import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import axios from "axios";
 
 export default {
    name: "RegisterPage",
    setup() {
+      const store = useStore();
       const formRegister = ref({
          firstname: "",
          lastname: "",
@@ -202,22 +213,32 @@ export default {
       });
       const errors = ref({});
       const router = useRouter();
+      const isLoading = ref(false);
 
-      const registerSubmit = async () => {
-         await axios
-            .post("register", formRegister.value)
+      const registerSubmit = () => {
+         isLoading.value = true;
+         store
+            .dispatch("auth/register", formRegister.value)
             .then(() => {
+               isLoading.value = false;
                router.push({ name: "login" });
             })
-            .catch((error) => {
-               errors.value = error.response.data.errors;
+            .catch((e) => {
+               isLoading.value = false;
+               errors.value = e.response.data.errors;
             });
       };
 
+      const clearError = (field) => {
+         delete errors.value[field];
+      };
+
       return {
+         isLoading,
          formRegister,
          errors,
          registerSubmit,
+         clearError,
       };
    },
 };

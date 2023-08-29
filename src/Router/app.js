@@ -7,11 +7,18 @@ import AccountPage from "../pages/AccountPage/AccountPage.vue";
 import LoginPage from "../pages/Auth/LoginPage/LoginPage.vue";
 import RegisterPage from "../pages/Auth/RegisterPage/RegisterPage.vue";
 import App from "../layouts/app.vue";
+import MyFavs from "@/pages/AccountPage/MyFavs/MyFavs.vue";
+import AccountContent from "@/pages/AccountPage/AccountContent/AccountContent.vue";
+import ChangePassword from "@/pages/AccountPage/ChangePassword/ChangePassword.vue";
+import { useStore } from "vuex";
 
 const app = [
    {
       path: "/",
       component: App,
+      meta: {
+         permission: "user",
+      },
       children: [
          {
             path: "/",
@@ -57,6 +64,25 @@ const app = [
             meta: {
                requiresAuth: true,
             },
+            beforeEnter: (to, from, next) => {
+               if(useStore().getters["auth/getUser"] && to.path === "/account") {
+                  next();
+               }
+            },
+            children: [
+               {
+                  path: "/account",
+                  component: AccountContent,
+               },
+               {
+                  path: "/myfavs",
+                  component: MyFavs,
+               },
+               {
+                  path: "/resetpw",
+                  component: ChangePassword,
+               },
+            ],
          },
       ],
    },

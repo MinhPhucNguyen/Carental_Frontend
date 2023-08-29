@@ -20,15 +20,15 @@
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ms-auto">
                <li class="nav-item">
-                  <router-link to="/about" class="nav-link text-dark btn" href=""
+                  <router-link to="/about" class="nav-link text-dark" href=""
                      >Về Chúng tôi</router-link
                   >
                </li>
                <li class="nav-item">
-                  <router-link to="/" class="nav-link text-dark btn">Trở thành chủ xe</router-link>
+                  <router-link to="/" class="nav-link text-dark ">Trở thành chủ xe</router-link>
                </li>
                <li class="nav-item">
-                  <router-link to="/blog" class="nav-link text-dark btn">Blog</router-link>
+                  <router-link to="/blog" class="nav-link text-dark">Blog</router-link>
                </li>
                <li class="nav-item">
                   <span class="nav-item-border"></span>
@@ -36,15 +36,19 @@
 
                <!-- Authentication Links -->
                <div class="authentication-container d-flex">
-                  <ul v-if="isAuthenticated">
-                     <li class="nav-item m-0">
-                        <form @submit.prevent="logout()">
-                           <button type="submit" class="nav-link text-dark btn btn-danger">
-                              Đăng xuất
-                           </button>
-                        </form>
-                     </li>
-                  </ul>
+                  <router-link
+                     v-if="isAuthenticated"
+                     to="/account"
+                     id="user-info"
+                     class="text-dark fw-bold text-decoration-none"
+                  >
+                     <img
+                        class="avatar-image"
+                        src="../../assets/images/banner-image/banner_img.jpg"
+                        alt="avatar"
+                     />
+                     {{ user.username }}
+                  </router-link>
                   <ul v-else>
                      <li id="register-btn" class="nav-item m-0">
                         <router-link to="/register" class="nav-link text-dark btn"
@@ -53,7 +57,8 @@
                      </li>
                      <li id="login-btn" class="nav-item border border-dark rounded-3">
                         <router-link to="/login" class="nav-link text-dark btn"
-                           >Đăng nhập</router-link>
+                           >Đăng nhập</router-link
+                        >
                      </li>
                   </ul>
                </div>
@@ -74,14 +79,9 @@ export default {
       const isAuthenticated = computed(() => store.getters["auth/isAuthenticated"]);
       const user = computed(() => store.getters["auth/getUser"]);
 
-      const logout = async () => {
-         console.log("logout");
-      };
-
       return {
-         isAuthenticated,
          user,
-         logout,
+         isAuthenticated,
       };
    },
 };

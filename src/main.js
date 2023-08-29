@@ -22,3 +22,4 @@ store.dispatch("auth/attempt", localStorage.getItem("token")).then(() => {
    app.component("font-awesome-icon", FontAwesomeIcon);
    app.mount("#app"); //mount() vào #app
 });
+   

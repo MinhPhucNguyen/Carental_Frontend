@@ -7,6 +7,11 @@ const auth = {
       user: null,
    },
    getters: {
+      isAdmin(state) {
+         if (state.user) {
+            return state.user.role_as === 1;
+         }
+      },
       getUser(state) {
          return state.user;
       },
@@ -24,6 +29,12 @@ const auth = {
       },
    },
    actions: {
+      async register({ dispatch }, registerForm) {
+         const response = await axios.post("register", registerForm);
+         console.log(response);
+         return dispatch("attempt", response.data.token);
+      },
+
       async login({ dispatch }, credentials) {
          const response = await axios.post("login", credentials);
          return dispatch("attempt", response.data.token);
@@ -45,6 +56,13 @@ const auth = {
             commit("SET_TOKEN", null);
             commit("SET_USER", null);
          }
+      },
+
+      async logout({ commit }) {
+         return await axios.post("logout").then(() => {
+            commit("SET_TOKEN", null);
+            commit("SET_USER", null);
+         });
       },
    },
 };

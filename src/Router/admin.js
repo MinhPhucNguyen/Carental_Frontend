@@ -7,6 +7,7 @@ const admin = [
       component: AdminPage,
       meta: {
          requiresAuth: true,
+         permission: "admin",
       },
       children: [
          {
@@ -14,8 +15,8 @@ const admin = [
             component: DashboardPage,
             name: "admin.dashboard",
             meta: {
-               requiresAuth: true
-            }
+               requiresAuth: true,
+            },
          },
       ],
    },
