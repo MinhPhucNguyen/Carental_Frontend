@@ -26,7 +26,7 @@
          <div class="avatar-wrap">
             <div class="avatar">
                <div class="avatar-container" data-bs-toggle="modal" data-bs-target="#avatarModal">
-                  <img src="@/assets/images/avatar/default.jpg" alt="avatar" />
+                  <img :src="user.avatar" alt="avatar" />
                </div>
             </div>
             <h6 class="user-fullname">{{ user.firstname + " " + user.lastname }}</h6>

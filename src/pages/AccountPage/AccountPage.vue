@@ -75,6 +75,7 @@
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import myModal from "@/components/Modal/Modal.vue";
+import { useRouter } from "vue-router";
 
 export default {
    name: "AccountPage",
@@ -83,6 +84,7 @@ export default {
    },
    setup() {
       const store = useStore();
+      const router = useRouter();
       const user = computed(() => store.getters["auth/getUser"]);
       const activeItem = ref("account");
 
@@ -92,7 +94,8 @@ export default {
 
       const logout = () => {
          store.dispatch("auth/logout").then(() => {
-            window.location.href = "/";
+            $("#logoutModal").modal("hide");
+            router.push({ name: "login" });
          });
       };
 

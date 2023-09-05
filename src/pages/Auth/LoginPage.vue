@@ -13,14 +13,12 @@
             >
             <form @submit.prevent="loginSubmit()" id="login-form">
                <div class="form-group row mb-2">
-                  <label for="username" class="col-md-3 col-form-label text-md-right fw-bold w-100"
-                     >Tên Đăng nhập</label
-                  >
+                  <label for="username" class="fw-bold">Tên Đăng nhập</label>
                   <div class="col-md-12">
                      <input
                         id="username"
                         type="text"
-                        class="form-control p-2"
+                        class="form-control login-input p-2"
                         :class="{ 'is-invalid': errors && errors.username }"
                         v-model="credentials.username"
                         @input="clearError('username')"
@@ -31,15 +29,13 @@
                      </small>
                   </div>
                </div>
-               <div class="form-group row mb-1">
-                  <label for="password" class="col-md-3 col-form-label text-md-right fw-bold"
-                     >Mật khẩu</label
-                  >
+               <div class="form-group row mb-1 mt-4">
+                  <label for="password" class="fw-bold">Mật khẩu</label>
                   <div class="col-md-12">
                      <input
                         id="password"
                         type="password"
-                        class="form-control p-2"
+                        class="form-control login-input p-2"
                         :class="{ 'is-invalid': errors && errors.password }"
                         v-model="credentials.password"
                         @input="clearError('password')"
@@ -153,6 +149,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.login-input {
+   height: 50px;
+   outline: none;
+}
 .login-btn {
    background: #1cc88a;
 

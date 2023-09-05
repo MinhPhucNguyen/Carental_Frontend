@@ -7,8 +7,8 @@
          <div class="card-body">
             <form @submit.prevent="registerSubmit()" class="row" id="register-form">
                <div class="form-group col-md-6 mb-2">
-                  <label for="firstname" class="col-form-label text-md-right fw-bold">Tên</label>
-                  <div class="col-md-12">
+                  <label for="firstname" class="fw-bold mb-0">Tên</label>
+                  <div class="col-md-12 p-0">
                      <input
                         v-model="formRegister.firstname"
                         type="text"
@@ -22,8 +22,8 @@
                   </div>
                </div>
                <div class="form-group col-md-6 mb-2">
-                  <label for="lastname" class="col-form-label text-md-right fw-bold">Họ</label>
-                  <div class="col-md-12">
+                  <label for="lastname" class="fw-bold mb-0">Họ</label>
+                  <div class="col-md-12 p-0">
                      <input
                         v-model="formRegister.lastname"
                         type="text"
@@ -37,7 +37,7 @@
                   </div>
                </div>
                <div class="form-group mb-2">
-                  <label for="" class="fw-bolder">Giới tính</label>
+                  <label for="" class="fw-bold mb-0">Giới tính</label>
                   <div>
                      <div class="form-check d-inline-block">
                         <input
@@ -63,10 +63,8 @@
                   </div>
                </div>
                <div class="form-group col-md-6 mb-2">
-                  <label for="username" class="col-md-12 col-form-label text-md-right fw-bold"
-                     >Tên đăng nhập</label
-                  >
-                  <div class="col-md-12">
+                  <label for="username" class="fw-bold mb-0">Tên đăng nhập</label>
+                  <div class="col-md-12 p-0">
                      <input
                         v-model="formRegister.username"
                         type="text"
@@ -80,10 +78,8 @@
                </div>
 
                <div class="form-group col-md-6 mb-2">
-                  <label for="phone" class="col-md-12 col-form-label text-md-right fw-bold"
-                     >Số điện thoại</label
-                  >
-                  <div class="col-md-12">
+                  <label for="phone" class="fw-bold mb-0">Số điện thoại</label>
+                  <div class="col-md-12 p-0">
                      <input
                         v-model="formRegister.phone"
                         type="text"
@@ -97,10 +93,8 @@
                </div>
 
                <div class="form-group mb-2">
-                  <label for="email" class="col-md-3 col-form-label text-md-right fw-bold"
-                     >Email</label
-                  >
-                  <div class="col-md-12">
+                  <label for="email" class="fw-bold mb-0">Email</label>
+                  <div class="col-md-12 p-0">
                      <input
                         v-model="formRegister.email"
                         type="text"
@@ -114,10 +108,8 @@
                </div>
 
                <div class="form-group mb-2">
-                  <label for="address" class="col-md-3 col-form-label text-md-right fw-bold"
-                     >Địa chỉ</label
-                  >
-                  <div class="col-md-12">
+                  <label for="address" class="fw-bold mb-0">Địa chỉ</label>
+                  <div class="col-md-12 p-0">
                      <input
                         v-model="formRegister.address"
                         type="text"
@@ -131,10 +123,8 @@
                </div>
 
                <div class="form-group col-md-6 mb-4">
-                  <label for="password" class="col-md-12 col-form-label text-md-right fw-bold"
-                     >Mật khẩu</label
-                  >
-                  <div class="col-md-12">
+                  <label for="password" class="fw-bold mb-0">Mật khẩu</label>
+                  <div class="col-md-12 p-0">
                      <input
                         v-model="formRegister.password"
                         type="password"
@@ -148,12 +138,8 @@
                </div>
 
                <div class="form-group col-md-6 mb-4">
-                  <label
-                     for="confirm_password"
-                     class="col-md-12 col-form-label text-md-right fw-bold"
-                     >Nhập lại mật khẩu</label
-                  >
-                  <div class="col-md-12">
+                  <label for="confirm_password" class="fw-bold mb-0">Nhập lại mật khẩu</label>
+                  <div class="col-md-12 p-0">
                      <input
                         v-model="formRegister.confirm_password"
                         type="password"
@@ -166,7 +152,7 @@
                   </div>
                </div>
                <div class="form-group mb-2">
-                  <div class="col-md-12">
+                  <div class="col-md-12 p-0">
                      <button
                         type="submit"
                         class="btn btn-lg fw-bold text-white mb-4 signup-btn d-flex aligns-items-center justify-content-center"

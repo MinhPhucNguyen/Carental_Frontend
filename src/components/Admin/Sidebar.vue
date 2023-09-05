@@ -1,22 +1,22 @@
 <template>
    <ul class="navbar-nav bg-light sidebar sidebar-light accordion border-end" id="accordionSidebar">
       <!-- Sidebar - Brand -->
-      <a
+      <router-link
+         to="/admin/dashboard"
          class="sidebar-brand d-flex align-items-center justify-content-center border-bottom"
-         href=""
       >
          <div class="sidebar-brand-text">CA<span style="color: #1cc88f">R</span>ENTAL</div>
-      </a>
+      </router-link>
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0" />
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active border-bottom">
-         <a class="nav-link text-success" href="">
+         <router-link class="nav-link text-success" to="/admin/dashboard">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
-         </a>
+         </router-link>
       </li>
 
       <!-- Divider -->
@@ -34,7 +34,7 @@
             aria-controls="collapseOne"
          >
             <i class="fas fa-fw fa-user"></i>
-            <span>User</span>
+            <span>Users</span>
          </a>
          <div
             id="collapseOne"
@@ -44,7 +44,9 @@
          >
             <div class="bg-white py-2 collapse-inner rounded">
                <h6 class="collapse-header">Action</h6>
-               <a class="collapse-item" href=""> <span class="ml-3">User List</span></a>
+               <router-link class="collapse-item" :to="{ name: 'admin.users' }">
+                  <span class="ml-3">User List</span></router-link
+               >
             </div>
          </div>
       </li>
@@ -60,7 +62,7 @@
             aria-controls="collapseThree"
          >
             <i class="fas fa-fw fa-car"></i>
-            <span>Car</span>
+            <span>Cars</span>
          </a>
          <div
             id="collapseThree"
@@ -91,6 +93,18 @@
          <a class="nav-link fw-bold text-dark" href="">
             <i class="fa-solid fa-square-rss"></i>
             <span>Blog</span>
+         </a>
+      </li>
+
+      <li class="nav-item border-bottom">
+         <a
+            class="nav-link fw-bold text-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#logoutModal"
+            style="cursor: pointer"
+         >
+            <i class="fa-solid fa-arrow-right-from-bracket text-danger"></i>
+            <span>Logout</span>
          </a>
       </li>
 

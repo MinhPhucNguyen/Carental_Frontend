@@ -20,13 +20,13 @@
                <h1 class="modal-title fs-3 text-dark w-100 text-center" id="exampleModalLabel">
                   <slot name="title"></slot>
                </h1>
-                  <slot></slot>
+               <slot></slot>
             </div>
             <div class="modal-footer w-100">
                <a
                   id="logout-btn"
-                  class="btn btn-danger fw-bold w-100 p-3 border-0 fs-5"
-                  style="background: #1cc88a"
+                  class="btn btn-primary fw-bold w-100 p-3 border-0 fs-5 text-light"
+                  :style="{ backgroundColor: bgColor }"
                   @click="$emit(idModal)"
                >
                   <slot name="buttonName"></slot>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { computed } from "vue";
 export default {
    name: "myModal",
    props: {
@@ -45,6 +46,23 @@ export default {
          type: String,
          default: "logout",
       },
+      bgColor: {
+         type: String,
+         default: "success",
+      },
+   },
+   setup(props) {
+      const bgColor = computed(() => {
+         if (props.bgColor == "danger") {
+            return "#e74a3b";
+         } else {
+            return "#1cc88a";
+         }
+      });
+
+      return {
+         bgColor,
+      };
    },
 };
 </script>

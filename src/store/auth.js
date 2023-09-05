@@ -27,11 +27,18 @@ const auth = {
       SET_USER(state, user) {
          state.user = user;
       },
+
+      SET_AVATAR(state, avatarUrl) {
+         state.user.avatar = avatarUrl;
+      },
+
+      RESET_USER(state) {
+         state.user = null;
+      }
    },
    actions: {
       async register({ dispatch }, registerForm) {
          const response = await axios.post("register", registerForm);
-         console.log(response);
          return dispatch("attempt", response.data.token);
       },
 

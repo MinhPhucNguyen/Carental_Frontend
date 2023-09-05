@@ -1,7 +1,7 @@
 <template>
    <nav class="navbar navbar-expand-lg">
       <div class="navbar-container text-dark p-0 d-flex">
-         <router-link to="/" class="navbar-brand text-dark fw-bold text-uppercase fs-4" href="/">
+         <router-link to="/" class="navbar-brand fw-bold text-uppercase fs-4" href="/">
             CA<span style="color: #1cc88a">R</span>ENTAL
          </router-link>
          <button
@@ -44,7 +44,7 @@
                   >
                      <img
                         class="avatar-image"
-                        src="../../assets/images/banner-image/banner_img.jpg"
+                        :src="user.avatar"
                         alt="avatar"
                      />
                      {{ user.username }}
