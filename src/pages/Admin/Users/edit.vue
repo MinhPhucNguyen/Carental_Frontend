@@ -113,7 +113,7 @@
                      </select>
                   </div>
                   <div>
-                     <button name="create_btn" class="btn btn-success">Save changes</button>
+                     <button name="create_btn" class="btn btn-success p-3 float-end fw-bold">Save changes</button>
                   </div>
                </div>
             </form>
@@ -125,47 +125,34 @@
    </div>
 </template>
 
-<script>
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+<script setup>
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import StateLoading from "@/components/Loading/Loading.vue";
 
-export default {
-   name: "EditUser",
-   components: {
-      StateLoading,
-   },
-   setup() {
-      const store = useStore();
-      const router = useRouter();
-      const id = router.currentRoute.value.params.id;
-      const model = ref();
+const store = useStore();
+const router = useRouter();
+const id = router.currentRoute.value.params.id;
+const model = ref();
 
-      store.dispatch("users/resetUser");
+store.dispatch("users/resetUser");
 
-      onMounted(() => {
-         store.dispatch("users/fetchUserById", id).then(() => {
-            model.value = store.getters["users/getUserById"];
-         });
-      });
+onMounted(() => {
+   store.dispatch("users/fetchUserById", id).then(() => {
+      model.value = store.getters["users/getUserById"];
+   });
+});
 
-      const editUser = () => {
-         store.dispatch("users/editUser", { id, model: model.value }).then(() => {
-            router.push({ name: "admin.users" });
-         });
-      };
-
-      onBeforeUnmount(() => {
-         store.dispatch("users/resetUser");
-      });
-
-      return {
-         model,
-         editUser,
-      };
-   },
+const editUser = () => {
+   store.dispatch("users/editUser", { id, model: model.value }).then(() => {
+      router.push({ name: "admin.users" });
+   });
 };
+
+onBeforeUnmount(() => {
+   store.dispatch("users/resetUser");
+});
 </script>
 
 <style></style>

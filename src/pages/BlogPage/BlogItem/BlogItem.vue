@@ -12,15 +12,12 @@
   </router-link>
 </template>
 
-<script>
-export default {
-  name: "BlogItem",
-  props: {
-    blog: {
-      type: Object,
-    },
+<script setup>
+const props = defineProps({
+  blog: {
+    type: Object,
   },
-};
+});
 </script>
 
 <style scoped>

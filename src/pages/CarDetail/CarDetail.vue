@@ -273,7 +273,7 @@
    </div>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, onUpdated } from "vue";
 import axios from "axios";
 import { useRoute } from "vue-router";
@@ -281,95 +281,76 @@ import { useRoute } from "vue-router";
 import "flatpickr/dist/flatpickr.min.css";
 import flatpickr from "flatpickr";
 
-export default {
-   name: "CarDetail",
-   setup() {
-      const carID = ref(null);
-      const carDetail = ref({});
-      const errorMessage = ref("");
-      const totalPrice = ref(0);
-      const isDescriptionHidden = ref(true);
-      const startDateTime = ref("");
-      const endDateTime = ref("");
+const carID = ref(null);
+const carDetail = ref({});
+const errorMessage = ref("");
+const totalPrice = ref(0);
+const isDescriptionHidden = ref(true);
+const startDateTime = ref("");
+const endDateTime = ref("");
 
-      //Get car detail
-      carID.value = useRoute().params.id;
-      const getCarDetail = async () => {
-         try {
-            const response = await axios.get(`v2/car/detail?car_id=${carID.value}`);
-            if (response.status === 200) {
-               carDetail.value = response.data.data;
-            } else {
-               throw new Error("Something went wrong");
-            }
-         } catch (error) {
-            errorMessage.value = error;
-         }
-      };
-      getCarDetail();
-
-      const newCarImageArr = computed(() => {
-         if (carDetail.value.carImages) {
-            return carDetail.value.carImages.slice(1, 4);
-         } else {
-            return [];
-         }
-      });
-
-      //Format price
-      const priceFormat = (price) => {
-         return new Intl.NumberFormat("it-IT", {
-            style: "currency",
-            currency: "VND",
-         }).format(price);
-      };
-
-      //Calulate total price of bill
-      const calulateTotalPrice = (originalPrice, servicesFee) => {
-         totalPrice.value = originalPrice + servicesFee;
-         return priceFormat(totalPrice.value);
-      };
-
-      //Ẩn hiện mô tả
-      const toggleDescription = () => {
-         isDescriptionHidden.value = !isDescriptionHidden.value;
-      };
-
-      const carDescHTML = computed(() => {
-         return carDetail.value.desc;
-      });
-
-      onUpdated(() => {
-         flatpickr(startDateTime.value, {
-            enableTime: true,
-            dateFormat: "d/m/Y    H:i",
-            allowInput: true,
-            defaultDate: new Date(),
-         });
-
-         flatpickr(endDateTime.value, {
-            enableTime: true,
-            dateFormat: "d/m/Y    H:i",
-            allowInput: true,
-            defaultDate: new Date(),
-         });
-      });
-
-      return {
-         carID,
-         carDetail,
-         carDescHTML,
-         errorMessage,
-         isDescriptionHidden,
-         priceFormat,
-         calulateTotalPrice,
-         toggleDescription,
-         newCarImageArr,
-         startDateTime,
-         endDateTime,
-      };
-   },
+//Get car detail
+carID.value = useRoute().params.id;
+const getCarDetail = async () => {
+   try {
+      const response = await axios.get(`v2/car/detail?car_id=${carID.value}`);
+      if (response.status === 200) {
+         carDetail.value = response.data.data;
+      } else {
+         throw new Error("Something went wrong");
+      }
+   } catch (error) {
+      errorMessage.value = error;
+   }
 };
+getCarDetail();
+
+const newCarImageArr = computed(() => {
+   if (carDetail.value.carImages) {
+      return carDetail.value.carImages.slice(1, 4);
+   } else {
+      return [];
+   }
+});
+
+//Format price
+const priceFormat = (price) => {
+   return new Intl.NumberFormat("it-IT", {
+      style: "currency",
+      currency: "VND",
+   }).format(price);
+};
+
+//Calulate total price of bill
+const calulateTotalPrice = (originalPrice, servicesFee) => {
+   totalPrice.value = originalPrice + servicesFee;
+   return priceFormat(totalPrice.value);
+};
+
+//Ẩn hiện mô tả
+const toggleDescription = () => {
+   isDescriptionHidden.value = !isDescriptionHidden.value;
+};
+
+const carDescHTML = computed(() => {
+   return carDetail.value.desc;
+});
+
+onUpdated(() => {
+   flatpickr(startDateTime.value, {
+      enableTime: true,
+      dateFormat: "d/m/Y    H:i",
+      allowInput: true,
+      defaultDate: new Date(),
+   });
+
+   flatpickr(endDateTime.value, {
+      enableTime: true,
+      dateFormat: "d/m/Y    H:i",
+      allowInput: true,
+      defaultDate: new Date(),
+   });
+});
 </script>
 
 <style scoped>

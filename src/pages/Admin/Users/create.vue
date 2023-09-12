@@ -136,7 +136,8 @@
                      <button
                         type="submit"
                         name="create_btn"
-                        class="btn btn-success pr-4 pl-4 fw-bold"
+                        class="btn btn-success p-3 fw-bold float-end"
+                        :disabled="isInvalidForm"
                      >
                         Create
                      </button>
@@ -148,48 +149,47 @@
    </div>
 </template>
 
-<script>
-import { computed, ref } from "vue";
+<script setup>
+import { ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-export default {
-   name: "CreateUser",
-   setup() {
-      const user = ref({
-         firstname: "",
-         lastname: "",
-         gender: 1,
-         username: "",
-         email: "",
-         phone: "",
-         address: "",
-         password: "",
-         confirm_password: "",
-         role_as: "",
-      });
-      const store = useStore();
-      const router = useRouter();
-      const errors = ref({});
 
-      const createUser = () => {
-         store
-            .dispatch("users/createUsers", user.value)
-            .then(() => {
-               router.push({ name: "admin.users" });
-            })
-            .catch((e) => {
-               if (e.response) {
-                  errors.value = e.response.data.errors;
-               }
-            });
-      };
-      return {
-         user,
-         errors,
-         createUser,
-      };
-   },
+const user = ref({
+   firstname: "",
+   lastname: "",
+   gender: 1,
+   username: "",
+   email: "",
+   phone: "",
+   address: "",
+   password: "",
+   confirm_password: "",
+   role_as: "",
+});
+const store = useStore();
+const router = useRouter();
+const errors = ref({});
+const isInvalidForm = ref(true);
+
+const createUser = () => {
+   store
+      .dispatch("users/createUsers", user.value)
+      .then(() => {
+         router.push({ name: "admin.users" });
+      })
+      .catch((e) => {
+         if (e.response) {
+            errors.value = e.response.data.errors;
+         }
+      });
 };
+
+/**
+ * TODO: Watch user object, if user object has changed, set isInvalidForm to false
+ */
+watch(user.value, () => {
+   isInvalidForm.value = false;
+});
 </script>
 
 <style></style>

@@ -110,47 +110,22 @@
                      </td>
 
                      <!-- Modal Delete Confirm -->
-                     <div
-                        class="modal fade"
-                        :id="`deleteConfirmModal${user.id}`"
-                        tabindex="-1"
-                        aria-labelledby="deleteConfirmModalLabel"
-                        aria-hidden="false"
+                     <my-modal
+                        @clickTo="deleteUser(user.id)"
+                        :idModal="`deleteConfirmModal${user.id}`"
+                        bgColor="danger"
                      >
-                        <div class="modal-dialog">
-                           <div class="modal-content">
-                              <div class="modal-header">
-                                 <h5 class="modal-title" id="deleteConfirmModalLabel">
-                                    Delete Confirmation
-                                 </h5>
-                                 <button
-                                    type="button"
-                                    class="btn-close"
-                                    data-bs-dismiss="modal"
-                                    aria-label="Close"
-                                 ></button>
-                              </div>
-                              <div class="modal-body">
-                                 <p>Are you sure you want to delete this user?</p>
-                              </div>
-                              <div class="modal-footer">
-                                 <button
-                                    type="button"
-                                    class="btn btn-secondary"
-                                    data-bs-dismiss="modal"
-                                 >
-                                    Cancel
-                                 </button>
-                                 <form @submit.prevent="deleteUser(user.id)">
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                 </form>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
+                        <template v-slot:title>Delete user</template>
+                        <h6 class="text-dark text-center fs-5 mt-4">
+                           Are you sure, you want to delete this user?
+                        </h6>
+                        <template v-slot:buttonName>Delete</template>
+                     </my-modal>
                   </tr>
                   <tr v-if="users.length === 0">
-                     <td colspan="9" class="text-center">No users found.</td>
+                     <td colspan="9" class="text-center">
+                        <stateLoading />
+                     </td>
                   </tr>
                </tbody>
             </table>
@@ -160,40 +135,30 @@
    </div>
 </template>
 
-<script>
-import { onMounted, computed, ref } from "vue";
+<script setup>
+import { computed, onBeforeMount } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import MyModal from "@/components/Modal/Modal.vue";
+import stateLoading from "@/components/Loading/Loading.vue";
 
-export default {
-   name: "UsersList",
-   setup() {
-      const store = useStore();
-      onMounted(() => store.dispatch("users/fetchUsers"));
-      const users = computed(() => store.getters["users/getUserList"]);
-      const successMessage = ref(null);
-      const router = useRouter();
+const store = useStore();
+onBeforeMount(() => store.dispatch("users/fetchUsers"));
+const users = computed(() => store.getters["users/getUserList"]);
+const router = useRouter();
 
-      const deleteUser = (id) => {
-         store
-            .dispatch("users/deleteUser", id)
-            .then(() => {
-               router.push({ name: "admin.users" });
-               $(`#deleteConfirmModal${id}`).modal("hide");
-            })
-            .catch((e) => {
-               if (e.response) {
-                  alert(e.response.data.message);
-               }
-            });
-      };
-
-      return {
-         users,
-         successMessage,
-         deleteUser,
-      };
-   },
+const deleteUser = (id) => {
+   store
+      .dispatch("users/deleteUser", id)
+      .then(() => {
+         router.push({ name: "admin.users" });
+         $(`#deleteConfirmModal${id}`).modal("hide");
+      })
+      .catch((e) => {
+         if (e.response) {
+            alert(e.response.data.message);
+         }
+      });
 };
 </script>
 

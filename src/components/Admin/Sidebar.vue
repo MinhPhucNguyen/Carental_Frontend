@@ -2,7 +2,7 @@
    <ul class="navbar-nav bg-light sidebar sidebar-light accordion border-end" id="accordionSidebar">
       <!-- Sidebar - Brand -->
       <router-link
-         to="/admin/dashboard"
+         :to="{ name: 'admin.dashboard' }"
          class="sidebar-brand d-flex align-items-center justify-content-center border-bottom"
       >
          <div class="sidebar-brand-text">CA<span style="color: #1cc88f">R</span>ENTAL</div>
@@ -13,7 +13,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active border-bottom">
-         <router-link class="nav-link text-success" to="/admin/dashboard">
+         <router-link class="nav-link text-success" :to="{ name: 'admin.dashboard' }">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
          </router-link>
@@ -72,28 +72,28 @@
          >
             <div class="bg-white py-2 collapse-inner rounded">
                <h6 class="collapse-header">Action</h6>
-               <a class="collapse-item" href="">
+               <router-link :to="{ name: 'admin.cars' }" class="collapse-item">
                   <span class="ml-3">Car List</span>
-               </a>
-               <a class="collapse-item" href="">
+               </router-link>
+               <router-link :to="{ name: 'admin.features' }" class="collapse-item">
                   <span class="ml-3">Features</span>
-               </a>
+               </router-link>
             </div>
          </div>
       </li>
 
       <li class="nav-item border-bottom">
-         <a class="nav-link fw-bold text-dark" href="">
+         <router-link :to="{ name: 'admin.brands' }" class="nav-link fw-bold text-dark">
             <i class="fa-sharp fa-solid fa-bars"></i>
             <span>Brand</span>
-         </a>
+         </router-link>
       </li>
 
       <li class="nav-item border-bottom">
-         <a class="nav-link fw-bold text-dark" href="">
+         <router-link :to="{ name: 'admin.blogs' }" class="nav-link fw-bold text-dark">
             <i class="fa-solid fa-square-rss"></i>
             <span>Blog</span>
-         </a>
+         </router-link>
       </li>
 
       <li class="nav-item border-bottom">

@@ -1,27 +1,5 @@
 <template>
-   <div
-      class="toast align-items-center shadow"
-      role="toast"
-      aria-live="assertive"
-      aria-atomic="true"
-   >
-      <div class="toast-content d-flex p-0">
-         <div class="d-flex align-items-center mr-3 fs-5">
-            <i class="fa-solid fa-circle-check"></i>
-         </div>
-         <div class="toast-body p-0 fw-bold mw-50">
-            <p class="m-0">{{ successMessage }}</p>
-         </div>
-         <div class="close-btn">
-            <button
-               type="button"
-               class="btn-close btn-close-white me-2 m-auto"
-               data-bs-dismiss="toast"
-               aria-label="Close"
-            ></button>
-         </div>
-      </div>
-   </div>
+   <ToastMessage :message="successMessage" />
 
    <div id="profile" class="section">
       <div class="view-right-item rounded-3 border d-flex justify-content-between">
@@ -56,11 +34,13 @@
                            </button>
                         </li>
                         <li>
-                           <a
-                              href=""
+                           <button
                               class="dropdown-item btn remove-avatar-btn text-danger fw-bolder"
-                              >Remove</a
+                              @click="removeAvatar(user.id)"
+                              :disabled="isDefaultAvatar"
                            >
+                              Remove
+                           </button>
                         </li>
                      </ul>
                   </div>
@@ -171,28 +151,49 @@
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import ToastMessage from "@/components/Toast/index.vue";
 
 export default {
    name: "MainProfile",
+   components: {
+      ToastMessage,
+   },
    setup() {
       const store = useStore();
       const router = useRouter();
       const user = computed(() => store.getters["users/getUserById"]);
       const fileInput = ref(null);
       const successMessage = ref(null);
+      const isDefaultAvatar = ref(false);
 
       const openAvatarInput = () => {
          fileInput.value.click();
       };
 
+      const id = router.currentRoute.value.params.id;
+
+      /**
+       * TODO: UPLOAD AVATAR
+       * @param {*} event
+       */
       const uploadAvatar = (event) => {
          const file = event.target.files[0];
-         const id = router.currentRoute.value.params.id;
-
          const formData = new FormData(); //tạo đối tượng form data để gửi file lên server giống với form thông thường có method="post" và enctype="multipart/form-data"
          formData.append("profile_avatar", file);
-
          store.dispatch("users/updateAvatar", { id, formData }).then((response) => {
+            isDefaultAvatar.value = false;
+            successMessage.value = response.data.message;
+            $(".toast").toast("show");
+         });
+      };
+
+      /**
+       * TODO: REMOVE AVATAR
+       * @param {*} id
+       */
+      const removeAvatar = (id) => {
+         store.dispatch("users/removeAvatar", id).then((response) => {
+            isDefaultAvatar.value = true;
             successMessage.value = response.data.message;
             $(".toast").toast("show");
          });
@@ -203,7 +204,9 @@ export default {
          fileInput,
          openAvatarInput,
          uploadAvatar,
+         removeAvatar,
          successMessage,
+         isDefaultAvatar,
       };
    },
 };

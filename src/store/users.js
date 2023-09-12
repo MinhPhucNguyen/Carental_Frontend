@@ -15,8 +15,8 @@ const users = {
          return state.user;
       },
 
-      getOverlayLoading(state) {
-         return state.showOverlayLoading;
+      getCountUsers(state) {
+         return state.usersList.length;
       },
    },
    mutations: {
@@ -55,19 +55,21 @@ const users = {
       },
 
       async editUser({ commit }, { id, model }) {
-         const response = await axios.put(`v2/admin/users/${id}/edit`, model);
-         commit("SET_USER", response.data.user);
-         return response;
+         return await axios.put(`v2/admin/users/${id}/edit`, model).then((response) => {
+            commit("SET_USER", response.data.user);
+         });
       },
 
       async createUsers({ dispatch }, user) {
-         const response = await axios.post("v2/admin/users/create", user, {
-            headers: {
-               "Content-Type": "application/json",
-            },
-         });
-         dispatch("fetchUsers");
-         return response;
+         return await axios
+            .post("v2/admin/users/create", user, {
+               headers: {
+                  "Content-Type": "application/json",
+               },
+            })
+            .then(() => {
+               dispatch("fetchUsers");
+            });
       },
 
       async deleteUser({ dispatch }, id) {
@@ -79,6 +81,13 @@ const users = {
 
       async updateAvatar({ commit }, { id, formData }) {
          const response = await axios.post(`v2/admin/users/${id}/update-avatar`, formData);
+         commit("SET_AVATAR", response.data.avatarUrl);
+         commit("auth/SET_AVATAR", response.data.avatarUrl, { root: true });
+         return response;
+      },
+
+      async removeAvatar({ commit }, id) {
+         const response = await axios.delete(`v2/admin/users/${id}/remove-avatar`);
          commit("SET_AVATAR", response.data.avatarUrl);
          commit("auth/SET_AVATAR", response.data.avatarUrl, { root: true });
          return response;

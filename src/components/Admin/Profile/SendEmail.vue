@@ -1,27 +1,5 @@
 <template>
-   <div
-      class="toast align-items-center shadow"
-      role="toast"
-      aria-live="assertive"
-      aria-atomic="true"
-   >
-      <div class="toast-content d-flex p-0">
-         <div class="d-flex align-items-center mr-3 fs-5">
-            <i class="fa-solid fa-circle-check"></i>
-         </div>
-         <div class="toast-body p-0 fw-bold mw-50">
-            <p class="m-0">{{ successMessage }}</p>
-         </div>
-         <div class="close-btn">
-            <button
-               type="button"
-               class="btn-close btn-close-white me-2 m-auto"
-               data-bs-dismiss="toast"
-               aria-label="Close"
-            ></button>
-         </div>
-      </div>
-   </div>
+   <ToastMessage :message="successMessage" />
 
    <div id="email" class="section active">
       <div class="view-right-item rounded-3 border d-flex justify-content-between">
@@ -120,9 +98,13 @@
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import axios from "axios";
+import ToastMessage from "@/components/Toast/index.vue";
 
 export default {
    name: "SendEmail",
+   components: {
+      ToastMessage,
+   },
    setup() {
       const model = ref({
          emailFrom: "",

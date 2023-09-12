@@ -1,5 +1,5 @@
 <template>
-   <my-modal @deleteUser="deleteUser()" idModal="deleteUser" bgColor="danger">
+   <my-modal @clickTo="deleteUser()" idModal="deleteUserModal" bgColor="danger">
       <template v-slot:title>Delete user</template>
       <h6 class="text-dark text-center fs-5 mt-4">Are you sure, you want to delete this user?</h6>
       <template v-slot:buttonName>Delete</template>
@@ -63,49 +63,30 @@
    </div>
 </template>
 
-<script>
+<script setup>
 import { computed, onBeforeUnmount, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import StateLoading from "@/components/Loading/Loading.vue";
 import MyModal from "@/components/Modal/Modal.vue";
-import OverlayLoading from "@/components/Loading/OverlayLoading.vue";
 
-export default {
-   name: "UserProfile",
-   components: {
-      StateLoading,
-      MyModal,
-      OverlayLoading,
-   },
-   setup() {
-      const store = useStore();
-      const router = useRouter();
-      const id = router.currentRoute.value.params.id;
-      store.dispatch("users/resetUser");
+const store = useStore();
+const router = useRouter();
+const id = router.currentRoute.value.params.id;
+store.dispatch("users/resetUser");
 
-      onMounted(() => store.dispatch("users/fetchUserById", id));
-      const user = computed(() => store.getters["users/getUserById"]);
-      const deleteUser = () => {
-         store.dispatch("users/deleteUser", id).then(() => {
-            router.push({ name: "admin.users" });
-            $("#deleteUserModal").modal("hide");
-         });
-      };
-
-      onBeforeUnmount(() => {
-         store.dispatch("users/resetUser");
-      });
-
-      const showOverlayLoading = computed(() => store.getters["users/getOverlayLoading"]);
-
-      return {
-         user,
-         deleteUser,
-         showOverlayLoading,
-      };
-   },
+onMounted(() => store.dispatch("users/fetchUserById", id));
+const user = computed(() => store.getters["users/getUserById"]);
+const deleteUser = () => {
+   store.dispatch("users/deleteUser", id).then(() => {
+      router.push({ name: "admin.users" });
+      $("#deleteUserModal").modal("hide");
+   });
 };
+
+onBeforeUnmount(() => {
+   store.dispatch("users/resetUser");
+});
 </script>
 
 <style lang="scss" scoped></style>

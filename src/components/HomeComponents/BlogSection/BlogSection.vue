@@ -76,7 +76,7 @@ export default {
       try {
         const response = await axios.get("v2/blogs");
         if (response.status === 200) {
-          blogSectionList.value = await response.data.all_blogs.slice(0, 3);
+          blogSectionList.value = await response.data.blogs.slice(0, 3);
         }
       } catch (error) {
         errorMessage.value = error;

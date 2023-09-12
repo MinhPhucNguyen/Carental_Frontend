@@ -1,7 +1,7 @@
 <template>
    <div
       class="modal fade"
-      :id="idModal + 'Modal'"
+      :id="idModal"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
@@ -23,14 +23,14 @@
                <slot></slot>
             </div>
             <div class="modal-footer w-100">
-               <a
+               <button
                   id="logout-btn"
-                  class="btn btn-primary fw-bold w-100 p-3 border-0 fs-5 text-light"
+                  class="btn btn-primary fw-bold w-100 p-3 border-0 fs-5 text-light d-flex justify-content-center align-items-center"
                   :style="{ backgroundColor: bgColor }"
-                  @click="$emit(idModal)"
+                  @click="$emit('clickTo')"
                >
                   <slot name="buttonName"></slot>
-               </a>
+               </button>
             </div>
          </div>
       </div>

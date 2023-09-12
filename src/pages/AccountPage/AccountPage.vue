@@ -1,5 +1,5 @@
 <template>
-   <my-modal @logout="logout()" idModal="logout">
+   <my-modal @clickTo="logout()" idModal="logoutModal">
       <template v-slot:title>Đăng xuất</template>
       <h6 class="text-dark text-center fs-5 mt-4">Bạn có chắc chắn muốn đăng xuất ?</h6>
       <template v-slot:buttonName>Đăng xuất</template>

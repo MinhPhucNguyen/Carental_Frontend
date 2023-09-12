@@ -85,66 +85,49 @@
    </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from "vue";
 import AlertMessage from "@/components/Alert/AlertMessage.vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
-export default {
-   name: "LoginPage",
-   components: {
-      AlertMessage,
-   },
-   setup() {
-      const store = useStore();
-      const credentials = ref({
-         username: "",
-         password: "",
-      });
-      const isLoading = ref(false);
-      const errors = ref(null);
-      const router = useRouter();
+const store = useStore();
+const credentials = ref({
+   username: "",
+   password: "",
+});
+const isLoading = ref(false);
+const errors = ref(null);
+const router = useRouter();
 
-      const loginSubmit = () => {
-         isLoading.value = true;
-         store
-            .dispatch("auth/login", credentials.value)
-            .then(() => {
-               isLoading.value = false;
-               store.getters["auth/getUser"] && store.getters["auth/isAdmin"]
-                  ? router.push({ name: "admin.dashboard" })
-                  : router.push({ name: "home" });
-            })
-            .catch((e) => {
-               errors.value = e.response.data.errors;
-               if (!errors.value.username && !errors.value.password) {
-                  errors.value = { global: e.response.data.errors };
-               }
-               isLoading.value = false;
-            });
-      };
-
-      const clearError = (field) => {
-         if (errors.value) {
-            delete errors.value[field];
-            errors.value = null;
+const loginSubmit = () => {
+   isLoading.value = true;
+   store
+      .dispatch("auth/login", credentials.value)
+      .then(() => {
+         isLoading.value = false;
+         store.getters["auth/getUser"] && store.getters["auth/isAdmin"]
+            ? router.push({ name: "admin.dashboard" })
+            : router.push({ name: "home" });
+      })
+      .catch((e) => {
+         errors.value = e.response.data.errors;
+         if (!errors.value.username && !errors.value.password) {
+            errors.value = { global: e.response.data.errors };
          }
-      };
+         isLoading.value = false;
+      });
+};
 
-      const closeGlobalError = () => {
-         errors.value = null;
-      };
+const clearError = (field) => {
+   if (errors.value) {
+      delete errors.value[field];
+      errors.value = null;
+   }
+};
 
-      return {
-         credentials,
-         loginSubmit,
-         errors,
-         closeGlobalError,
-         clearError,
-         isLoading,
-      };
-   },
+const closeGlobalError = () => {
+   errors.value = null;
 };
 </script>
 

@@ -177,56 +177,43 @@
    </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
-export default {
-   name: "RegisterPage",
-   setup() {
-      const store = useStore();
-      const formRegister = ref({
-         firstname: "",
-         lastname: "",
-         username: "",
-         password: "",
-         gender: 1,
-         phone: "",
-         email: "",
-         address: "",
-         confirm_password: "",
+const store = useStore();
+const formRegister = ref({
+   firstname: "",
+   lastname: "",
+   username: "",
+   password: "",
+   gender: 1,
+   phone: "",
+   email: "",
+   address: "",
+   confirm_password: "",
+});
+const errors = ref({});
+const router = useRouter();
+const isLoading = ref(false);
+
+const registerSubmit = () => {
+   isLoading.value = true;
+   store
+      .dispatch("auth/register", formRegister.value)
+      .then(() => {
+         isLoading.value = false;
+         router.push({ name: "login" });
+      })
+      .catch((e) => {
+         isLoading.value = false;
+         errors.value = e.response.data.errors;
       });
-      const errors = ref({});
-      const router = useRouter();
-      const isLoading = ref(false);
+};
 
-      const registerSubmit = () => {
-         isLoading.value = true;
-         store
-            .dispatch("auth/register", formRegister.value)
-            .then(() => {
-               isLoading.value = false;
-               router.push({ name: "login" });
-            })
-            .catch((e) => {
-               isLoading.value = false;
-               errors.value = e.response.data.errors;
-            });
-      };
-
-      const clearError = (field) => {
-         delete errors.value[field];
-      };
-
-      return {
-         isLoading,
-         formRegister,
-         errors,
-         registerSubmit,
-         clearError,
-      };
-   },
+const clearError = (field) => {
+   delete errors.value[field];
 };
 </script>
 

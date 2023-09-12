@@ -11,8 +11,8 @@
       </div>
       <div class="row pl-3 mt-2">
          <div class="mr-3 bg-success bg-gradient rounded-4" style="height: 180px; width: 378px">
-            <a
-               href=""
+            <router-link
+               :to="{ name: 'admin.users' }"
                class="dashboard-card h-100 d-block text-decoration-none"
             >
                <div
@@ -20,37 +20,36 @@
                   style="font-size: 60px"
                >
                   <i class="fa-solid fa-users"></i>
-                  <h5 class="mt-3 fw-bold">Users: </h5>
+                  <h5 class="mt-3 fw-bold">Users: {{ usersList }}</h5>
                </div>
-            </a>
+            </router-link>
          </div>
 
          <div class="mr-3 bg-success bg-gradient rounded-4" style="height: 180px; width: 378px">
-            <a
-               href=""
-               class="dashboard-card h-100 d-block text-decoration-none"
-            >
+            <router-link :to="{name: 'admin.cars'}" class="dashboard-card h-100 d-block text-decoration-none">
                <div
                   class="h-100 w-100 d-flex justify-content-center align-items-center text-white flex-column"
                   style="font-size: 60px"
                >
                   <i class="fa-solid fa-car"></i>
-                  <h5 class="mt-3 fw-bold">Cars: </h5>
+                  <h5 class="mt-3 fw-bold">Cars: {{ carsList }}</h5>
                </div>
-            </a>
+            </router-link>
          </div>
       </div>
    </div>
 </template>
 
-<script>
-
-export default {
-   name: "DashboardPage",
-   setup() {
-      return {  };
-   },
-};
+<script setup>
+import { computed, onBeforeMount } from "vue";
+import { useStore } from "vuex";
+const store = useStore();
+onBeforeMount(() => {
+   store.dispatch("users/fetchUsers");
+   store.dispatch("cars/fetchCars");
+});
+const usersList = computed(() => store.getters["users/getCountUsers"]);
+const carsList = computed(() => store.getters["cars/getCountCars"]);
 </script>
 
 <style></style>
