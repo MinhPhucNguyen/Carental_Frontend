@@ -578,7 +578,6 @@ const updateCar = async () => {
          "Content-Type": "multipart/form-data",
       })
       .then((response) => {
-         console.log(response.data.carImages);
          if (Array.isArray(response.data.carImages)) {
             for (const item of response.data.carImages) {
                imagesUrl.value.push(item.image);
