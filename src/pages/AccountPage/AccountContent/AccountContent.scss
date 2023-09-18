@@ -104,7 +104,7 @@
 }
 
 .avatar-wrap .note {
-   font-size: 14px;
+   font-size: 15px;
    color: #767676;
 }
 
@@ -189,8 +189,25 @@
    font-size: 11px;
 }
 
+.warning {
+   display: flex;
+   align-items: center;
+   gap: 4px;
+   border-radius: 20px;
+   padding: 4px 8px;
+   background-color: #ffe2bb;
+   color: black;
+   font-size: 11px;
+}
+
 .success i {
    color: #1cc88a;
+   font-size: 12px;
+}
+
+.warning i {
+   color: #f79009;
+   font-size: 12px;
 }
 
 .info-desc-item .name {
@@ -312,4 +329,3 @@
    font-weight: 500;
    color: #767676;
 }
-

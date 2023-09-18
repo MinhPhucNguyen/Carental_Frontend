@@ -21,8 +21,8 @@
 
    <div class="col-md-12 p-0">
       <div class="card">
-         <div class="card-header bg-dark d-flex align-items-center">
-            <div class="d-inline-block fw-bold text-white fs-4 flex-grow-1">Features List</div>
+         <div class="card-header bg-transparent d-flex align-items-center border-0">
+            <div class="d-inline-block fw-bold text-dark fs-4 flex-grow-1">Features List</div>
             <div>
                <button class="btn btn-success fw-bold float-right ml-3" @click="addFeature">
                   <i class="fa-solid fa-plus"></i>
@@ -30,7 +30,7 @@
                </button>
             </div>
          </div>
-         <div class="card-body">
+         <div class="card-body mt-0">
             <table class="table table-bordered table-striped">
                <thead>
                   <tr class="text-dark">

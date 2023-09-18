@@ -1,8 +1,22 @@
 <template>
-   <updateEmailModal />
-   <updatePhoneNumberModal />
-   <updateInfoModal />
-   <avatarUpload />
+   <!-- <ToastMessage :message="successMessage" /> -->
+   <updatePhoneNumberModal
+      @update-phone-number="updatePhoneNumber"
+      :user="user"
+      :isLoading="isLoading"
+      :errors="errors"
+   />
+   <updateEmailModal
+      @handle-email="handleEmail"
+      :user="user"
+      :isLoading="isLoading"
+      :errors="errors"
+      :successMessage="successMessage"
+      :isUpdateEmailSuccess="isUpdateEmailSuccess"
+      :checkEmail="checkEmail"
+   />
+   <updateInfoModal :user="user" @update-infor="updateInfor" :isLoading="isLoading" />
+   <avatarUpload @handle-change-avatar="handleChangeAvatar" :isLoading="isLoading" />
 
    <div class="content-item user-profile">
       <div class="content-title d-flex align-items-center justify-content-between">
@@ -11,7 +25,7 @@
             <div
                class="wrap-edit-btn edit-account-btn"
                data-bs-toggle="modal"
-               data-bs-target="#editAccountModal"
+               data-bs-target="#editAccount"
             >
                <i class="fa-solid fa-pen"></i>
             </div>
@@ -29,7 +43,7 @@
                   <img :src="user.avatar" alt="avatar" />
                </div>
             </div>
-            <h6 class="user-fullname">{{ user.firstname + " " + user.lastname }}</h6>
+            <h6 class="user-fullname">{{ user.fullname }}</h6>
             <div class="note">
                Tham gia: <span>{{ dateJoin }}</span>
             </div>
@@ -45,11 +59,11 @@
             <div class="info-box">
                <div class="info-box-item d-flex justify-content-between align-items-center">
                   <p>Ngày sinh</p>
-                  <p class="main">01/01/1950</p>
+                  <p class="main">{{ formatBirth }}</p>
                </div>
                <div class="info-box-item d-flex justify-content-between align-items-center">
                   <p>Giới tính</p>
-                  <p class="main">Nam</p>
+                  <p class="main">{{ user.gender === 1 ? "Nam" : "Nữ" }}</p>
                </div>
             </div>
             <div class="info-desc">
@@ -76,13 +90,18 @@
                <div class="info-desc-item">
                   <div class="title-item">
                      Email
-                     <div class="note success">
+                     <div v-if="user.email_verified_at" class="note success">
                         <i class="fa-solid fa-circle-check"></i>
-                        Đã xác thực
+                        <span> Đã xác thực</span>
+                     </div>
+                     <div v-else class="note warning">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span> Chưa xác thực</span>
                      </div>
                   </div>
                   <div class="name">
-                     {{ user.email }}
+                     <span v-if="user.email">{{ user.email }}</span
+                     ><span v-else>Thêm email</span>
                      <div
                         class="wrap-edit-btn update-email-btn"
                         data-bs-toggle="modal"
@@ -197,56 +216,185 @@
    </div>
 </template>
 
-<script>
+<script setup>
 import updatePhoneNumberModal from "@/components/Modal/updatePhoneNumberModal/index.vue";
 import updateEmailModal from "@/components/Modal/updateEmailModal/index.vue";
 import updateInfoModal from "@/components/Modal/updateInfoModal/index.vue";
 import avatarUpload from "@/components/Modal/avatarUpload/index.vue";
-import { computed, ref } from "vue";
+import ToastMessage from "@/components/Toast/index.vue";
+import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
+import axios from "axios";
 
-export default {
-   name: "AccountContent",
-   components: {
-      updatePhoneNumberModal,
-      updateEmailModal,
-      updateInfoModal,
-      avatarUpload,
-   },
-   setup() {
-      const store = useStore();
-      const user = computed(() => store.getters["auth/getUser"]);
-      const licenseImageUrl = ref(null);
+const store = useStore();
+const licenseImageUrl = ref(null);
+const successMessage = ref(null);
+const isLoading = ref(false);
+const errors = ref(null);
+const user = ref({});
 
-      const dateJoin = computed(() => {
-         const date = new Date(user.value.created_at);
-         const day = date.getDate().toString().padStart(2, "0");
-         const month = (date.getMonth() + 1).toString().padStart(2, "0");
-         const year = date.getFullYear();
-         return `${day}/${month}/${year}`;
-      });
+/**
+ * TODO: FETCH USER WHEN AUTHENTICATED
+ */
+user.value = store.getters["auth/getUser"];
 
-      const chooseLicenseUpload = () => {
-         const input = document.querySelector("input[name='license-upload-input']");
-         input.click();
-      };
-
-      const handleLicenseImage = (e) => {
-         const selectedFile = e.target.files[0];
-         if (selectedFile) {
-            licenseImageUrl.value = URL.createObjectURL(selectedFile);
-         }
-      };
-
-      return {
-         dateJoin,
-         user,
-         licenseImageUrl,
-         chooseLicenseUpload,
-         handleLicenseImage,
-      };
-   },
+const fetchUserById = async () => {
+   return await store.dispatch("users/fetchUserById", user.value.id).then((response) => {
+      user.value = response.data.user;
+   });
 };
+
+const formatBirth = computed(() => {
+   const birth = new Date(user.value.birth);
+   const day = birth.getDate().toString().padStart(2, "0");
+   const month = (birth.getMonth() + 1).toString().padStart(2, "0");
+   return `${day}-${month}-${birth.getFullYear()}`;
+});
+
+const dateJoin = computed(() => {
+   const date = new Date(user.value.created_at);
+   const day = date.getDate().toString().padStart(2, "0");
+   const month = (date.getMonth() + 1).toString().padStart(2, "0");
+   const year = date.getFullYear();
+   return `${day}/${month}/${year}`;
+});
+
+const chooseLicenseUpload = () => {
+   const input = document.querySelector("input[name='license-upload-input']");
+   input.click();
+};
+
+const handleLicenseImage = (e) => {
+   const selectedFile = e.target.files[0];
+   if (selectedFile) {
+      licenseImageUrl.value = URL.createObjectURL(selectedFile);
+   }
+};
+
+/**
+ * TODO: UPLOAD AVATAR
+ * @param {*} file
+ */
+const id = user.value.id;
+const handleChangeAvatar = async (file) => {
+   const formData = new FormData();
+   formData.append("profile_avatar", file);
+   isLoading.value = true;
+   store.dispatch("users/updateAvatar", { id, formData }).then((response) => {
+      successMessage.value = "Thay đổi thành công";
+      fetchUserById().then(() => {
+         isLoading.value = false;
+         $("#avatarModal").modal("hide");
+         $(".toast").toast("show");
+      });
+   });
+};
+
+/**
+ * TODO: UPDATE INFO
+ */
+const updateInfor = async (model) => {
+   isLoading.value = true;
+   await axios
+      .patch(`v2/users/${id}/update-infor`, model)
+      .then((response) => {
+         successMessage.value = response.data.message;
+         fetchUserById().then(() => {
+            isLoading.value = false;
+            $("#editAccount").modal("hide");
+            $(".toast").toast("show");
+         });
+      })
+      .catch((e) => {
+         if (e.response) {
+            isLoading.value = false;
+            errors.value = e.response.data.errors;
+         }
+      });
+};
+
+/**
+ * TODO: UPDATE PHONE NUMBER
+ */
+const updatePhoneNumber = async (model) => {
+   isLoading.value = true;
+   await axios
+      .patch(`v2/users/${id}/update-phone`, model)
+      .then((response) => {
+         successMessage.value = response.data.message;
+         fetchUserById().then(() => {
+            isLoading.value = false;
+            $("#updatePhoneNumberModal").modal("hide");
+            $(".toast").toast("show");
+         });
+      })
+      .catch((e) => {
+         if (e.response) {
+            console.log(e);
+            errors.value = "*Không hợp lệ mới nhập lại";
+            $("#updatePhoneNumberModal").modal("show");
+            isLoading.value = false;
+         }
+      });
+};
+
+/**
+ * TODO:UPDATE AND EMAIL VERIFICATION
+ */
+const isUpdateEmailSuccess = ref(false);
+
+const handleEmail = (model) => {
+   if (model === true) {
+      verificationEmail();
+   } else {
+      updateEmail(model);
+   }
+};
+
+const updateEmail = async (model) => {
+   isLoading.value = true;
+   await axios
+      .patch(`v2/users/${id}/update-email`, model)
+      .then((response) => {
+         successMessage.value = response.data.message;
+         fetchUserById().then(() => {
+            isLoading.value = false;
+            isUpdateEmailSuccess.value = true;
+         });
+      })
+      .catch((e) => {
+         if (e.response) {
+            if (e.response.data.errors.email[0] === "*Please enter a valid email") {
+               errors.value = "*Vui lòng nhập email hợp lệ";
+            } else if (e.response.data.errors.email[0] === "*Email already exists") {
+               errors.value = "*Email đã tồn tại";
+            }
+            $("#updateEmailModal").modal("show");
+            isLoading.value = false;
+         }
+      });
+};
+
+const checkEmail = ref("");
+const verificationEmail = async () => {
+   checkEmail.value = "Vui lòng kiểm tra email của bạn.";
+   isLoading.value = true;
+   await axios
+      .post(`v2/users/${id}/send-email-verification`)
+      .then((response) => {
+         console.log(response.data);
+      })
+      .catch((e) => {
+         console.log(e);
+      });
+};
+
+onMounted(() => {
+   $("#updateEmailModal").on("hide.bs.modal", () => {
+      isUpdateEmailSuccess.value = false;
+      errors.value = null;
+   });
+});
 </script>
 
 <style scoped>

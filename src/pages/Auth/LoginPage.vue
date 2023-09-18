@@ -13,19 +13,19 @@
             >
             <form @submit.prevent="loginSubmit()" id="login-form">
                <div class="form-group row mb-2">
-                  <label for="username" class="fw-bold">Tên Đăng nhập</label>
+                  <label for="email" class="fw-bold">Email</label>
                   <div class="col-md-12">
                      <input
-                        id="username"
+                        id="email"
                         type="text"
                         class="form-control login-input p-2"
-                        :class="{ 'is-invalid': errors && errors.username }"
-                        v-model="credentials.username"
-                        @input="clearError('username')"
+                        :class="{ 'is-invalid': errors && errors.email }"
+                        v-model="credentials.email"
+                        @input="clearError('email')"
                         autofocus
                      />
-                     <small v-if="errors && errors.username" class="text-danger">
-                        {{ errors.username[0] }}
+                     <small v-if="errors && errors.email" class="text-danger">
+                        {{ errors.email[0] }}
                      </small>
                   </div>
                </div>
@@ -93,7 +93,7 @@ import { useRouter } from "vue-router";
 
 const store = useStore();
 const credentials = ref({
-   username: "",
+   email: "",
    password: "",
 });
 const isLoading = ref(false);
@@ -111,11 +111,13 @@ const loginSubmit = () => {
             : router.push({ name: "home" });
       })
       .catch((e) => {
-         errors.value = e.response.data.errors;
-         if (!errors.value.username && !errors.value.password) {
-            errors.value = { global: e.response.data.errors };
+         if (e) {
+            errors.value = e.response.data.errors;
+            if (!errors.value.email && !errors.value.password) {
+               errors.value = { global: e.response.data.errors };
+            }
+            isLoading.value = false;
          }
-         isLoading.value = false;
       });
 };
 

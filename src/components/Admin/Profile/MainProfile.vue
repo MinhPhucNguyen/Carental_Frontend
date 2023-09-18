@@ -56,7 +56,7 @@
             </div>
             <div class="info ml-4">
                <p class="fs-4 fw-bolder text-dark mb-1">
-                  {{ user.firstname + " " + user.lastname }}
+                  {{ user.fullname }}
                </p>
                <p
                   class="fw-bolder mb-1"

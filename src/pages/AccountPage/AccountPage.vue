@@ -71,41 +71,30 @@
    </div>
 </template>
 
-<script>
-import { ref, computed } from "vue";
+<script setup>
+import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import myModal from "@/components/Modal/Modal.vue";
 import { useRouter } from "vue-router";
+const store = useStore();
+const router = useRouter();
+const activeItem = ref("account");
 
-export default {
-   name: "AccountPage",
-   components: {
-      myModal,
-   },
-   setup() {
-      const store = useStore();
-      const router = useRouter();
-      const user = computed(() => store.getters["auth/getUser"]);
-      const activeItem = ref("account");
+const user = computed(() => store.getters["auth/getUser"]);
 
-      const setActiveItem = (item) => {
-         activeItem.value = item;
-      };
+onMounted(() => {
+   store.dispatch("users/fetchUserById", user.value.id);
+});
 
-      const logout = () => {
-         store.dispatch("auth/logout").then(() => {
-            $("#logoutModal").modal("hide");
-            router.push({ name: "login" });
-         });
-      };
+const setActiveItem = (item) => {
+   activeItem.value = item;
+};
 
-      return {
-         activeItem,
-         setActiveItem,
-         logout,
-         user,
-      };
-   },
+const logout = () => {
+   store.dispatch("auth/logout").then(() => {
+      $("#logoutModal").modal("hide");
+      router.push({ name: "login" });
+   });
 };
 </script>
 

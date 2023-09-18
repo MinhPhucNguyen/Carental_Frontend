@@ -3,7 +3,7 @@
     :to="`/car/${(
       carItemProps.brand +
       ' ' +
-      carItemProps.carOriginalName +
+      carItemProps.carName +
       carItemProps.yearOfCar
     )
       .toLowerCase()

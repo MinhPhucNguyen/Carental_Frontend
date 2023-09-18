@@ -11,7 +11,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
    const isAuthenticated = useStore().getters["auth/isAuthenticated"];
-
    if (to.meta.requiresAuth && !isAuthenticated) {
       return next({ name: "login" });
    } else if (to.meta.permission == "admin" && !useStore().getters["auth/isAdmin"]) {

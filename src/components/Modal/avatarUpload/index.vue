@@ -14,18 +14,14 @@
                   class="btn-close border border-3 rounded-circle"
                   data-bs-dismiss="modal"
                   aria-label="Close"
+                  @click="closeModal"
                ></button>
             </div>
             <div class="modal-body text-center">
                <h1 class="modal-title fs-3 text-center" id="avatarModalLabel">
                   Cập nhật ảnh đại diện
                </h1>
-               <input
-                  type="file"
-                  name="ip_upload_avatar"
-                  class="d-none"
-                  @change="handleImageChange"
-               />
+               <input type="file" name="ip_upload_avatar" class="d-none" @change="imageChange" />
                <button
                   type="button"
                   class="btn btn-primary choose-avatar-btn hover-shadow rounded-pill border-0 text-uppercase"
@@ -35,7 +31,7 @@
                      padding: 16px 24px;
                      font-weight: 500;
                   "
-                  @click="uploadAvatar()"
+                  @click="uploadAvatar"
                >
                   Chọn hình
                </button>
@@ -44,7 +40,16 @@
                   <a
                      class="btn btn-danger fw-bold w-100 p-3 border-0 fs-5"
                      style="background: #1cc88a"
+                     @click.prevent="handleChangeAvatar"
                   >
+                     <div
+                        class="spinner-border"
+                        role="status"
+                        style="width: 24px; height: 24px; margin-right: 10px"
+                        v-if="props.isLoading"
+                     >
+                        <span class="visually-hidden">Loading...</span>
+                     </div>
                      Cập nhật
                   </a>
                </div>
@@ -54,33 +59,43 @@
    </div>
 </template>
 
-<script>
-import { ref } from "vue";
+<script setup>
+import { onMounted, ref } from "vue";
 
-export default {
-   name: "avatarUpload",
-   setup() {
-      const imageUrl = ref(null);
+const emits = defineEmits(["handle-change-avatar"]);
+const imageUrl = ref(null);
 
-      const uploadAvatar = () => {
-         const input = document.querySelector('input[name="ip_upload_avatar"]');
-         input.click();
-      };
+const props = defineProps(["isLoading"]);
 
-      const handleImageChange = (e) => {
-         const selectedFile = e.target.files[0];
-         if (selectedFile) {
-            imageUrl.value = URL.createObjectURL(selectedFile);
-         }
-      };
-
-      return {
-         imageUrl,
-         uploadAvatar,
-         handleImageChange,
-      };
-   },
+const uploadAvatar = () => {
+   const input = document.querySelector('input[name="ip_upload_avatar"]');
+   input.click();
 };
+
+const selectedFile = ref(null);
+
+const imageChange = (e) => {
+   selectedFile.value = e.target.files[0];
+   if (selectedFile.value != null) {
+      imageUrl.value = URL.createObjectURL(selectedFile.value);
+   }
+};
+
+const handleChangeAvatar = () => {
+   emits("handle-change-avatar", selectedFile.value);
+};
+
+const closeModal = () => {
+   imageUrl.value = null;
+   selectedFile.value = null;
+};
+
+onMounted(() => {
+   $("#avatarModal").on("hide.bs.modal", () => {
+      imageUrl.value = null;
+      selectedFile.value = null;
+   });
+});
 </script>
 
 <style scoped>

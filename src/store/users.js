@@ -5,6 +5,7 @@ const users = {
    state: {
       usersList: [],
       user: null,
+      totalUser: 0,
    },
    getters: {
       getUserList(state) {
@@ -33,10 +34,31 @@ const users = {
       },
    },
    actions: {
-      async fetchUsers({ commit }) {
-         await axios.get("v2/admin/users").then((response) => {
-            commit("SET_USERS_LIST", response.data.users);
-         });
+      async fetchUsers({ commit, state }, payload) {
+         try {
+            const response = await axios.get(
+               "v2/admin/users?page=" +
+                  payload.page +
+                  "&search=" +
+                  payload.searchInput.value +
+                  "&selected_role=" +
+                  payload.selected_role.value +
+                  "&sort_direction=" +
+                  payload.sort_direction.value +
+                  "&sort_field=" +
+                  payload.sort_field.value
+            );
+            const data = response.data;
+            commit("SET_USERS_LIST", data.data.users);
+            state.totalUser = data.meta.total;
+            const pagination = {
+               currentPage: data.meta.current_page,
+               lastPage: data.meta.last_page,
+            };
+            return { pagination };
+         } catch (error) {
+            commit("SET_USERS_LIST", []);
+         }
       },
 
       resetUser({ commit }) {
@@ -44,20 +66,14 @@ const users = {
       },
 
       async fetchUserById({ commit }, id) {
-         return await axios
-            .get(`v2/admin/users/${id}`)
-            .then((response) => {
-               commit("SET_USER", response.data.user);
-            })
-            .catch(() => {
-               commit("SET_USER", null);
-            });
-      },
-
-      async editUser({ commit }, { id, model }) {
-         return await axios.put(`v2/admin/users/${id}/edit`, model).then((response) => {
+         try {
+            const response = await axios.get(`v2/admin/users/${id}`);
             commit("SET_USER", response.data.user);
-         });
+            // commit("auth/SET_USER", response.data.user, { root: true });
+            return response;
+         } catch (e) {
+            commit("SET_USER", null);
+         }
       },
 
       async createUsers({ dispatch }, user) {
@@ -72,15 +88,21 @@ const users = {
             });
       },
 
+      async editUser({ commit }, { id, model }) {
+         const response = await axios.put(`v2/admin/users/${id}/edit`, model);
+         commit("SET_USER", response.data.user);
+         return response;
+      },
+
       async deleteUser({ dispatch }, id) {
-         return await axios.delete(`v2/admin/users/${id}`).then(() => {
-            dispatch("resetUser");
-            dispatch("fetchUsers");
-         });
+         const response = await axios.delete(`v2/admin/users/${id}/delete`);
+         dispatch("resetUser");
+         dispatch("fetchUsers");
+         return response;
       },
 
       async updateAvatar({ commit }, { id, formData }) {
-         const response = await axios.post(`v2/admin/users/${id}/update-avatar`, formData);
+         const response = await axios.post(`v2/users/${id}/update-avatar`, formData);
          commit("SET_AVATAR", response.data.avatarUrl);
          commit("auth/SET_AVATAR", response.data.avatarUrl, { root: true });
          return response;

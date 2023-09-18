@@ -170,7 +170,6 @@
                      </button>
                   </div>
                </div>
-               <hr />
             </form>
          </div>
       </div>
@@ -203,8 +202,8 @@ const registerSubmit = () => {
    store
       .dispatch("auth/register", formRegister.value)
       .then(() => {
-         isLoading.value = false;
          router.push({ name: "login" });
+         isLoading.value = false;
       })
       .catch((e) => {
          isLoading.value = false;

@@ -3,14 +3,14 @@
 
    <div class="col-md-12">
       <div class="card">
-         <div class="card-header bg-dark">
-            <div class="d-inline-block fw-bold text-white fs-4">Edit Car</div>
+         <div class="card-header bg-transparent border-0">
+            <div class="d-inline-block fw-bold text-dark fs-4">Edit Car</div>
             <router-link :to="{ name: 'admin.cars' }" class="btn btn-danger fw-bold float-right">
                <i class="fa-solid fa-arrow-left"></i>
                BACK
             </router-link>
          </div>
-         <div class="card-body">
+         <div class="card-body mt-0">
             <div v-if="formLoadingSuccess">
                <form @submit.prevent="updateCar">
                   <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -72,6 +72,7 @@
                         <div class="row">
                            <div class="col-md-4 mb-3">
                               <label for="brand">Brand</label>
+                              {{ model.brand_id }}
                               <select class="form-control" v-model="model.brand_id">
                                  <option value="">--Select Brand--</option>
                                  <option
@@ -493,7 +494,10 @@ const handleRemoveImage = async (index) => {
    imagesUrl.value.splice(index, 1);
    isRemoveImageLoading.value = true;
    $(`#deleteConfirmModal${index}`).modal("hide");
+
    const newFileList = new DataTransfer();
+
+   //Lấy những ảnh khác với ảnh bị xóa vào newFileList
    for (let i = 0; i < filesInput.value.files.length; i++) {
       if (i !== index) {
          newFileList.items.add(filesInput.value.files[i]);
@@ -501,13 +505,14 @@ const handleRemoveImage = async (index) => {
    }
    filesInput.value.files = newFileList.files;
 
+   //Xóa ảnh có đường dẫn có chứa storage
    if (image.includes("storage")) {
       imagesUrl.value = [];
       const parts = image.split("/");
       const filename = parts[parts.length - 1];
       isRemoveImageLoading.value = true;
       await axios
-         .delete(`v2/admin/cars/${carId}/${filename}/removeImage`)
+         .delete(`v2/admin/cars/${carId}/${filename}/remove-image`)
          .then((response) => {
             if (Array.isArray(response.data.carImages)) {
                for (const item of response.data.carImages) {

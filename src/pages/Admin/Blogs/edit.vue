@@ -3,14 +3,14 @@
 
    <div class="col-md-12">
       <div class="card">
-         <div class="card-header bg-dark">
-            <div class="d-inline-block fw-bold text-white fs-4">Edit Blog</div>
+         <div class="card-header bg-transparent border-0">
+            <div class="d-inline-block fw-bold text-dark fs-4">Edit Blog</div>
             <router-link :to="{ name: 'admin.blogs' }" class="btn btn-danger fw-bold float-right">
                <i class="fa-solid fa-arrow-left"></i>
                BACK
             </router-link>
          </div>
-         <div v-if="model" class="card-body mt-3">
+         <div v-if="model" class="card-body mt-0">
             <form @submit.prevent="editBlog">
                <div class="row">
                   <div class="form-group col-md-6">
@@ -149,7 +149,7 @@ const successMessage = ref(null);
 const editBlog = async () => {
    const formData = new FormData();
    for (const key in model.value) {
-        //Xác định xem đối tượng có chứa thuộc tính được chỉ định hay không
+      //Xác định xem đối tượng có chứa thuộc tính được chỉ định hay không
       if (model.value.hasOwnProperty(key)) {
          const value = model.value[key];
          formData.append(key, value);
@@ -165,7 +165,6 @@ const editBlog = async () => {
          });
       })
       .catch((e) => {
-         console.log(e);
          if (e.response) {
             errors.value = e.response.data.errors;
          }

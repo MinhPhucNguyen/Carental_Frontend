@@ -16,7 +16,9 @@ const auth = {
          return state.user;
       },
       isAuthenticated(state) {
-         return state.token && state.user;
+         if (state.user && state.token) {
+            return true;
+         }
       },
    },
    mutations: {
@@ -34,7 +36,7 @@ const auth = {
 
       RESET_USER(state) {
          state.user = null;
-      }
+      },
    },
    actions: {
       async register({ dispatch }, registerForm) {
@@ -47,7 +49,7 @@ const auth = {
          return dispatch("attempt", response.data.token);
       },
 
-      async attempt({ commit, state }, token) {
+      async attempt({ commit, state, dispatch }, token) {
          if (token) {
             commit("SET_TOKEN", token);
          }
@@ -59,9 +61,11 @@ const auth = {
          try {
             const response = await axios.get("user");
             commit("SET_USER", response.data);
+            dispatch("users/fetchUserById", response.data.id, { root: true });
          } catch (e) {
             commit("SET_TOKEN", null);
             commit("SET_USER", null);
+            commit("users/SET_USER", null, { root: true });
          }
       },
 
@@ -69,6 +73,7 @@ const auth = {
          return await axios.post("logout").then(() => {
             commit("SET_TOKEN", null);
             commit("SET_USER", null);
+            commit("users/SET_USER", null, { root: true });
          });
       },
    },

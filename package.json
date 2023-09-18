@@ -20,7 +20,6 @@
     "core-js": "^3.8.3",
     "flatpickr": "^4.6.13",
     "jquery": "^3.7.1",
-    "laravel-vue-pagination": "^4.1.1",
     "vue": "^3.2.13",
     "vue-flatpickr-component": "^11.0.3",
     "vue-router": "^4.2.4",

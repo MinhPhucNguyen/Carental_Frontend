@@ -1,15 +1,15 @@
 <template>
    <div class="col-md-12">
       <div class="card p-0">
-         <div class="card-header bg-dark">
-            <div class="d-inline-block fw-bold text-white fs-4">Create New User</div>
+         <div class="card-header bg-transparent">
+            <div class="d-inline-block fw-bold text-dark fs-4">Create New User</div>
             <router-link to="/admin/users" class="btn btn-danger fw-bold float-right">
                <i class="fa-solid fa-arrow-left"></i>
                BACK
             </router-link>
          </div>
          <div class="card-body p-3 mt-0">
-            <form @submit.prevent="createUser" method="POST">
+            <form @submit.prevent="createUser" method="POST" v-if="user">
                <div class="row">
                   <div class="col-md-6 mb-3">
                      <label for="firstname">Firstname</label>

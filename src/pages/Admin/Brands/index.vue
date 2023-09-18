@@ -19,8 +19,8 @@
 
    <div class="col-md-12">
       <div class="card">
-         <div class="card-header bg-dark d-flex align-items-center">
-            <div class="d-inline-block fw-bold text-white fs-4 flex-grow-1">Brand List</div>
+         <div class="card-header bg-transparent d-flex align-items-center">
+            <div class="d-inline-block fw-bold text-dark fs-4 flex-grow-1">Brand List</div>
             <div>
                <button class="btn btn-success fw-bold float-right ml-3" @click="addBrand">
                   <i class="fa-solid fa-plus"></i>

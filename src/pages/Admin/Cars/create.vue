@@ -3,14 +3,14 @@
 
    <div class="col-md-12">
       <div class="card">
-         <div class="card-header bg-dark">
-            <div class="d-inline-block fw-bold text-white fs-4">Create New Car</div>
+         <div class="card-header bg-transparent border-0">
+            <div class="d-inline-block fw-bold text-dark fs-4">Create New Car</div>
             <router-link :to="{ name: 'admin.cars' }" class="btn btn-danger fw-bold float-right">
                <i class="fa-solid fa-arrow-left"></i>
                BACK
             </router-link>
          </div>
-         <div class="card-body">
+         <div class="card-body mt-0">
             <form @submit.prevent="createNewCar">
                <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item" role="presentation">

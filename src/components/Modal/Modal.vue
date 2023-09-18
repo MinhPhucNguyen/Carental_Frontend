@@ -7,7 +7,7 @@
       aria-hidden="true"
    >
       <div class="modal-dialog">
-         <div class="modal-content">
+         <div class="modal-content rounded-3 border-0">
             <div class="modal-header border-0">
                <button
                   type="button"
@@ -17,20 +17,25 @@
                ></button>
             </div>
             <div class="modal-body text-dark">
-               <h1 class="modal-title fs-3 text-dark w-100 text-center" id="exampleModalLabel">
+               <h1
+                  class="modal-title fs-3 text-black fw-bold w-100 text-center"
+                  id="exampleModalLabel"
+               >
                   <slot name="title"></slot>
                </h1>
                <slot></slot>
             </div>
-            <div class="modal-footer w-100">
+            <div class="modal-footer w-100 border-0">
                <button
                   id="logout-btn"
                   class="btn btn-primary fw-bold w-100 p-3 border-0 fs-5 text-light d-flex justify-content-center align-items-center"
                   :style="{ backgroundColor: bgColor }"
                   @click="$emit('clickTo')"
+                  :disabled="!filledForm"
                >
                   <slot name="buttonName"></slot>
                </button>
+               <slot name="message"></slot>
             </div>
          </div>
       </div>
@@ -49,6 +54,10 @@ export default {
       bgColor: {
          type: String,
          default: "success",
+      },
+      filledForm: {
+         type: Boolean,
+         default: true,
       },
    },
    setup(props) {

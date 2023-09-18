@@ -107,7 +107,7 @@ export default {
    },
    setup() {
       const model = ref({
-         emailFrom: "",
+         emailFrom: "johnnynguyen1619@gmail.com",
          name: "",
          emailTo: "",
          subject: "",
@@ -124,7 +124,7 @@ export default {
       const sendEmail = async () => {
          isSending.value = true;
          await axios
-            .post("v2/admin/send_email", model.value)
+            .post("v2/admin/send-email", model.value)
             .then((response) => {
                $(".toast").toast("show");
                if (response.data.message) {

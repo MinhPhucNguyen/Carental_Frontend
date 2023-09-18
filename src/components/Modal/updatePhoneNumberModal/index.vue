@@ -1,22 +1,43 @@
 <template>
-   <my-modal @updatePhoneNumber="updatePhoneNumber()" idModal="updatePhoneNumber">
+   <my-modal @clickTo="updatePhoneNumber" idModal="updatePhoneNumberModal">
       <template v-slot:title>Cập nhật số điện thoại</template>
       <div class="custom-input mt-4">
          <div class="wrap-input w-100">
-            <input type="text" name="ip_displayname" placeholder="Số điện thoại" />
+            <input
+               type="text"
+               name="ip_displayname"
+               placeholder="Số điện thoại"
+               v-model="model.phone"
+            />
          </div>
+         <small class="text-danger" v-if="props.errors">{{ props.errors }}</small>
       </div>
-      <template v-slot:buttonName>Cập nhật</template>
+      <template v-slot:buttonName>
+         <div
+            class="spinner-border"
+            role="status"
+            style="width: 24px; height: 24px; margin-right: 10px"
+            v-if="props.isLoading"
+         >
+            <span class="visually-hidden">Loading...</span>
+         </div>
+         Cập nhật</template
+      >
    </my-modal>
 </template>
 
-<script>
+<script setup>
 import myModal from "@/components/Modal/Modal.vue";
-export default {
-   name: "updatePhoneNumberModal",
-   components: {
-      myModal,
-   },
+import { ref } from "vue";
+const props = defineProps(["user", "errors", "isLoading"]);
+
+const model = ref({
+   phone: props.user.phone,
+});
+
+const emits = defineEmits(["update-phone-number"]);
+const updatePhoneNumber = () => {
+   emits("update-phone-number", model.value);
 };
 </script>
 

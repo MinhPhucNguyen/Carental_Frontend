@@ -1,8 +1,10 @@
 <template>
+   <ToastMessage :message="successMessage" />
+
    <div class="col-md-12">
       <div class="card p-0">
-         <div class="card-header bg-dark">
-            <div class="d-inline-block fw-bold text-white fs-4">Edit User</div>
+         <div class="card-header bg-transparent">
+            <div class="d-inline-block fw-bold text-dark fs-4">Edit User</div>
             <router-link :to="{ name: 'admin.users' }" class="btn btn-danger fw-bold float-right">
                <i class="fa-solid fa-arrow-left"></i>
                BACK
@@ -20,6 +22,9 @@
                         class="form-control"
                         v-model="model.firstname"
                      />
+                     <small class="text-danger" v-if="errors.firstname">{{
+                        errors.firstname[0]
+                     }}</small>
                   </div>
                   <div class="col-md-6 mb-3">
                      <label for="lastname">Lastname</label>
@@ -29,6 +34,9 @@
                         class="form-control"
                         v-model="model.lastname"
                      />
+                     <small class="text-danger" v-if="errors.lastname">{{
+                        errors.lastname[0]
+                     }}</small>
                   </div>
                   <div class="col-md-12 mb-3">
                      <label for="">Gender</label>
@@ -66,14 +74,19 @@
                         class="form-control"
                         v-model="model.username"
                      />
+                     <small class="text-danger" v-if="errors.username">{{
+                        errors.username[0]
+                     }}</small>
                   </div>
                   <div class="col-md-6 mb-3">
                      <label for="email">Email</label>
                      <input type="email" name="email" class="form-control" v-model="model.email" />
+                     <small class="text-danger" v-if="errors.email">{{ errors.email[0] }}</small>
                   </div>
                   <div class="col-md-6 mb-3">
                      <label for="phone">Phone</label>
                      <input type="text" name="phone" class="form-control" v-model="model.phone" />
+                     <small class="text-danger" v-if="errors.phone">{{ errors.phone[0] }}</small>
                   </div>
                   <div class="col-md-6 mb-3">
                      <label for="address">Address</label>
@@ -83,6 +96,9 @@
                         class="form-control"
                         v-model="model.address"
                      />
+                     <small class="text-danger" v-if="errors.address">{{
+                        errors.address[0]
+                     }}</small>
                   </div>
                   <div class="col-md-6 mb-3">
                      <label for="password">Password</label>
@@ -93,6 +109,9 @@
                         placeholder="*Leave blank if you don't want to change password"
                         v-model="model.password"
                      />
+                     <small class="text-danger" v-if="errors.password">{{
+                        errors.password[0]
+                     }}</small>
                   </div>
                   <div class="col-md-6 mb-3">
                      <label for="confirm_password">Confirm Password</label>
@@ -103,6 +122,9 @@
                         placeholder="*Leave blank if you don't want to change password"
                         v-model="model.confirm_password"
                      />
+                     <small class="text-danger" v-if="errors.confirm_password">{{
+                        errors.confirm_password[0]
+                     }}</small>
                   </div>
                   <div class="col-md-6 mb-3">
                      <label for="role_as">Role as</label>
@@ -111,9 +133,22 @@
                         <option value="admin" :selected="model.role_as === 1">Admin</option>
                         <option value="user" :selected="model.role_as === 0">User</option>
                      </select>
+                     <small class="text-danger" v-if="errors.role_as">{{
+                        errors.role_as[0]
+                     }}</small>
                   </div>
                   <div>
-                     <button name="create_btn" class="btn btn-success p-3 float-end fw-bold">Save changes</button>
+                     <button name="create_btn" class="btn btn-success p-3 float-end fw-bold">
+                        <div
+                           class="spinner-border"
+                           role="status"
+                           style="width: 24px; height: 24px; margin-right: 10px"
+                           v-if="isLoading"
+                        >
+                           <span class="visually-hidden">Loading...</span>
+                        </div>
+                        Save changes
+                     </button>
                   </div>
                </div>
             </form>
@@ -130,11 +165,15 @@ import { onBeforeUnmount, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import StateLoading from "@/components/Loading/Loading.vue";
+import ToastMessage from "@/components/Toast/index.vue";
 
 const store = useStore();
 const router = useRouter();
 const id = router.currentRoute.value.params.id;
 const model = ref();
+const successMessage = ref("");
+const errors = ref({});
+const isLoading = ref(false);
 
 store.dispatch("users/resetUser");
 
@@ -145,9 +184,23 @@ onMounted(() => {
 });
 
 const editUser = () => {
-   store.dispatch("users/editUser", { id, model: model.value }).then(() => {
-      router.push({ name: "admin.users" });
-   });
+   isLoading.value = true;
+   store
+      .dispatch("users/editUser", { id, model: model.value })
+      .then((response) => {
+         successMessage.value = response.data.message;
+         $(".toast").toast("show");
+         isLoading.value = false;
+         setTimeout(() => {
+            router.push({ name: "admin.users" });
+         }, 2000);
+      })
+      .catch((e) => {
+         if (e.response) {
+            isLoading.value = false;
+            errors.value = e.response.data.errors;
+         }
+      });
 };
 
 onBeforeUnmount(() => {

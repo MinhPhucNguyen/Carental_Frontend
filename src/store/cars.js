@@ -61,17 +61,35 @@ const cars = {
             });
       },
 
-      async fetchCars({ commit }) {
-         return await axios
-            .get("v2/admin/cars")
-            .then((response) => {
-               commit("SET_CARS_LIST", response.data.cars);
-            })
-            .catch((e) => {
-               if (e.response) {
-                  alert("Something went wrong. Please try again later.");
-               }
-            });
+      async fetchCars({ commit }, payload) {
+         try {
+            const response = await axios.get(
+               "v2/admin/cars?page=" +
+                  payload.page +
+                  "&search=" +
+                  payload.searchInput.value +
+                  "&filter_by_brand=" +
+                  payload.filterByBrand.value +
+                  "&filter_by_fuel=" +
+                  payload.filterByFuel.value +
+                  "&sort_direction=" +
+                  payload.sort_direction.value +
+                  "&sort_field=" +
+                  payload.sort_field.value
+            );
+            const data = response.data.data;
+            commit("SET_CARS_LIST", data.cars);
+
+            const pagination = {
+               currentPage: response.data.meta.current_page,
+               lastPage: response.data.meta.last_page,
+            };
+            return { pagination };
+         } catch (error) {
+            if (error.response) {
+               alert("Something went wrong. Please try again later.");
+            }
+         }
       },
 
       async createNewCar({ dispatch }, formData) {

@@ -20,7 +20,7 @@
 
 <script>
 import axios from "axios";
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import CarItem from "../CarItemCard/CarItem.vue";
 import stateLoading from "@/components/Loading/Loading.vue";
 
@@ -38,13 +38,16 @@ export default {
          try {
             const response = await axios.get("v2/cars/randomCars");
             if (response.status === 200) {
-               randomCars.value = response.data.data;
+               randomCars.value = response.data.data.cars;
             }
          } catch (error) {
             errorMessage.value = error;
          }
       };
-      getRandomCars();
+
+      onBeforeMount(() => {
+         getRandomCars();
+      });
 
       const getImagePath = (carImages) => {
          if (carImages.length > 0) {

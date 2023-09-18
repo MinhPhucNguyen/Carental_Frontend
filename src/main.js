@@ -1,7 +1,7 @@
 import "./assets/styles/globalstyles.scss";
 import "../public/admin/vendor/bootstrap/js/bootstrap.bundle.min.js";
 import "../public/admin/vendor/jquery/jquery.min.js";
-import CKEditor from '@ckeditor/ckeditor5-vue';
+import CKEditor from "@ckeditor/ckeditor5-vue";
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router/index";

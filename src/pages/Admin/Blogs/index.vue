@@ -3,8 +3,8 @@
 
    <div class="col-md-12">
       <div class="card">
-         <div class="card-header bg-dark">
-            <div class="d-inline-block fw-bold text-white fs-4">Blog List</div>
+         <div class="card-header bg-transparent border-0">
+            <div class="d-inline-block fw-bold text-dark fs-4">Blog List</div>
             <router-link :to="{ name: 'blogs.create' }" class="btn btn-success fw-bold float-right">
                <i class="fa-solid fa-plus"></i>
                Add New Blog
@@ -104,11 +104,12 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import axios from "axios";
 import MyModal from "@/components/Modal/Modal.vue";
 import ToastMessage from "@/components/Toast/index.vue";
 import stateLoading from "@/components/Loading/Loading.vue";
+import { formatDateTime } from "@/utils/formatDataTime";
 
 const blogsList = ref([]);
 const successMessage = ref(null);
@@ -119,20 +120,6 @@ const getBlogsList = async () => {
       blogsList.value = response.data.blogs;
    });
 };
-
-const formatDateTime = computed(() => {
-   return (createdAt) => {
-      const datetime = new Date(createdAt);
-
-      const formatDate = datetime.toLocaleDateString("en-US", {
-         year: "numeric",
-         month: "numeric",
-         day: "numeric",
-      });
-
-      return `${formatDate}`;
-   };
-});
 
 const deleteBlog = async (id) => {
    isLoading.value = true;
