@@ -32,6 +32,7 @@
                   :style="{ backgroundColor: bgColor }"
                   @click="$emit('clickTo')"
                   :disabled="!filledForm"
+                  v-if="showButton"
                >
                   <slot name="buttonName"></slot>
                </button>
@@ -56,6 +57,10 @@ export default {
          default: "success",
       },
       filledForm: {
+         type: Boolean,
+         default: true,
+      },
+      showButton: {
          type: Boolean,
          default: true,
       },

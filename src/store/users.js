@@ -6,6 +6,7 @@ const users = {
       usersList: [],
       user: null,
       totalUser: 0,
+      verifiedMessage: "",
    },
    getters: {
       getUserList(state) {
@@ -31,6 +32,9 @@ const users = {
 
       SET_AVATAR(state, avatarUrl) {
          state.user.avatar = avatarUrl;
+      },
+      SET_VERIFIED_MESSAGE(state, verifiedMessage) {
+         state.verifiedMessage = verifiedMessage;
       },
    },
    actions: {
@@ -69,7 +73,6 @@ const users = {
          try {
             const response = await axios.get(`v2/admin/users/${id}`);
             commit("SET_USER", response.data.user);
-            // commit("auth/SET_USER", response.data.user, { root: true });
             return response;
          } catch (e) {
             commit("SET_USER", null);
@@ -113,6 +116,20 @@ const users = {
          commit("SET_AVATAR", response.data.avatarUrl);
          commit("auth/SET_AVATAR", response.data.avatarUrl, { root: true });
          return response;
+      },
+
+      async verifyEmail({ dispatch, commit }, payload) {
+         await axios
+            .get("email-verification", {
+               params: payload,
+            })
+            .then((response) => {
+               commit("SET_VERIFIED_MESSAGE", response.data.message);
+               dispatch("fetchUserById", payload.id);
+            })
+            .catch((error) => {
+               alert(error);
+            });
       },
    },
 };

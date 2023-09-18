@@ -1,49 +1,37 @@
-import HomePage from "../pages/HomePage/HomePage.vue";
-import AboutPage from "../pages/AboutPage/AboutPage.vue";
-import BlogPage from "../pages/BlogPage/BlogPage.vue";
-import BlogDetail from "../pages/BlogDetail/BlogDetail.vue";
-import CarDetail from "../pages/CarDetail/CarDetail.vue";
-import AccountPage from "../pages/AccountPage/AccountPage.vue";
-import LoginPage from "../pages/Auth/LoginPage.vue";
-import RegisterPage from "../pages/Auth/RegisterPage.vue";
-import App from "../layouts/app.vue";
-import MyFavs from "@/pages/AccountPage/MyFavs/MyFavs.vue";
-import AccountContent from "@/pages/AccountPage/AccountContent/AccountContent.vue";
-import ChangePassword from "@/pages/AccountPage/ChangePassword/ChangePassword.vue";
 import { useStore } from "vuex";
 
 const app = [
    {
       path: "/",
-      component: App,
+      component: () => import("../layouts/app.vue"),
       meta: {
          permission: "user",
       },
       children: [
          {
             path: "/",
-            component: HomePage,
+            component: () => import("../pages/HomePage/HomePage.vue"),
             name: "home",
          },
          {
             path: "about",
-            component: AboutPage,
+            component: () => import("../pages/AboutPage/AboutPage.vue"),
          },
          {
             path: "car/:carname/:id",
-            component: CarDetail,
+            component: () => import("../pages/CarDetail/CarDetail.vue"),
          },
          {
             path: "blog",
-            component: BlogPage,
+            component: () => import("../pages/BlogPage/BlogPage.vue"),
          },
          {
             path: "blog/:slug",
-            component: BlogDetail,
+            component: () => import("../pages/BlogDetail/BlogDetail.vue"),
          },
          {
             path: "login",
-            component: LoginPage,
+            component: () => import("../pages/Auth/LoginPage.vue"),
             name: "login",
             meta: {
                hideFooter: true,
@@ -51,7 +39,7 @@ const app = [
          },
          {
             path: "register",
-            component: RegisterPage,
+            component: () => import("../pages/Auth/RegisterPage.vue"),
             name: "register",
             meta: {
                hideFooter: true,
@@ -59,30 +47,39 @@ const app = [
          },
          {
             path: "account",
-            component: AccountPage,
+            component: () => import("../pages/AccountPage/AccountPage.vue"),
             name: "account",
             meta: {
                requiresAuth: true,
             },
             beforeEnter: (to, from, next) => {
-               if(useStore().getters["auth/getUser"] && to.path === "/account") {
+               if (useStore().getters["auth/getUser"] && to.path === "/account") {
                   next();
                }
             },
             children: [
                {
                   path: "/account",
-                  component: AccountContent,
+                  component: () => import("../pages/AccountPage/AccountContent/AccountContent.vue"),
+                  name: "accountContent",
                },
                {
                   path: "/myfavs",
-                  component: MyFavs,
+                  component: () => import("../pages/AccountPage/MyFavs/MyFavs.vue"),
                },
                {
                   path: "/resetpw",
-                  component: ChangePassword,
+                  component: () => import("../pages/AccountPage/ChangePassword/ChangePassword.vue"),
                },
             ],
+         },
+         {
+            path: "/verify-email",
+            component: () => import("../pages/Auth/VerifyEmail.vue"),
+            name: "verifyEmail",
+            meta: {
+               hideFooter: true,
+            },
          },
       ],
    },

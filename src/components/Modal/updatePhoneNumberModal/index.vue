@@ -1,6 +1,16 @@
 <template>
    <my-modal @clickTo="updatePhoneNumber" idModal="updatePhoneNumberModal">
       <template v-slot:title>Cập nhật số điện thoại</template>
+      <div class="w-100 d-flex justify-content-center mt-3 mb-4">
+         <div
+            class="spinner-grow text-success"
+            role="status"
+            style="width: 30px; height: 30px"
+            v-if="props.isLoading"
+         >
+            <span class="visually-hidden">Loading...</span>
+         </div>
+      </div>
       <div class="custom-input mt-4">
          <div class="wrap-input w-100">
             <input
@@ -12,17 +22,7 @@
          </div>
          <small class="text-danger" v-if="props.errors">{{ props.errors }}</small>
       </div>
-      <template v-slot:buttonName>
-         <div
-            class="spinner-border"
-            role="status"
-            style="width: 24px; height: 24px; margin-right: 10px"
-            v-if="props.isLoading"
-         >
-            <span class="visually-hidden">Loading...</span>
-         </div>
-         Cập nhật</template
-      >
+      <template v-slot:buttonName> Cập nhật</template>
    </my-modal>
 </template>
 

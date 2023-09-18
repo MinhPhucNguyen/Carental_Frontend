@@ -1,5 +1,5 @@
 <template>
-   <!-- <ToastMessage :message="successMessage" /> -->
+   <ToastMessage :message="successMessage" />
    <updatePhoneNumberModal
       @update-phone-number="updatePhoneNumber"
       :user="user"
@@ -244,6 +244,8 @@ const fetchUserById = async () => {
    });
 };
 
+fetchUserById();
+
 const formatBirth = computed(() => {
    const birth = new Date(user.value.birth);
    const day = birth.getDate().toString().padStart(2, "0");
@@ -388,6 +390,19 @@ const verificationEmail = async () => {
          console.log(e);
       });
 };
+
+onMounted(() => {
+   if (store.state["users"].verifiedMessage !== "") {
+      successMessage.value = store.state["users"].verifiedMessage;
+      setTimeout(() => {
+         $(".toast").toast("show");
+      }, 2000);
+   }
+
+   $(".toast").on("hide.bs.toast", () => {
+      store.commit("users/SET_VERIFIED_MESSAGE", "");
+   });
+});
 
 onMounted(() => {
    $("#updateEmailModal").on("hide.bs.modal", () => {

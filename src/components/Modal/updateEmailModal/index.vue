@@ -1,11 +1,11 @@
 <template>
-   <my-modal @clickTo="handleEmail" idModal="updateEmailModal">
+   <my-modal @clickTo="handleEmail" idModal="updateEmailModal" :showButton="showButton">
       <template v-slot:title>Cập nhật Email</template>
-      <div class="w-100 d-flex justify-content-center mt-3">
+      <div class="w-100 d-flex justify-content-center mt-3 mb-4">
          <div
             class="spinner-grow text-success"
             role="status"
-            style="width: 26px; height: 26px; margin-right: 10px"
+            style="width: 30px; height: 30px"
             v-if="props.isLoading"
          >
             <span class="visually-hidden">Loading...</span>
@@ -32,7 +32,7 @@
          <span v-else> Cập nhật </span>
       </template>
       <template v-slot:message>
-         <div v-if="props.checkEmail" class="text-center fs-6 mt-2 mb-0 mx-auto">
+         <div v-if="props.checkEmail" class="text-center fs-6 mt-2 mb-3 mb-0 mx-auto">
             Không nhận được email.
             <span class="fs-6 text-success" style="cursor: pointer">Yêu cầu gửi lại</span>
          </div>
@@ -70,7 +70,9 @@ const updateEmail = () => {
    emits("handle-email", model.value);
 };
 
+const showButton = ref(true);
 const verificationEmail = () => {
+   showButton.value = false;
    emits("handle-email", props.isUpdateEmailSuccess);
 };
 
