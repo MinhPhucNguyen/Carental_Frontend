@@ -208,7 +208,7 @@ const loginWithFacebook = () => {
    }
 
    a:hover {
-      transition: 0.3s all ease-in-out;
+      transition: 0.2s all ease-in-out;
       box-shadow: 0 0 0 2px #21e09ab0;
    }
 }
