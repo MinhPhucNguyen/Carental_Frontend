@@ -206,6 +206,7 @@ const registerSubmit = () => {
          isLoading.value = false;
       })
       .catch((e) => {
+         console.log(e);
          isLoading.value = false;
          errors.value = e.response.data.errors;
       });

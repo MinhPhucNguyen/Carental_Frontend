@@ -30,6 +30,15 @@ const app = [
             component: () => import("../pages/BlogDetail/BlogDetail.vue"),
          },
          {
+            path: "authorize/:provider/callback",
+            component: () => import("../pages/Auth/LoginSocial.vue"),
+            name: "socialLogin",
+            meta: {
+               hideFooter: true,
+               hideNavbar: true,
+            },
+         },
+         {
             path: "login",
             component: () => import("../pages/Auth/LoginPage.vue"),
             name: "login",
@@ -95,6 +104,7 @@ const app = [
             name: "verifyEmail",
             meta: {
                hideFooter: true,
+               hideNavbar: true,
             },
          },
       ],

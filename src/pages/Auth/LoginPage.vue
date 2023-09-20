@@ -2,7 +2,9 @@
    <div class="col-md-4 mx-auto">
       <div class="card" style="margin-top: 100px">
          <div class="card-header text-center bg-white border-0 mt-4">
-            <h3 class="text-black fw-bold">Đăng nhập</h3>
+            <h3 class="text-black fw-bold" style="font-family: 'Montserrat', sans-serif">
+               Đăng nhập
+            </h3>
          </div>
          <div class="card-body mx-auto pt-0" style="width: 500px">
             <div class="mt-1 text-danger text-center" v-if="errors && errors.global">
@@ -82,17 +84,17 @@
                   >
                </p>
             </div>
-            <div class="socialite-container mt-4">
+            <div class="socialite-container mt-4 mb-4">
                <div class="title d-flex align-items-center justify-content-between">
                   <div class="border-text"></div>
                   <div class="d-inline-block fw-bold">Hoặc đăng nhập với tài khoản</div>
                   <div class="border-text"></div>
                </div>
                <div class="socialite-btn mt-4">
-                  <a class="border border-1"
+                  <a class="border border-1" @click.prevent="loginWithFacebook"
                      ><img src="../../assets/images/social-logo/facebook.png" alt="" /> Facebook
                   </a>
-                  <a class="border border-1"
+                  <a class="border border-1" @click.prevent="loginWithGoogle"
                      ><img src="../../assets/images/social-logo/google.png" alt="" /> Google
                   </a>
                </div>
@@ -143,6 +145,22 @@ const clearError = (field) => {
       errors.value = null;
    }
 };
+
+const loginWithGoogle = () => {
+   store.dispatch("auth/loginWithGoogle").then((response) => {
+      if (response.data.url) {
+         window.location.href = response.data.url;
+      }
+   });
+};
+
+const loginWithFacebook = () => {
+   store.dispatch("auth/loginWithFacebook").then((response) => {
+      if (response.data.url) {
+         window.location.href = response.data.url;
+      }
+   });
+};
 </script>
 
 <style lang="scss" scoped>
@@ -160,7 +178,7 @@ const clearError = (field) => {
 
 .border-text {
    height: 1px;
-   width: 25%;
+   min-width: 20%;
    background: #e3e6f0;
 }
 

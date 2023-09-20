@@ -20,14 +20,25 @@ const store = useStore();
 const router = useRouter();
 const isLoading = ref(true);
 
-store
-   .dispatch("users/verifyEmail", router.currentRoute.value.query)
-   .then(() => {
-      isLoading.value = false;
-   })
-   .then(() => {
-      router.push({ name: "accountContent" });
-   });
+const provider = router.currentRoute.value.params.provider;
+
+const loginSocial = () => {
+   store
+      .dispatch(
+         `auth/${
+            provider === "facebook" ? "loginWithFacebookCallback" : "loginWithGoogleCallback"
+         }`,
+         { code: router.currentRoute.value.query.code }
+      )
+      .then(() => {
+         router.push({ name: "home" });
+      })
+      .then(() => {
+         isLoading.value = false;
+      });
+};
+
+loginSocial();
 </script>
 
 <style scoped>

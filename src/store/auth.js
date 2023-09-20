@@ -39,6 +39,46 @@ const auth = {
       },
    },
    actions: {
+      async loginWithFacebook() {
+         try {
+            const response = await axios.get("/authorize/facebook/redirect");
+            return response;
+         } catch (error) {
+            alert(error);
+         }
+      },
+
+      async loginWithFacebookCallback({ dispatch }, payload) {
+         try {
+            const response = await axios.get("/authorize/facebook/callback", {
+               params: payload,
+            });
+            return dispatch("attempt", response.data.token);
+         } catch (error) {
+            alert(error);
+         }
+      },
+
+      async loginWithGoogle() {
+         try {
+            const response = await axios.get("/authorize/google/redirect");
+            return response;
+         } catch (error) {
+            alert(error);
+         }
+      },
+
+      async loginWithGoogleCallback({ dispatch }, payload) {
+         try {
+            const response = await axios.get("/authorize/google/callback", {
+               params: payload,
+            });
+            return dispatch("attempt", response.data.token);
+         } catch (error) {
+            alert(error);
+         }
+      },
+
       async register({ dispatch }, registerForm) {
          const response = await axios.post("register", registerForm);
          dispatch("attempt", response.data.token);
@@ -49,7 +89,6 @@ const auth = {
          const response = await axios.post("login", credentials);
          return dispatch("attempt", response.data.token);
       },
-
       async attempt({ commit, state, dispatch }, token) {
          if (token) {
             commit("SET_TOKEN", token);
@@ -78,18 +117,18 @@ const auth = {
          });
       },
 
-      sendForgotPasswordEmail(ctx, payload) {
+      async sendForgotPasswordEmail(ctx, payload) {
          try {
-            const response = axios.post("/forgot-password", payload);
+            const response = await axios.post("/forgot-password", payload);
             return response;
          } catch (error) {
             alert(error);
          }
       },
 
-      resetPassword(ctx, payload) {
+      async resetPassword(ctx, payload) {
          try {
-            const response = axios.post("/reset-password", payload);
+            const response = await axios.post("/reset-password", payload);
             return response;
          } catch (error) {
             alert(error);

@@ -175,7 +175,7 @@
             <div class="custom-input">
                <div class="wrap-info fw-bold mb-1">Ngày sinh</div>
                <div class="wrap-input w-100">
-                  <input type="text" name="driver-license-birth" value="01/01/1970" disabled />
+                  <input type="text" name="driver-license-birth" :value="formatBirth" disabled />
                </div>
             </div>
          </div>
