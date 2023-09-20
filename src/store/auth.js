@@ -41,7 +41,8 @@ const auth = {
    actions: {
       async register({ dispatch }, registerForm) {
          const response = await axios.post("register", registerForm);
-         return dispatch("attempt", response.data.token);
+         dispatch("attempt", response.data.token);
+         return response;
       },
 
       async login({ dispatch }, credentials) {
@@ -75,6 +76,24 @@ const auth = {
             commit("SET_USER", null);
             commit("users/SET_USER", null, { root: true });
          });
+      },
+
+      sendForgotPasswordEmail(ctx, payload) {
+         try {
+            const response = axios.post("/forgot-password", payload);
+            return response;
+         } catch (error) {
+            alert(error);
+         }
+      },
+
+      resetPassword(ctx, payload) {
+         try {
+            const response = axios.post("/reset-password", payload);
+            return response;
+         } catch (error) {
+            alert(error);
+         }
       },
    },
 };

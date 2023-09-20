@@ -1,10 +1,10 @@
 <template>
    <div class="col-md-4 mx-auto mb-4">
       <div class="card">
-         <div class="card-header text-center bg-white">
-            <h3 class="text-dark">Đăng ký</h3>
+         <div class="card-header text-center bg-white border-0 mt-4">
+            <h3 class="text-black fw-bold">Đăng ký</h3>
          </div>
-         <div class="card-body">
+         <div class="card-body pt-0">
             <form @submit.prevent="registerSubmit()" class="row" id="register-form">
                <div class="form-group col-md-6 mb-2">
                   <label for="firstname" class="fw-bold mb-0">Tên</label>
@@ -36,8 +36,8 @@
                      </small>
                   </div>
                </div>
-               <div class="form-group mb-2">
-                  <label for="" class="fw-bold mb-0">Giới tính</label>
+               <div class="form-group mb-2 d-flex mt-2">
+                  <label for="" class="fw-bold mb-0 mr-4">Giới tính</label>
                   <div>
                      <div class="form-check d-inline-block">
                         <input
@@ -155,7 +155,7 @@
                   <div class="col-md-12 p-0">
                      <button
                         type="submit"
-                        class="btn btn-lg fw-bold text-white mb-4 signup-btn d-flex aligns-items-center justify-content-center"
+                        class="btn btn-lg p-3 fw-bold text-white mb-4 signup-btn d-flex aligns-items-center justify-content-center"
                         name="register-btn"
                      >
                         <div
@@ -202,7 +202,7 @@ const registerSubmit = () => {
    store
       .dispatch("auth/register", formRegister.value)
       .then(() => {
-         router.push({ name: "login" });
+         router.push({ name: "home" });
          isLoading.value = false;
       })
       .catch((e) => {
@@ -217,6 +217,11 @@ const clearError = (field) => {
 </script>
 
 <style scoped>
+input:not([type="radio"]) {
+   height: 50px;
+   outline: none;
+}
+
 .card-body {
    margin-top: 5px;
 }

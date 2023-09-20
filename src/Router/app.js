@@ -46,6 +46,22 @@ const app = [
             },
          },
          {
+            path: "forgot-password",
+            component: () => import("../pages/Auth/ForgotPassword.vue"),
+            name: "forgotPassword",
+            meta: {
+               hideFooter: true,
+            },
+         },
+         {
+            path: "reset-password",
+            component: () => import("../pages/Auth/ResetPassword.vue"),
+            name: "resetPassword",
+            meta: {
+               hideFooter: true,
+            },
+         },
+         {
             path: "account",
             component: () => import("../pages/AccountPage/AccountPage.vue"),
             name: "account",

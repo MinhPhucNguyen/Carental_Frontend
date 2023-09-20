@@ -43,14 +43,14 @@
                      @click.prevent="handleChangeAvatar"
                   >
                      <div
-                        class="spinner-border"
+                        class="spinner-grow"
                         role="status"
                         style="width: 24px; height: 24px; margin-right: 10px"
                         v-if="props.isLoading"
                      >
                         <span class="visually-hidden">Loading...</span>
                      </div>
-                     Cập nhật
+                     <span v-if="!props.isLoading"> Cập nhật </span>
                   </a>
                </div>
             </div>

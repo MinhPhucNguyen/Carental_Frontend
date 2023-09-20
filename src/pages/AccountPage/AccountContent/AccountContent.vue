@@ -397,6 +397,7 @@ onMounted(() => {
       setTimeout(() => {
          $(".toast").toast("show");
       }, 2000);
+      fetchUserById();
    }
 
    $(".toast").on("hide.bs.toast", () => {
@@ -407,6 +408,8 @@ onMounted(() => {
 onMounted(() => {
    $("#updateEmailModal").on("hide.bs.modal", () => {
       isUpdateEmailSuccess.value = false;
+      isLoading.value = false;
+      checkEmail.value = "";
       errors.value = null;
    });
 });

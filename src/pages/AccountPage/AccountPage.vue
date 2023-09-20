@@ -60,6 +60,10 @@
                         <i class="fa-solid fa-arrow-left"></i>
                         <p>Đăng xuất</p>
                      </a>
+                     <a class="sidebar-item" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <p>Yêu cầu xóa tài khoản</p>
+                     </a>
                   </div>
                </div>
             </div>

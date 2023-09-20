@@ -1,16 +1,14 @@
 <template>
    <div class="col-md-4 mx-auto">
       <div class="card" style="margin-top: 100px">
-         <div class="card-header text-center bg-white">
-            <h3 class="text-dark">Đăng nhập</h3>
+         <div class="card-header text-center bg-white border-0 mt-4">
+            <h3 class="text-black fw-bold">Đăng nhập</h3>
          </div>
-         <div class="card-body mx-auto" style="width: 500px">
-            <alert-message
-               @close-alert="closeGlobalError"
-               v-if="errors && errors.global"
-               type="danger"
-               >{{ errors.global }}</alert-message
-            >
+         <div class="card-body mx-auto pt-0" style="width: 500px">
+            <div class="mt-1 text-danger text-center" v-if="errors && errors.global">
+               <i class="fa-regular fa-circle-xmark mb-3" style="font-size: 30px"></i>
+               <p class="fw-bold fs-6">{{ errors.global }}</p>
+            </div>
             <form @submit.prevent="loginSubmit()" id="login-form">
                <div class="form-group row mb-2">
                   <label for="email" class="fw-bold">Email</label>
@@ -46,14 +44,19 @@
                      </small>
                   </div>
                </div>
-               <p class="" style="text-align: right">
-                  <a href="" style="color: #1cc88a; text-decoration: none">Quên Mật khẩu ?</a>
+               <p class="mt-2" style="text-align: right">
+                  <router-link
+                     :to="{ name: 'forgotPassword' }"
+                     style="color: #1cc88a; text-decoration: none"
+                     class="fw-bold"
+                     >Quên Mật khẩu?</router-link
+                  >
                </p>
                <div class="form-group row mb-3">
                   <div class="col-md-12">
                      <button
                         type="submit"
-                        class="btn btn-lg w-100 fw-bold text-white d-flex justify-content-center align-items-center login-btn"
+                        class="btn btn-lg p-3 w-100 fw-bold text-white d-flex justify-content-center align-items-center login-btn"
                      >
                         <div
                            class="spinner-grow text-light"
@@ -79,7 +82,21 @@
                   >
                </p>
             </div>
-            <hr />
+            <div class="socialite-container mt-4">
+               <div class="title d-flex align-items-center justify-content-between">
+                  <div class="border-text"></div>
+                  <div class="d-inline-block fw-bold">Hoặc đăng nhập với tài khoản</div>
+                  <div class="border-text"></div>
+               </div>
+               <div class="socialite-btn mt-4">
+                  <a class="border border-1"
+                     ><img src="../../assets/images/social-logo/facebook.png" alt="" /> Facebook
+                  </a>
+                  <a class="border border-1"
+                     ><img src="../../assets/images/social-logo/google.png" alt="" /> Google
+                  </a>
+               </div>
+            </div>
          </div>
       </div>
    </div>
@@ -87,7 +104,6 @@
 
 <script setup>
 import { ref } from "vue";
-import AlertMessage from "@/components/Alert/AlertMessage.vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
@@ -127,10 +143,6 @@ const clearError = (field) => {
       errors.value = null;
    }
 };
-
-const closeGlobalError = () => {
-   errors.value = null;
-};
 </script>
 
 <style lang="scss" scoped>
@@ -143,6 +155,43 @@ const closeGlobalError = () => {
 
    &:hover {
       background: #26b480;
+   }
+}
+
+.border-text {
+   height: 1px;
+   width: 25%;
+   background: #e3e6f0;
+}
+
+.socialite-btn {
+   display: flex;
+   justify-content: space-between;
+   gap: 18px;
+   grid-gap: 18px;
+
+   a {
+      width: 50%;
+      padding: 14px 48px;
+      font-size: 16px;
+      text-decoration: none;
+      color: black;
+      font-weight: 500;
+      border-radius: 6px;
+      text-align: center;
+      cursor: pointer;
+
+      img {
+         width: 20px;
+         height: 20px;
+         object-fit: cover;
+         margin-right: 8px;
+      }
+   }
+
+   a:hover {
+      transition: 0.3s all ease-in-out;
+      box-shadow: 0 0 0 2px #21e09ab0;
    }
 }
 </style>

@@ -34,7 +34,9 @@
       <template v-slot:message>
          <div v-if="props.checkEmail" class="text-center fs-6 mt-2 mb-3 mb-0 mx-auto">
             Không nhận được email.
-            <span class="fs-6 text-success" style="cursor: pointer">Yêu cầu gửi lại</span>
+            <span class="fs-6 resend-btn" style="cursor: pointer" @click="verificationEmail"
+               >Yêu cầu gửi lại</span
+            >
          </div>
       </template>
    </my-modal>
@@ -79,8 +81,17 @@ const verificationEmail = () => {
 onMounted(() => {
    $("#updateEmailModal").on("hide.bs.modal", () => {
       model.value.email = "";
+      showButton.value = true;
    });
 });
 </script>
 
-<style></style>
+<style scoped>
+.resend-btn {
+   color: #1cc88a;
+}
+.resend-btn:hover {
+   color: #2ddd9da1;
+   transition: all 0.2s ease-in-out;
+}
+</style>
