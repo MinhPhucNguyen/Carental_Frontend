@@ -28,17 +28,25 @@
 
 <script setup>
 import myModal from "@/components/Modal/Modal.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 const props = defineProps(["user", "errors", "isLoading"]);
 
 const model = ref({
-   phone: props.user.phone,
+   phone: null,
 });
 
 const emits = defineEmits(["update-phone-number"]);
 const updatePhoneNumber = () => {
    emits("update-phone-number", model.value);
 };
+
+onMounted(() => {
+   $("#updatePhoneNumberModal").on("hide.bs.modal", () => {
+      model.value = {
+         phone: null,
+      };
+   });
+});
 </script>
 
 <style></style>

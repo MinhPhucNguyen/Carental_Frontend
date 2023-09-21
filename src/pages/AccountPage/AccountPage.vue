@@ -52,11 +52,7 @@
                         <i class="fa-solid fa-user-gear"></i>
                         <p>Admin</p>
                      </router-link>
-                     <a
-                        class="sidebar-item text-danger"
-                        data-bs-toggle="modal"
-                        data-bs-target="#logoutModal"
-                     >
+                     <a class="sidebar-item" data-bs-toggle="modal" data-bs-target="#logoutModal">
                         <i class="fa-solid fa-arrow-left"></i>
                         <p>Đăng xuất</p>
                      </a>

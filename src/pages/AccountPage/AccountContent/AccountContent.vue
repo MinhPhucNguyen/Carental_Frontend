@@ -70,9 +70,13 @@
                <div class="info-desc-item">
                   <div class="title-item">
                      Số điện thoại
-                     <div class="note success">
+                     <div v-if="user.phone_is_verified" class="note success">
                         <i class="fa-solid fa-circle-check"></i>
-                        Đã xác thực
+                        <span> Đã xác thực</span>
+                     </div>
+                     <div v-else class="note warning">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span> Xác minh</span>
                      </div>
                   </div>
                   <div class="name">
@@ -96,7 +100,7 @@
                      </div>
                      <div v-else class="note warning">
                         <i class="fa-solid fa-circle-exclamation"></i>
-                        <span> Chưa xác thực</span>
+                        <span>Xác minh</span>
                      </div>
                   </div>
                   <div class="name">
@@ -123,7 +127,7 @@
                <div class="info-desc-item">
                   <div class="title-item">Google</div>
                   <div class="name">
-                     Minh Phúc Nguyễn
+                     {{ user.username }}
                      <div class="wrap-edit-btn">
                         <i class="fa-solid fa-link"></i>
                      </div>

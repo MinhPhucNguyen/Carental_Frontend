@@ -82,7 +82,6 @@ const store = useStore();
 const isAuthenticated = computed(() => store.getters["auth/isAuthenticated"]);
 
 const user = computed(() => store.getters["users/getUserById"]);
-console.log(user.value);
 </script>
 
 <style lang="scss" scoped>
