@@ -42,8 +42,19 @@
                      id="user-info"
                      class="text-black fw-bold text-decoration-none"
                   >
-                     <img class="avatar-image" :src="user.avatar" alt="avatar" />
-                     {{ user.username }}
+                     <div class="d-flex align-items-center" v-if="user">
+                        <img class="avatar-image" :src="user.avatar" alt="avatar" />
+                        <span class="mr-3">{{ user.fullname ?? user.username }}</span>
+                        <i class="fa-solid fa-angle-down"></i>
+                     </div>
+                     <div
+                        v-else
+                        class="spinner-grow text-success"
+                        role="status"
+                        style="width: 20px; height: 20px"
+                     >
+                        <span class="visually-hidden">Loading...</span>
+                     </div>
                   </router-link>
                   <ul v-else>
                      <li id="register-btn" class="nav-item m-0">
@@ -64,23 +75,14 @@
    </nav>
 </template>
 
-<script>
+<script setup>
 import { computed } from "vue";
 import { useStore } from "vuex";
+const store = useStore();
+const isAuthenticated = computed(() => store.getters["auth/isAuthenticated"]);
 
-export default {
-   name: "MainNavbar",
-   setup() {
-      const store = useStore();
-      const isAuthenticated = computed(() => store.getters["auth/isAuthenticated"]);
-      const user = computed(() => store.getters["auth/getUser"]);
-
-      return {
-         user,
-         isAuthenticated,
-      };
-   },
-};
+const user = computed(() => store.getters["users/getUserById"]);
+console.log(user.value);
 </script>
 
 <style lang="scss" scoped>

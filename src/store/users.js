@@ -104,6 +104,12 @@ const users = {
          return response;
       },
 
+      async updateInfor({ commit }, payload) {
+         const response = await axios.patch(`v2/users/${payload.id}/update-infor`, payload.model);
+         commit("SET_USER", response.data.user);
+         return response;
+      },
+
       async updateAvatar({ commit }, { id, formData }) {
          const response = await axios.post(`v2/users/${id}/update-avatar`, formData);
          commit("SET_AVATAR", response.data.avatarUrl);

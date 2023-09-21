@@ -20,7 +20,7 @@
                </router-link>
             </div>
          </div>
-         <div class="w-100 d-flex align-items-center justify-content-between mt-4">
+         <div class="w-100 d-flex align-items-center justify-content-between mt-4 pl-4 pr-4">
             <div class="w-25 m-0 d-flex align-items-center justify-content-between">
                <div class="mb-3 w-50">
                   <div class="d-flex align-items-center w-50">

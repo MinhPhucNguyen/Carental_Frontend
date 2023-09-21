@@ -55,7 +55,7 @@ const auth = {
             });
             return dispatch("attempt", response.data.token);
          } catch (error) {
-            alert(error);
+            console.log(error);
          }
       },
 
@@ -101,7 +101,8 @@ const auth = {
          try {
             const response = await axios.get("user");
             commit("SET_USER", response.data);
-            dispatch("users/fetchUserById", response.data.id, { root: true });
+            // dispatch("users/fetchUserById", response.data.id, { root: true });
+            commit("users/SET_USER", response.data, { root: true });
          } catch (e) {
             commit("SET_TOKEN", null);
             commit("SET_USER", null);

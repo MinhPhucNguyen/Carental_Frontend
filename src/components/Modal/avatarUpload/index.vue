@@ -45,7 +45,7 @@
                      <div
                         class="spinner-grow"
                         role="status"
-                        style="width: 24px; height: 24px; margin-right: 10px"
+                        style="width: 24px; height: 24px"
                         v-if="props.isLoading"
                      >
                         <span class="visually-hidden">Loading...</span>

@@ -67,7 +67,7 @@
                            <div
                               class="spinner-grow text-light"
                               v-if="isLoading"
-                              style="width: 2rem; height: 2rem; margin-right: 10px"
+                              style="width: 2rem; height: 2rem"
                               role="status"
                            >
                               <span class="visually-hidden">Loading...</span>

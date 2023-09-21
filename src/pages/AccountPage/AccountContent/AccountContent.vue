@@ -43,7 +43,7 @@
                   <img :src="user.avatar" alt="avatar" />
                </div>
             </div>
-            <h6 class="user-fullname">{{ user.fullname }}</h6>
+            <h6 class="user-fullname">{{ user.fullname ?? user.username }}</h6>
             <div class="note">
                Tham gia: <span>{{ dateJoin }}</span>
             </div>
@@ -236,15 +236,14 @@ const user = ref({});
 /**
  * TODO: FETCH USER WHEN AUTHENTICATED
  */
-user.value = store.getters["auth/getUser"];
+// user.value = store.getters["auth/getUser"];
+user.value = store.getters["users/getUserById"];
 
 const fetchUserById = async () => {
    return await store.dispatch("users/fetchUserById", user.value.id).then((response) => {
       user.value = response.data.user;
    });
 };
-
-fetchUserById();
 
 const formatBirth = computed(() => {
    const birth = new Date(user.value.birth);
@@ -297,8 +296,8 @@ const handleChangeAvatar = async (file) => {
  */
 const updateInfor = async (model) => {
    isLoading.value = true;
-   await axios
-      .patch(`v2/users/${id}/update-infor`, model)
+   await store
+      .dispatch("users/updateInfor", { id, model })
       .then((response) => {
          successMessage.value = response.data.message;
          fetchUserById().then(() => {
@@ -308,6 +307,7 @@ const updateInfor = async (model) => {
          });
       })
       .catch((e) => {
+         console.log(e);
          if (e.response) {
             isLoading.value = false;
             errors.value = e.response.data.errors;
