@@ -1,5 +1,5 @@
 <template>
-   <nav class="navbar navbar-expand-lg">
+   <nav class="navbar navbar-expand-lg" ref="navbar">
       <div class="navbar-container text-black p-0 d-flex">
          <router-link to="/" class="navbar-brand fw-bold text-uppercase fs-4" href="/">
             CA<span style="color: #1cc88a">R</span>ENTAL
@@ -76,12 +76,24 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 const store = useStore();
 const isAuthenticated = computed(() => store.getters["auth/isAuthenticated"]);
-
+const navbar = ref(null);
 const user = computed(() => store.getters["users/getUserById"]);
+
+if (!navbar.value) {
+   onMounted(() => {
+      window.addEventListener("scroll", () => {
+         if (window.scrollY >= 150) {
+            navbar.value.classList.add("navbar-scroll");
+         } else {
+            navbar.value.classList.remove("navbar-scroll");
+         }
+      });
+   });
+}
 </script>
 
 <style lang="scss" scoped>

@@ -52,15 +52,22 @@ const formatCreatedAt = computed(() => {
 });
 </script>
 
-<style lang="scss" scoped>
+<style>
 .blog-page {
    background: #f5f5f5;
 }
 
 .blog-detail-container {
-   width: 80%;
+   width: 75%;
    margin: 0 auto;
    padding: 80px 0;
+}
+
+.main-blog-image {
+   border-radius: 16px;
+   width: 100%;
+   object-fit: cover;
+   height: 600px;
 }
 
 .blog-detail-content {

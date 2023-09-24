@@ -1,10 +1,22 @@
 <template>
    <ToastMessage :message="successMessage" />
+   <updateInfoModal :user="user" @update-infor="updateInfor" :isLoading="isLoading" />
+   <avatarUpload @handle-change-avatar="handleChangeAvatar" :isLoading="isLoading" />
    <updatePhoneNumberModal
-      @update-phone-number="updatePhoneNumber"
+      @update-phone-number="updateAndVerifyPhoneNumber"
       :user="user"
       :isLoading="isLoading"
       :errors="errors"
+      :successMessage="successMessage"
+      :isUpdatePhoneSuccess="isUpdatePhoneSuccess"
+   />
+   <verifyPhoneNumberModal
+      @send-otp="sendOTP"
+      @verify-phone-number="verifyPhoneNumber"
+      :isLoading="isLoading"
+      :verificationMessage="verificationMessage"
+      :SMSOTPMessage="SMSOTPMessage"
+      :phone="user.phone"
    />
    <updateEmailModal
       @handle-email="handleEmail"
@@ -15,8 +27,6 @@
       :isUpdateEmailSuccess="isUpdateEmailSuccess"
       :checkEmail="checkEmail"
    />
-   <updateInfoModal :user="user" @update-infor="updateInfor" :isLoading="isLoading" />
-   <avatarUpload @handle-change-avatar="handleChangeAvatar" :isLoading="isLoading" />
 
    <div class="content-item user-profile">
       <div class="content-title d-flex align-items-center justify-content-between">
@@ -74,7 +84,7 @@
                         <i class="fa-solid fa-circle-check"></i>
                         <span> Đã xác thực</span>
                      </div>
-                     <div v-else class="note warning">
+                     <div v-else class="note warning verify-btn" @click="openModalVerify">
                         <i class="fa-solid fa-circle-exclamation"></i>
                         <span> Xác minh</span>
                      </div>
@@ -222,6 +232,7 @@
 
 <script setup>
 import updatePhoneNumberModal from "@/components/Modal/updatePhoneNumberModal/index.vue";
+import verifyPhoneNumberModal from "@/components/Modal/verifyPhoneNumberModal/index.vue";
 import updateEmailModal from "@/components/Modal/updateEmailModal/index.vue";
 import updateInfoModal from "@/components/Modal/updateInfoModal/index.vue";
 import avatarUpload from "@/components/Modal/avatarUpload/index.vue";
@@ -322,6 +333,71 @@ const updateInfor = async (model) => {
 /**
  * TODO: UPDATE PHONE NUMBER
  */
+const isUpdatePhoneSuccess = ref(false);
+
+const updateAndVerifyPhoneNumber = (model) => {
+   if (model.isVerify === true) {
+      openVerifyPhoneNumberModal(model.phone);
+   } else {
+      updatePhoneNumber(model);
+   }
+};
+
+const verificationMessage = ref("");
+const openVerifyPhoneNumberModal = async (phone) => {
+   $("#updatePhoneNumberModal").modal("hide");
+   $("#verifyPhoneNumberModal").modal("show");
+
+   await axios
+      .post(`v2/users/verification-now`, { phone })
+      .then((response) => {
+         verificationMessage.value = {
+            message: response.data.message,
+            phone: response.data.phone,
+         };
+      })
+      .catch((e) => {
+         alert(e.response.data.errors);
+      });
+};
+
+const SMSOTPMessage = ref("");
+const sendOTP = async () => {
+   isLoading.value = true;
+   await axios
+      .post(`v2/users/${id}/send-phone-verification`)
+      .then((response) => {
+         isLoading.value = false;
+         SMSOTPMessage.value = {
+            message: response.data.message,
+            phone: response.data.phone,
+         };
+      })
+      .catch((e) => {
+         isLoading.value = false;
+         console.log(e.response);
+      });
+};
+
+const verifyPhoneNumber = async (model) => {
+   await axios
+      .get("/phone-verification", {
+         params: {
+            phone: model.phone,
+            otp: model.otp,
+         },
+      })
+      .then((response) => {
+         successMessage.value = response.data.message;
+         fetchUserById();
+         $(".toast").toast("show");
+         $("#verifyPhoneNumberModal").modal("hide");
+      })
+      .catch((e) => {
+         alert(e.response.data.errors);
+      });
+};
+
 const updatePhoneNumber = async (model) => {
    isLoading.value = true;
    await axios
@@ -330,14 +406,13 @@ const updatePhoneNumber = async (model) => {
          successMessage.value = response.data.message;
          fetchUserById().then(() => {
             isLoading.value = false;
-            $("#updatePhoneNumberModal").modal("hide");
-            $(".toast").toast("show");
+            isUpdatePhoneSuccess.value = true;
          });
       })
       .catch((e) => {
          if (e.response) {
             console.log(e);
-            errors.value = "*Không hợp lệ mới nhập lại";
+            errors.value = "*Không hợp lệ mời nhập lại";
             $("#updatePhoneNumberModal").modal("show");
             isLoading.value = false;
          }
@@ -414,6 +489,15 @@ onMounted(() => {
       isUpdateEmailSuccess.value = false;
       isLoading.value = false;
       checkEmail.value = "";
+      errors.value = null;
+   });
+
+   $("#updatePhoneNumberModal").on("hide.bs.modal", () => {
+      isUpdatePhoneSuccess.value = false;
+      successMessage.value = "";
+      verificationMessage.value = "";
+      SMSOTPMessage.value = "";
+      isLoading.value = false;
       errors.value = null;
    });
 });

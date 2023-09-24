@@ -22,7 +22,9 @@
                      :key="blog.blog_id"
                      class="blog-latest-other-item"
                   >
-                     <img :src="blog.image" alt="blog-image" />
+                     <div class="latest-image">
+                        <img :src="blog.image" alt="blog-image" />
+                     </div>
                      <div class="content">
                         <h6>{{ blog.title }}</h6>
                         <div class="disc">
