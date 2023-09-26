@@ -107,6 +107,11 @@ const app = [
                hideNavbar: true,
             },
          },
+         {
+            path: "/delete-account",
+            component: () => import("../pages/DeleteAccount/index.vue"),
+            name: "deleteAccount",
+         },
       ],
    },
 ];

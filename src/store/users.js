@@ -137,6 +137,12 @@ const users = {
                alert(error);
             });
       },
+
+      async deleteAccount({ dispatch }, payload) {
+         const response = await axios.delete("v2/users/" + payload.id + "/delete-account");
+         dispatch("fetchUsers");
+         return response;
+      },
    },
 };
 
