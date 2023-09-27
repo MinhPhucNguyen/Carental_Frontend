@@ -13,7 +13,10 @@
          />
          <div class="text-center fs-6 mt-3">
             <p>Bạn chưa nhận được mã?</p>
-            <p>Yêu cầu mã mới trong vòng: {{ timeLeft }}s</p>
+            <p v-if="timeLeft > 0">Yêu cầu mã mới trong vòng: {{ timeLeft }}s</p>
+            <p class="mb-0" v-else>
+               <a href="#" class="new-otp-btn" @click="resendOTP">Yêu cầu mã mới</a>
+            </p>
          </div>
       </div>
       <div v-else-if="props.isLoading" class="w-100 d-flex justify-content-center mt-3 mb-4">
@@ -46,16 +49,25 @@ const model = ref({
 });
 const timeLeft = ref(15);
 
+const sendOTP = () => {
+   emits("send-otp");
+};
+
+const resetTimeLeft = () => {
+   timeLeft.value = 15;
+};
+
 const verifyPhoneNumber = () => {
-   if (props.SMSOTPMessage) {
-      emits("verify-phone-number", model.value); //Xác nhận mã OTP sau khi nhập
+   if (props.SMSOTPMessage && model.value.otp) {
+      emits("verify-phone-number", model.value); //Xác nhận mã OTP sau khi nhập, nút tiếp tực
    } else {
       sendOTP();
    }
 };
 
-const sendOTP = () => {
-   emits("send-otp");
+const resendOTP = () => {
+   resetTimeLeft();
+   sendOTP();
 };
 
 onMounted(() => {
@@ -66,10 +78,6 @@ onMounted(() => {
    }, 1000);
    resetTimeLeft();
 });
-
-const resetTimeLeft = () => {
-   timeLeft.value = 15;
-};
 
 onMounted(() => {
    $("#verifyPhoneNumberModal").on("hide.bs.modal", () => {
@@ -82,9 +90,24 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .otp-input {
    height: 60px;
    outline: none;
+}
+
+.new-otp-btn {
+   width: 100%;
+   text-decoration: none;
+   color: #1cc88a;
+   padding: 14px 24px;
+   font-weight: 500;
+   border: 1px solid #1cc88a;
+   border-radius: 6px;
+   display: inline-block;
+
+   &:hover {
+      background-color: white;
+   }
 }
 </style>

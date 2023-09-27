@@ -138,8 +138,8 @@ const users = {
             });
       },
 
-      async deleteAccount({ dispatch }, payload) {
-         const response = await axios.delete("v2/users/" + payload.id + "/delete-account");
+      async deleteAccount({ dispatch }, id) {
+         const response = await axios.delete("v2/users/" + id + "/delete-account");
          dispatch("fetchUsers");
          return response;
       },

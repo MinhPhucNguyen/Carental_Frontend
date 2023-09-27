@@ -1,9 +1,27 @@
 <template>
-   <my-modal @clickTo="deleteAccount" idModal="logoutModal">
-      <template v-slot:title>Đăng xuất</template>
-      <h6 class="text-dark text-center fs-5 mt-4">Bạn có chắc chắn muốn đăng xuất ?</h6>
-      <template v-slot:buttonName>Đăng xuất</template>
-   </my-modal>
+   <MyModal @clickTo="handleDeleteAccount" idModal="deleteAccountModal">
+      <template v-slot:title>{{ isDeleteAccountSuccess ? "Thông báo" : "Xác nhận" }}</template>
+      <h6 class="text-dark text-center fs-5 mt-4">
+         {{
+            isDeleteAccountSuccess
+               ? "Yêu cầu xóa tài khoản thành công."
+               : "Bạn có chắc chắn muốn xóa tài khoản?"
+         }}
+      </h6>
+      <template v-slot:buttonName>
+         <div
+            class="spinner-grow text-white"
+            role="status"
+            style="width: 30px; height: 30px"
+            v-if="isLoading"
+         >
+            <span class="visually-hidden">Loading...</span>
+         </div>
+         <span v-else>
+            {{ isDeleteAccountSuccess ? "Đóng" : "Tiếp tục" }}
+         </span>
+      </template>
+   </MyModal>
 
    <div class="delete-account-section">
       <div class="delete-account-container flex-column text-center">
@@ -38,10 +56,10 @@
             </p>
          </div>
          <div class="wrap-btn d-flex flex-column">
-            <a @click.prevent="deleteAccount" class="btn btn-danger del-account-btn fs-5 fw-bold"
+            <a @click.prevent="deleteAccountConfirm" class="btn btn-danger del-account-btn fw-bold"
                >Xóa tài khoản</a
             >
-            <router-link :to="{ name: 'home' }" class="cancel-btn text-dark mt-4 fs-5 fw-bold"
+            <router-link :to="{ name: 'home' }" class="cancel-btn text-dark mt-2 fw-bold"
                >Hủy</router-link
             >
          </div>
@@ -50,14 +68,52 @@
 </template>
 
 <script setup>
+import { onBeforeMount, onMounted, ref } from "vue";
 import { useStore } from "vuex";
+import MyModal from "@/components/Modal/Modal.vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const store = useStore();
-const deleteAccount = () => {
-   store.dispatch("users.deleteAccount").then((response) => {
-      console.log(response);
-   });
+const isLoading = ref(false);
+const isDeleteAccountSuccess = ref(false);
+
+/**
+ * TODO: Open modal to confirm delete account
+ */
+const deleteAccountConfirm = () => {
+   $("#deleteAccountModal").modal("show");
 };
+
+const handleDeleteAccount = () => {
+   if (isDeleteAccountSuccess.value) {
+      router.push({ name: "home" });
+      $("#deleteAccountModal").modal("hide");
+   } else {
+      deleteAccount();
+   }
+};
+
+const deleteAccount = () => {
+   isLoading.value = true;
+   store
+      .dispatch("users/deleteAccount", store.getters["auth/getUser"].id)
+      .then(() => {
+         isLoading.value = false;
+         isDeleteAccountSuccess.value = true;
+      })
+      .catch((error) => {
+         alert(error);
+      });
+};
+
+onMounted(() => {
+   $("#deleteAccountModal").on("hide.bs.modal", () => {
+      if (isDeleteAccountSuccess.value) {
+         router.go({ name: "home" });
+      }
+   });
+});
 </script>
 
 <style scoped>

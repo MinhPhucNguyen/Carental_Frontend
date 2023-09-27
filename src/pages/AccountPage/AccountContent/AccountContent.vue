@@ -53,7 +53,7 @@
                   <img :src="user.avatar" alt="avatar" />
                </div>
             </div>
-            <h6 class="user-fullname">{{ user.fullname ?? user.username }}</h6>
+            <h6 class="user-fullname">{{ user.fullname }}</h6>
             <div class="note">
                Tham gia: <span>{{ dateJoin }}</span>
             </div>

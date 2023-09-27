@@ -58,7 +58,7 @@
                   aria-expanded="false"
                >
                   <span class="mr-2 d-none d-lg-inline text-gray-600 fw-bold">{{
-                     user.username
+                     user.fullname
                   }}</span>
                   <img
                      class=""

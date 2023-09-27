@@ -6,7 +6,7 @@
 }
 
 .delete-account-container {
-   width: 75%;
+   max-width: 1280px;
    margin: 0 auto;
    display: flex;
    gap: 30px;
@@ -15,18 +15,18 @@
 
 .content-inner {
    margin-top: 30px;
-   max-width: 50%;
+   max-width: 661px;
    text-align: left;
    font-size: 14px;
    font-weight: 400;
    margin: 0 auto;
 
-   p {
-      margin-bottom: 10px;
+   & p {
+      margin-bottom: 8px;
    }
 
    ul li {
-      margin-bottom: 10px;
+      margin-bottom: 5px;
    }
 }
 
@@ -37,7 +37,7 @@
 }
 
 .del-account-btn {
-   padding: 20px 80px;
+   padding: 16px 24px;
 }
 
 .cancel-btn {

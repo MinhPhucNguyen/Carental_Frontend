@@ -28,6 +28,7 @@ const app = [
          {
             path: "blog/:slug",
             component: () => import("../pages/BlogDetail/BlogDetail.vue"),
+            name: "blogDetail",
          },
          {
             path: "authorize/:provider/callback",
@@ -103,6 +104,7 @@ const app = [
             component: () => import("../pages/Auth/VerifyEmail.vue"),
             name: "verifyEmail",
             meta: {
+               requiresAuth: true,
                hideFooter: true,
                hideNavbar: true,
             },
@@ -111,6 +113,14 @@ const app = [
             path: "/delete-account",
             component: () => import("../pages/DeleteAccount/index.vue"),
             name: "deleteAccount",
+            meta: {
+               requiresAuth: true,
+            },
+            beforeEnter: (to, from, next) => {
+               if (useStore().getters["auth/getUser"] && to.path === "/delete-account") {
+                  next();
+               }
+            },
          },
       ],
    },

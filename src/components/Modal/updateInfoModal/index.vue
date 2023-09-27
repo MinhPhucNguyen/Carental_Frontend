@@ -61,7 +61,7 @@ const model = ref({
 });
 
 const filledForm = ref(false);
-watch(model.value, (value) => {
+watch(model.value, () => {
    filledForm.value = true;
 });
 
