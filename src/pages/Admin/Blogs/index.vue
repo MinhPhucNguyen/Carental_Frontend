@@ -109,7 +109,7 @@ import axios from "axios";
 import MyModal from "@/components/Modal/Modal.vue";
 import ToastMessage from "@/components/Toast/index.vue";
 import stateLoading from "@/components/Loading/Loading.vue";
-import { formatDateTime } from "@/utils/formatDataTime";
+import { formatDateTime } from "@/utils/formatDateTime";
 
 const blogsList = ref([]);
 const successMessage = ref(null);

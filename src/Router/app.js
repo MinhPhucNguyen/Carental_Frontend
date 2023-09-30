@@ -85,7 +85,7 @@ const app = [
             },
             children: [
                {
-                  path: "/account",
+                  path: "",
                   component: () => import("../pages/AccountPage/AccountContent/AccountContent.vue"),
                   name: "accountContent",
                },

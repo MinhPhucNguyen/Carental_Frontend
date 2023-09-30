@@ -33,7 +33,11 @@
                      <div class="wrap-ic">
                         <i class="fa-solid fa-share-nodes"></i>
                      </div>
-                     <div class="wrap-ic">
+                     <div
+                        class="wrap-ic fav-btn"
+                        :class="{ active: isFavorite }"
+                        @click="addCarToFavorite"
+                     >
                         <i class="fa-solid fa-heart"></i>
                      </div>
                   </div>
@@ -274,12 +278,13 @@
 </template>
 
 <script setup>
-import { ref, computed, onUpdated } from "vue";
+import { ref, computed, onUpdated, onMounted } from "vue";
 import axios from "axios";
 import { useRoute } from "vue-router";
 // import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import flatpickr from "flatpickr";
+import { useStore } from "vuex";
 
 const carID = ref(null);
 const carDetail = ref({});
@@ -288,6 +293,8 @@ const totalPrice = ref(0);
 const isDescriptionHidden = ref(true);
 const startDateTime = ref("");
 const endDateTime = ref("");
+const store = useStore();
+const isFavorite = ref(false);
 
 //Get car detail
 carID.value = useRoute().params.id;
@@ -351,6 +358,31 @@ onUpdated(() => {
       defaultDate: new Date(),
    });
 });
+
+/**
+ * TODO: Add car to favorite
+ */
+
+const addCarToFavorite = () => {
+   const favBtn = document.querySelector(".fav-btn");
+   favBtn.classList.add("active");
+   store
+      .dispatch("favorite/addCar", { id: carID.value })
+      .then((response) => {
+         console.log(response);
+      })
+      .catch((error) => {
+         console.log(error);
+      });
+};
+
+store.getters["favorite/getFavoriteCars"].some((car) => {
+   if (car.carId === parseInt(carID.value)) {
+      isFavorite.value = true;
+      return true;
+   }
+});
+console.log(isFavorite.value);
 </script>
 
 <style scoped>

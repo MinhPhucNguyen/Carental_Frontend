@@ -331,7 +331,7 @@ import { useStore } from "vuex";
 import MyModal from "@/components/Modal/Modal.vue";
 import stateLoading from "@/components/Loading/Loading.vue";
 import Pagination from "@/components/Pagination/index.vue";
-import { formatDateTime } from "@/utils/formatDataTime";
+import { formatDateTime } from "@/utils/formatDateTime";
 import ToastMessage from "@/components/Toast/index.vue";
 import axios from "axios";
 

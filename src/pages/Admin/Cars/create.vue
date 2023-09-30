@@ -467,10 +467,9 @@ const createNewCar = async () => {
          }, 2000);
       })
       .catch((e) => {
+         isLoading.value = false;
          if (e.response.status === 422) {
             errors.value = e.response.data.errors;
-            console.log(errors.value);
-            isLoading.value = false;
          }
       });
 };

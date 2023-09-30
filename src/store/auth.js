@@ -89,7 +89,7 @@ const auth = {
          const response = await axios.post("login", credentials);
          return dispatch("attempt", response.data.token);
       },
-      async attempt({ commit, state }, token) {
+      async attempt({ commit, state, dispatch }, token) {
          if (token) {
             commit("SET_TOKEN", token);
          }
@@ -103,10 +103,12 @@ const auth = {
             commit("SET_USER", response.data);
             // dispatch("users/fetchUserById", response.data.id, { root: true });
             commit("users/SET_USER", response.data, { root: true });
+            dispatch("favorite/fetchFavoriteCars", null, { root: true });
          } catch (e) {
             commit("SET_TOKEN", null);
             commit("SET_USER", null);
             commit("users/SET_USER", null, { root: true });
+            commit("favorite/SET_FAVORITE_CARS", [], { root: true });
          }
       },
 
@@ -115,6 +117,7 @@ const auth = {
             commit("SET_TOKEN", null);
             commit("SET_USER", null);
             commit("users/SET_USER", null, { root: true });
+            commit("favorite/SET_FAVORITE_CARS", [], { root: true });
          });
       },
 

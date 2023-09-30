@@ -16,30 +16,32 @@
          Xe có tài xế
       </div>
    </div>
-   <div class="empty-car w-100">
+   <div v-if="favoriteCars">
+      <div class="list-car fav-car">
+         <FavoriteCarItem v-for="car in favoriteCars" :key="car.carId" :car="car" />
+      </div>
+   </div>
+   <div class="empty-car w-100" v-else>
       <img src="@/assets/images/myfavs-tab/empty-favcar.2c855700.svg" alt="empty_car" />
       <p>Không có xe yêu thích</p>
    </div>
 </template>
 
-<script>
-import { ref } from "vue";
+<script setup>
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
+import FavoriteCarItem from "@/components/FavoriteCarItem/index.vue";
 
-export default {
-   name: "MyFavs",
-   setup() {
-      const selectedTab = ref("Xe tự lái");
+const store = useStore();
+const selectedTab = ref("Xe tự lái");
 
-      const changeTab = (tabName) => {
-         selectedTab.value = tabName;
-      };
-
-      return {
-         selectedTab,
-         changeTab,
-      };
-   },
+const changeTab = (tabName) => {
+   selectedTab.value = tabName;
 };
+
+const favoriteCars = computed(() => {
+   return store.getters["favorite/getFavoriteCars"];
+});
 </script>
 
 <style scoped>
