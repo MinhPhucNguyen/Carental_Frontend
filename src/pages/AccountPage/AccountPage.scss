@@ -15,7 +15,6 @@
 
 .sidebar-account {
    width: calc(30% - 20px);
-   margin-bottom: 50px;
 }
 
 .sidebar-sticky {
@@ -74,7 +73,7 @@ a {
 }
 
 #account-content {
-   width: 70%;
+   width: 75%;
    display: flex;
    flex-direction: column;
    gap: 24px;

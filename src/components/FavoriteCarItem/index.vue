@@ -38,7 +38,7 @@
                <img src="../../assets/images/avatar/default.jpg" alt="" />
             </div>
             <div class="price">{{ formatCurrency(props.car.price) }}<span>/&nbsp;ngày</span></div>
-            <a href="" class="btn btn-primary">Bỏ thích</a>
+            <a class="btn remove-favorite-car" @click.prevent="removeFavoriteCar">Bỏ thích</a>
             <router-link
                :to="`/car/${(props.car.brand + ' ' + props.car.carName + props.car.yearOfCar)
                   .toLowerCase()
@@ -53,12 +53,17 @@
 
 <script setup>
 import { formatCurrency } from "@/utils/formatCurrency.js";
+const emits = defineEmits(["removeFavoriteCar"]);
 const props = defineProps({
    car: {
       type: Object,
       required: true,
    },
 });
+
+const removeFavoriteCar = () => {
+   emits("removeFavoriteCar", props.car.carId);
+};
 </script>
 
 <style scoped>

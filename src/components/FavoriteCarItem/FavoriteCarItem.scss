@@ -133,11 +133,22 @@
    }
 
    .btn {
+      text-decoration: none;
       background: #1cc88a;
       padding: 12px 20px;
       border-color: #1cc88a;
       color: white;
       font-weight: 600;
+   }
+
+   .remove-favorite-car:active {
+      background-color: #1cc88a;
+      border-color: #1cc88a;
+      color: white;
+   }
+
+   .remove-favorite-car:hover {
+      box-shadow: 0 8px 24px 12px rgba(0, 0, 0, 0.08), 0 20px 24px -4px rgba(0, 0, 0, 0.08);
    }
 
    .btn-link {

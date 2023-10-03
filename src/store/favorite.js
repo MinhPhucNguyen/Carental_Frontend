@@ -26,10 +26,21 @@ const favorite = {
          }
       },
 
-      async addCar({ commit, dispatch }, payload) {
+      async addCar({ dispatch }, payload) {
          try {
             const response = await axios.post("v2/fav/add-car/" + payload.id);
-            commit("SET_IS_FAVORITE", true);
+            dispatch("fetchFavoriteCars");
+            return response;
+         } catch (e) {
+            if (e.response) {
+               return e.response;
+            }
+         }
+      },
+
+      async removeCar({ dispatch }, payload) {
+         try {
+            const response = await axios.post("v2/fav/remove-car/" + payload.id);
             dispatch("fetchFavoriteCars");
             return response;
          } catch (e) {

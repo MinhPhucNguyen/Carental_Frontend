@@ -1,5 +1,5 @@
 <template>
-   <div id="featured-cars-section">
+   <div id="featured-cars-section" class="hidden">
       <div class="section-container">
          <p class="section-title">Xe dành cho bạn</p>
          <div class="car-list" v-if="randomCars.length > 0">

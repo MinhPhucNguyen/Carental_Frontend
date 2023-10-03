@@ -18,3 +18,12 @@
    color: #8f8e8e;
    margin-bottom: 50px;
 }
+
+.hidden {
+   opacity: 0;
+   transition: all 1s;
+}
+
+.show {
+   opacity: 1;
+}

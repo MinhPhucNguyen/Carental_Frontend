@@ -1,5 +1,5 @@
 <template>
-   <div id="banner-section">
+   <div id="banner-section" class="hidden">
       <div class="banner">
          <!-- Banner Title -->
          <div class="banner-title">CARENTAL-CÙNG BẠN TRÊN MỌI HÀNH TRÌNH</div>
@@ -140,7 +140,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 @import "./Banner.scss";
 .flatpickr {
    font-weight: bold;

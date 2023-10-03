@@ -1,100 +1,100 @@
 <template>
-  <div id="featured-places-section">
-    <div class="section-container">
-      <p class="section-title">Địa điểm nổi bật</p>
-      <div id="carouselExample1" class="carousel slide">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <div class="d-block d-flex w-100">
-              <div class="places-item-image d-inline-block">
-                <img
-                  src="../../../assets/images/places-image/HaNoi_v2.jpg"
-                  class="d-block w-100"
-                  alt="..."
-                />
-              </div>
-              <div class="places-item-image d-inline-block">
-                <img
-                  src="../../../assets/images/places-image/HoChiMinh_v2.jpg"
-                  class="d-block w-100"
-                  alt="..."
-                />
-              </div>
-              <div class="places-item-image d-inline-block">
-                <img
-                  src="../../../assets/images/places-image/DaLat_v2.jpg"
-                  class="d-block w-100"
-                  alt="..."
-                />
-              </div>
-              <div class="places-item-image d-inline-block">
-                <img
-                  src="../../../assets/images/places-image/DaNang_v2.jpg"
-                  class="d-block w-100"
-                  alt="..."
-                />
-              </div>
+   <div id="featured-places-section" class="hidden">
+      <div class="section-container">
+         <p class="section-title">Địa điểm nổi bật</p>
+         <div id="carouselExample1" class="carousel slide">
+            <div class="carousel-inner">
+               <div class="carousel-item active">
+                  <div class="d-block d-flex w-100">
+                     <div class="places-item-image d-inline-block">
+                        <img
+                           src="../../../assets/images/places-image/HaNoi_v2.jpg"
+                           class="d-block w-100"
+                           alt="..."
+                        />
+                     </div>
+                     <div class="places-item-image d-inline-block">
+                        <img
+                           src="../../../assets/images/places-image/HoChiMinh_v2.jpg"
+                           class="d-block w-100"
+                           alt="..."
+                        />
+                     </div>
+                     <div class="places-item-image d-inline-block">
+                        <img
+                           src="../../../assets/images/places-image/DaLat_v2.jpg"
+                           class="d-block w-100"
+                           alt="..."
+                        />
+                     </div>
+                     <div class="places-item-image d-inline-block">
+                        <img
+                           src="../../../assets/images/places-image/DaNang_v2.jpg"
+                           class="d-block w-100"
+                           alt="..."
+                        />
+                     </div>
+                  </div>
+               </div>
+               <div class="carousel-item">
+                  <div class="d-block d-flex w-100">
+                     <div class="places-item-image d-inline-block">
+                        <img
+                           src="../../../assets/images/places-image/DaLat_v2.jpg"
+                           class="d-block w-100"
+                           alt="..."
+                        />
+                     </div>
+                     <div class="places-item-image d-inline-block">
+                        <img
+                           src="../../../assets/images/places-image/DaLat_v2.jpg"
+                           class="d-block w-100"
+                           alt="..."
+                        />
+                     </div>
+                     <div class="places-item-image d-inline-block">
+                        <img
+                           src="../../../assets/images/places-image/DaLat_v2.jpg"
+                           class="d-block w-100"
+                           alt="..."
+                        />
+                     </div>
+                     <div class="places-item-image d-inline-block">
+                        <img
+                           src="../../../assets/images/places-image/DaLat_v2.jpg"
+                           class="d-block w-100"
+                           alt="..."
+                        />
+                     </div>
+                  </div>
+               </div>
             </div>
-          </div>
-          <div class="carousel-item">
-            <div class="d-block d-flex w-100">
-              <div class="places-item-image d-inline-block">
-                <img
-                  src="../../../assets/images/places-image/DaLat_v2.jpg"
-                  class="d-block w-100"
-                  alt="..."
-                />
-              </div>
-              <div class="places-item-image d-inline-block">
-                <img
-                  src="../../../assets/images/places-image/DaLat_v2.jpg"
-                  class="d-block w-100"
-                  alt="..."
-                />
-              </div>
-              <div class="places-item-image d-inline-block">
-                <img
-                  src="../../../assets/images/places-image/DaLat_v2.jpg"
-                  class="d-block w-100"
-                  alt="..."
-                />
-              </div>
-              <div class="places-item-image d-inline-block">
-                <img
-                  src="../../../assets/images/places-image/DaLat_v2.jpg"
-                  class="d-block w-100"
-                  alt="..."
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-        <button
-          class="carousel-control-prev"
-          type="button"
-          data-bs-target="#carouselExample1"
-          data-bs-slide="prev"
-        >
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden prev-btn">Previous</span>
-        </button>
-        <button
-          class="carousel-control-next"
-          type="button"
-          data-bs-target="#carouselExample1"
-          data-bs-slide="next"
-        >
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden next-btn">Next</span>
-        </button>
+            <button
+               class="carousel-control-prev"
+               type="button"
+               data-bs-target="#carouselExample1"
+               data-bs-slide="prev"
+            >
+               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+               <span class="visually-hidden prev-btn">Previous</span>
+            </button>
+            <button
+               class="carousel-control-next"
+               type="button"
+               data-bs-target="#carouselExample1"
+               data-bs-slide="next"
+            >
+               <span class="carousel-control-next-icon" aria-hidden="true"></span>
+               <span class="visually-hidden next-btn">Next</span>
+            </button>
+         </div>
       </div>
-    </div>
-  </div>
+   </div>
 </template>
 
 <script>
 export default {
-  name: "FeaturedPlacesSection",
+   name: "FeaturedPlacesSection",
 };
 </script>
 

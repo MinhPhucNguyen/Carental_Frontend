@@ -62,7 +62,7 @@
             <div class="rent-box">
                <div class="price">
                   <h4>
-                     {{ priceFormat(carDetail.price) + "/ngày" }}
+                     {{ formatCurrency(carDetail.price) + "/ngày" }}
                   </h4>
                </div>
                <div class="date-time-form">
@@ -97,13 +97,13 @@
                   <div class="price-item">
                      <p>Đơn giá thuê</p>
                      <p class="cost" id="originalPrice">
-                        {{ priceFormat(carDetail.price) + "/ngày" }}
+                        {{ formatCurrency(carDetail.price) + "/ ngày" }}
                      </p>
                   </div>
                   <div class="price-item">
                      <p>Phí dịch vụ</p>
                      <p class="cost" id="servicesFee">
-                        {{ priceFormat(100000) + "/ngày" }}
+                        {{ formatCurrency(100000) + "/ ngày" }}
                      </p>
                   </div>
                   <div class="line-page"></div>
@@ -278,13 +278,14 @@
 </template>
 
 <script setup>
-import { ref, computed, onUpdated, onMounted } from "vue";
+import { ref, computed, onUpdated } from "vue";
 import axios from "axios";
 import { useRoute } from "vue-router";
 // import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import flatpickr from "flatpickr";
 import { useStore } from "vuex";
+import { formatCurrency } from "@/utils/formatCurrency.js";
 
 const carID = ref(null);
 const carDetail = ref({});
@@ -320,18 +321,10 @@ const newCarImageArr = computed(() => {
    }
 });
 
-//Format price
-const priceFormat = (price) => {
-   return new Intl.NumberFormat("it-IT", {
-      style: "currency",
-      currency: "VND",
-   }).format(price);
-};
-
 //Calulate total price of bill
 const calulateTotalPrice = (originalPrice, servicesFee) => {
    totalPrice.value = originalPrice + servicesFee;
-   return priceFormat(totalPrice.value);
+   return formatCurrency(totalPrice.value);
 };
 
 //Ẩn hiện mô tả
@@ -365,24 +358,37 @@ onUpdated(() => {
 
 const addCarToFavorite = () => {
    const favBtn = document.querySelector(".fav-btn");
-   favBtn.classList.add("active");
-   store
-      .dispatch("favorite/addCar", { id: carID.value })
-      .then((response) => {
-         console.log(response);
-      })
-      .catch((error) => {
-         console.log(error);
-      });
+   favBtn.classList.toggle("active");
+   if (favBtn.classList.contains("active")) {
+      store
+         .dispatch("favorite/addCar", { id: carID.value })
+         .then((response) => {
+            console.log(response);
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+   } else {
+      store
+         .dispatch("favorite/removeCar", { id: carID.value })
+         .then((response) => {
+            console.log(response);
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+   }
 };
 
 store.getters["favorite/getFavoriteCars"].some((car) => {
    if (car.carId === parseInt(carID.value)) {
       isFavorite.value = true;
       return true;
+   } else {
+      isFavorite.value = false;
+      return false;
    }
 });
-console.log(isFavorite.value);
 </script>
 
 <style scoped>
