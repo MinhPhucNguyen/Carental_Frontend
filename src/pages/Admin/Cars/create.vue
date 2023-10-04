@@ -31,6 +31,21 @@
                   <li class="nav-item" role="presentation">
                      <button
                         class="nav-link text-success fw-bold"
+                        id="time-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#time-tab-pane"
+                        type="button"
+                        role="tab"
+                        aria-controls="time-tab-pane"
+                        aria-selected="true"
+                     >
+                        <i class="fa-regular fa-clock mr-1"></i>
+                        Car Rental Period
+                     </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                     <button
+                        class="nav-link text-success fw-bold"
                         id="profile-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#feature-tab-pane"
@@ -241,6 +256,56 @@
 
                   <div
                      class="tab-pane fade mt-3"
+                     id="time-tab-pane"
+                     role="tabpanel"
+                     aria-labelledby="image-tab"
+                     tabindex="0"
+                  >
+                     <div class="row">
+                        <div class="col-md-6 mb-3">
+                           <h5 class="mb-4">Set rental period</h5>
+                        </div>
+                        <div class="priod-input">
+                           <div
+                              class="priod-item"
+                              v-for="period in model.rental_periods"
+                              :key="period.id"
+                           >
+                              <div class="from">
+                                 <label for="from">From</label>
+                                 <input
+                                    :id="`from-input-${period.id}`"
+                                    name="from"
+                                    type="datetime-local"
+                                    class="datetime-input fw-bold p-4"
+                                    v-model="period.from"
+                                 />
+                              </div>
+                              <div class="to">
+                                 <label for="to">To</label>
+                                 <input
+                                    :id="`to-input-${period.id}`"
+                                    name="to"
+                                    type="datetime-local"
+                                    class="datetime-input fw-bold p-4"
+                                    v-model="period.to"
+                                 />
+                              </div>
+                              <a class="remove-period" @click.prevent="removePeriod(period.id)"
+                                 ><i class="fa-regular fa-circle-xmark"></i
+                              ></a>
+                           </div>
+                           <div class="add-period">
+                              <div class="add-period-wrapper">
+                                 <a @click.prevent="addPeriod"><i class="fa-solid fa-plus"></i></a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div
+                     class="tab-pane fade mt-3"
                      id="feature-tab-pane"
                      role="tabpanel"
                      aria-labelledby="image-tab"
@@ -259,7 +324,7 @@
                               >
                                  {{ feature.name }}
                               </div>
-                              <input type="hidden" class="featuresChose" />
+                              <!-- <input type="hidden" class="featuresChose" /> -->
                            </div>
                         </div>
                      </div>
@@ -325,10 +390,12 @@
 
 <script setup>
 import ckeditorComponent from "@/components/Editor/index.vue";
-import { ref, onBeforeMount, computed, watch } from "vue";
+import { ref, onBeforeMount, computed, watch, onMounted, nextTick } from "vue";
 import { useStore } from "vuex";
 import ToastMessage from "@/components/Toast/index.vue";
 import { useRouter } from "vue-router";
+import flatpickr from "flatpickr";
+import "flatpickr/dist/themes/material_green.css";
 
 const store = useStore();
 const brandsList = ref([]);
@@ -337,6 +404,17 @@ const successMessage = ref(null);
 const errors = ref({});
 const isLoading = ref(false);
 const router = useRouter();
+
+const config = {
+   enableTime: true,
+   dateFormat: "d/m/Y    H:i",
+   altInput: true,
+   altFormat: "d/m/Y    H:i",
+   allowInput: true,
+   defaultDate: new Date(),
+   defaultHour: new Date().getHours(),
+};
+
 const model = ref({
    brand_id: "",
    car_name: "",
@@ -354,7 +432,59 @@ const model = ref({
    number_of_trip: "",
    featuresId: [],
    car_images: [],
+   rental_periods: [
+      {
+         id: 0,
+         from: flatpickr.formatDate(new Date(), config.dateFormat),
+         to: flatpickr.formatDate(new Date(), config.dateFormat),
+      },
+   ],
 });
+
+/**
+ * TODO: Add datetime picker to input
+ */
+const fromInput = ref(null);
+const toInput = ref(null);
+onMounted(() => {
+   fromInput.value = document.querySelector(`#from-input-0`);
+   toInput.value = document.querySelector(`#to-input-0`);
+   flatpickr(fromInput.value, config);
+   flatpickr(toInput.value, config);
+});
+
+/**
+ * TODO: Add rental period
+ */
+const addPeriod = () => {
+   model.value.rental_periods.push({
+      id: model.value.rental_periods.length,
+      from: "",
+      to: "",
+   });
+
+   const newIndex = model.value.rental_periods.length - 1;
+
+   //nextTick nhận tham số đầu vào là Callback function
+   //khi click vào button add period thì DOM elements chưa được render ra => nextTick sẽ chờ DOM elements được render xong rồi mới thực thi callback function
+   // => Đảm bảo DOM elements đã tồn tại trước khi áp dụng Flatpickr
+   nextTick(() => {
+      const fromInput = document.querySelector(`#from-input-${newIndex}`);
+      const toInput = document.querySelector(`#to-input-${newIndex}`);
+
+      // Áp dụng Flatpickr sau khi DOM elements đã tồn tại
+      flatpickr(fromInput, config);
+      flatpickr(toInput, config);
+   });
+};
+
+/**
+ * TODO: Remove rental period
+ */
+const removePeriod = (id) => {
+   const idRemove = model.value.rental_periods.findIndex((period) => period.id === id);
+   model.value.rental_periods.splice(idRemove, 1);
+};
 
 onBeforeMount(() => {
    store.dispatch("cars/fetchBrands").then(() => {
@@ -431,7 +561,7 @@ const isDeliveryChecked = computed({
 });
 
 /**
- * TODO: Create new car
+ * TODO: CREATE NEW CAR
  */
 const isFilledForm = ref(true);
 
@@ -441,11 +571,23 @@ watch(model.value, () => {
 
 const createNewCar = async () => {
    const formData = new FormData();
+
+   model.value.rental_periods.forEach((period, index) => {
+      formData.append(`rental_periods[${index}][id]`, period.id);
+      formData.append(`rental_periods[${index}][from]`, period.from);
+      formData.append(`rental_periods[${index}][to]`, period.to);
+   });
+
+   // Loại bỏ rental_periods từ model
+   delete model.value.rental_periods;
+
    for (const key in model.value) {
       if (model.value.hasOwnProperty(key)) {
          //Xác định xem đối tượng có chứa thuộc tính được chỉ định hay không
          const value = model.value[key];
          if (Array.isArray(value)) {
+            console.log(key);
+            console.log(value);
             for (const item of value) {
                formData.append(`${key}[]`, item);
             }
@@ -469,10 +611,64 @@ const createNewCar = async () => {
       .catch((e) => {
          isLoading.value = false;
          if (e.response.status === 422) {
+            console.log(e.response);
             errors.value = e.response.data.errors;
          }
       });
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.priod-input {
+   margin-bottom: 30px;
+}
+.priod-item {
+   width: 50%;
+   display: flex;
+   align-items: center;
+   gap: 50px;
+   border-bottom: 1px solid #ddd;
+   margin-bottom: 40px;
+   padding-bottom: 40px;
+
+   .from,
+   .to {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+   }
+
+   .remove-period {
+      font-size: 25px;
+      color: #e74a3b;
+      cursor: pointer;
+   }
+}
+
+.add-period {
+   margin-top: 20px;
+   display: flex;
+   justify-content: center;
+   .add-period-wrapper {
+      width: 50%;
+
+      a {
+         border: 2px solid #1cc88a;
+         color: #1cc88a;
+         cursor: pointer;
+         font-size: 25px;
+         width: 42px;
+         height: 42px;
+         border-radius: 50%;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         text-decoration: none;
+
+         &:hover {
+            color: #1cc88a;
+         }
+      }
+   }
+}
+</style>
