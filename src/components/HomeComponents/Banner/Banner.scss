@@ -145,6 +145,22 @@
    margin: 0 30px;
 }
 
+.search-form-choose .flatpickr_end {
+   font-weight: 500;
+   font-size: 22px;
+   cursor: pointer;
+}
+
+.search-form-choose .flatpickr_start {
+   font-weight: 500;
+   font-size: 22px;
+   cursor: pointer;
+}
+
+.search-form-choose > div {
+   height: 100%;
+}
+
 .find-car-btn {
    width: 140px;
    background: #1cc88a;

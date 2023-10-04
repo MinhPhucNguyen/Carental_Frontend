@@ -31,6 +31,14 @@ const app = [
             name: "blogDetail",
          },
          {
+            path: "find",
+            component: () => import("../pages/FindCar/index.vue"),
+            name: "findCar",
+            meta: {
+               hideFooter: true,
+            },
+         },
+         {
             path: "authorize/:provider/callback",
             component: () => import("../pages/Auth/LoginSocial.vue"),
             name: "socialLogin",

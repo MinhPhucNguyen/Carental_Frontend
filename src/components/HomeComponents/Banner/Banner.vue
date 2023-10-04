@@ -54,13 +54,13 @@
                      <div class="search-form-choose">
                         <input
                            type="date"
-                           class="form-control datetime-picker flatpickr border-0"
+                           class="form-control datetime-picker flatpickr_start border-0 text-black"
                            placeholder="Select Start Date"
+                           v-model="startDate"
                         />
-                        <font-awesome-icon
-                           :icon="['fas', 'chevron-down']"
-                           @click.self="openFlatPickr('start-date')"
-                        />
+                        <div @click="openFlatPickr('start-date')">
+                           <i class="fa-solid fa-chevron-down"></i>
+                        </div>
                      </div>
                   </div>
                   <div class="search-form-item_divider"></div>
@@ -72,79 +72,69 @@
                      <div class="search-form-choose">
                         <input
                            type="date"
-                           class="form-control datetime-picker flatpickr border-0"
+                           class="form-control datetime-picker flatpickr_end border-0 text-black"
                            placeholder="Select End Date"
+                           v-model="endDate"
                         />
-                        <font-awesome-icon
-                           :icon="['fas', 'chevron-down']"
-                           @click.self="openFlatPickr('end-date')"
-                        />
+                        <div @click="openFlatPickr('end-date')">
+                           <i class="fa-solid fa-chevron-down"></i>
+                        </div>
                      </div>
                   </div>
                </div>
-               <a href="#" class="find-car-btn">Tìm xe</a>
+               <router-link :to="{ name: 'findCar' }" class="find-car-btn">Tìm xe</router-link>
             </div>
          </div>
       </div>
    </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, ref } from "vue";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/themes/material_green.css";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-export default {
-   name: "BannerSection",
-   components: {
-      FontAwesomeIcon,
-   },
-   setup() {
-      //setup() là một hàm của Vue 3, nó được gọi trước khi component được render, có 2 tham số đầu vào là props và context
-      const selectedOption = ref("self-drive");
-      const address = ref("Hà Nội");
+const selectedOption = ref("self-drive");
+const address = ref("Hà Nội");
 
-      onMounted(() => {
-         //onMounted() được gọi sau khi component được render
-         flatpickr(".flatpickr", {
-            enableTime: true,
-            dateFormat: "d/m/Y    H:i",
-            allowInput: true,
-            defaultDate: new Date(),
-         });
-      });
+const startDate = ref("");
+const endDate = ref("");
 
-      const openFlatPickr = (open) => {
-         const flatpickrInput = document.querySelectorAll(".flatpickr");
-         flatpickrInput.forEach((input, index) => {
-            if (open === "start-date" && index === 0) {
-               input._flatpickr.open();
-            } else if (open === "end-date" && index === 1) {
-               input._flatpickr.open();
-            }
-         });
-      };
+onMounted(() => {
+   //onMounted() được gọi sau khi component được render
+   flatpickr(".flatpickr_start", {
+      enableTime: true,
+      dateFormat: "d/m/Y    H:i ",
+      allowInput: true,
+      defaultDate: new Date(),
+      defaultHour: new Date().getHours(),
+   });
 
-      const changeSelectedOption = (option) => {
-         this.selectedOption = option;
-      };
+   flatpickr(".flatpickr_end", {
+      enableTime: true,
+      dateFormat: "d/m/Y    H:i ",
+      allowInput: true,
+      defaultDate: new Date(),
+      defaultHour: new Date().getHours(),
+   });
+});
 
-      return {
-         selectedOption,
-         address,
-         openFlatPickr,
-         changeSelectedOption,
-      };
-   },
+const openFlatPickr = (open) => {
+   const flatpickrInput = document.querySelectorAll(".datetime-picker");
+   flatpickrInput.forEach((input, index) => {
+      if (open === "start-date" && index === 0) {
+         input._flatpickr.open();
+      } else if (open === "end-date" && index === 1) {
+         input._flatpickr.open();
+      }
+   });
+};
+
+const changeSelectedOption = (option) => {
+   selectedOption.value = option;
 };
 </script>
 
 <style scoped>
 @import "./Banner.scss";
-.flatpickr {
-   font-weight: bold;
-   font-size: 22px;
-   cursor: pointer;
-}
 </style>
