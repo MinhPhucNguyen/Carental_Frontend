@@ -3,7 +3,7 @@
       <div class="section-container">
          <p class="section-title">Xe dành cho bạn</p>
          <div class="car-list" v-if="randomCars.length > 0">
-            <car-item
+            <CarItem
                v-for="carItem in randomCars"
                :key="carItem.carId"
                :carItemProps="carItem"
@@ -12,56 +12,37 @@
          </div>
          <div v-else-if="errorMessage">{{ errorMessage }}</div>
          <div v-else>
-            <state-loading />
+            <stateLoading />
          </div>
       </div>
    </div>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
-import { onBeforeMount, ref } from "vue";
-import CarItem from "../CarItemCard/CarItem.vue";
+import { ref } from "vue";
+import CarItem from "@/components/HomeComponents/CarItemCard/CarItem.vue";
 import stateLoading from "@/components/Loading/Loading.vue";
+const randomCars = ref([]);
+const errorMessage = ref(null);
 
-export default {
-   name: "FeaturedCarsSection",
-   components: {
-      CarItem,
-      stateLoading,
-   },
-   setup() {
-      const randomCars = ref([]);
-      const errorMessage = ref(null);
+const getRandomCars = async () => {
+   try {
+      const response = await axios.get("v2/cars/randomCars");
+      if (response.status === 200) {
+         randomCars.value = response.data.data.cars;
+      }
+   } catch (error) {
+      errorMessage.value = error;
+   }
+};
+getRandomCars();
 
-      const getRandomCars = async () => {
-         try {
-            const response = await axios.get("v2/cars/randomCars");
-            if (response.status === 200) {
-               randomCars.value = response.data.data.cars;
-            }
-         } catch (error) {
-            errorMessage.value = error;
-         }
-      };
-
-      onBeforeMount(() => {
-         getRandomCars();
-      });
-
-      const getImagePath = (carImages) => {
-         if (carImages.length > 0) {
-            return carImages[0].imagePath;
-         }
-         return null;
-      };
-
-      return {
-         randomCars,
-         errorMessage,
-         getImagePath,
-      };
-   },
+const getImagePath = (carImages) => {
+   if (carImages.length > 0) {
+      return carImages[0].imagePath;
+   }
+   return null;
 };
 </script>
 

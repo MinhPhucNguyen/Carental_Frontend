@@ -13,4 +13,8 @@ import MainNavbar from "@/components/Navbar/Navbar.vue";
 import MainFooter from "@/components/Footer/Footer.vue";
 </script>
 
-<style></style>
+<style>
+.main {
+   padding-top: 90px;
+}
+</style>

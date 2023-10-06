@@ -1,11 +1,21 @@
-.finding-wrapper {
+.finding-filter-wrapper {
    width: 100%;
+   position: fixed;
+   top: 90px;
    background-color: white;
    border-top: 1px solid #e9e9e9;
-   box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
+   box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.04);
    padding-bottom: 20px;
    z-index: 9999;
+   transition: all 0.3s ease-in-out 0s;
 }
+
+.scroll-finding-down {
+   transition: all 0.3s ease-in-out;
+   background-color: white;
+   top: 0;
+}
+
 .finding-container {
    width: 100%;
    padding: 20px 0;
@@ -110,12 +120,25 @@
 }
 
 .list-car-section {
-   padding-top: 20px;
+   padding-top: 145px;
    background: #f6f6f6;
-   min-height: 100vh;
+   margin-bottom: 50px;
+   height: 1000vh;
 }
 
 .swiper-slide.active {
    border-color: #1cc88a !important;
    background-color: #dff5e7;
+}
+
+.car-list {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: space-around;
+}
+
+.car-list .car-item {
+   width: 25%;
+   margin-bottom: 20px;
+   padding: 0 10px;
 }

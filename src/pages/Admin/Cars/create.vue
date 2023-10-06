@@ -277,7 +277,7 @@
                                     :id="`from-input-${period.id}`"
                                     name="from"
                                     type="datetime-local"
-                                    class="datetime-input fw-bold p-4"
+                                    class="datetime-input fw-bold p-4 text-black"
                                     v-model="period.from"
                                  />
                               </div>
@@ -287,7 +287,7 @@
                                     :id="`to-input-${period.id}`"
                                     name="to"
                                     type="datetime-local"
-                                    class="datetime-input fw-bold p-4"
+                                    class="datetime-input fw-bold p-4 text-black"
                                     v-model="period.to"
                                  />
                               </div>
@@ -390,7 +390,7 @@
 
 <script setup>
 import ckeditorComponent from "@/components/Editor/index.vue";
-import { ref, onBeforeMount, computed, watch, onMounted, nextTick } from "vue";
+import { ref, computed, watch, onMounted, nextTick } from "vue";
 import { useStore } from "vuex";
 import ToastMessage from "@/components/Toast/index.vue";
 import { useRouter } from "vue-router";
@@ -407,9 +407,9 @@ const router = useRouter();
 
 const config = {
    enableTime: true,
-   dateFormat: "d/m/Y    H:i",
+   dateFormat: "d/m/Y H:i",
    altInput: true,
-   altFormat: "d/m/Y    H:i",
+   altFormat: "d/m/Y H:i",
    allowInput: true,
    defaultDate: new Date(),
    defaultHour: new Date().getHours(),
@@ -435,8 +435,8 @@ const model = ref({
    rental_periods: [
       {
          id: 0,
-         from: flatpickr.formatDate(new Date(), config.dateFormat),
-         to: flatpickr.formatDate(new Date(), config.dateFormat),
+         from: flatpickr.formatDate(new Date(), "d/m/Y H:i"),
+         to: flatpickr.formatDate(new Date(), "d/m/Y H:i"),
       },
    ],
 });
@@ -486,13 +486,11 @@ const removePeriod = (id) => {
    model.value.rental_periods.splice(idRemove, 1);
 };
 
-onBeforeMount(() => {
-   store.dispatch("cars/fetchBrands").then(() => {
-      brandsList.value = store.getters["cars/getBrandsList"];
-   });
-   store.dispatch("cars/fetchFeatures").then(() => {
-      featuresList.value = store.getters["cars/getFeaturesList"];
-   });
+store.dispatch("cars/fetchBrands").then(() => {
+   brandsList.value = store.getters["cars/getBrandsList"];
+});
+store.dispatch("cars/fetchFeatures").then(() => {
+   featuresList.value = store.getters["cars/getFeaturesList"];
 });
 
 /**
@@ -578,16 +576,13 @@ const createNewCar = async () => {
       formData.append(`rental_periods[${index}][to]`, period.to);
    });
 
-   // Loại bỏ rental_periods từ model
-   delete model.value.rental_periods;
-
    for (const key in model.value) {
+      if (key === "rental_periods") continue;
+
       if (model.value.hasOwnProperty(key)) {
          //Xác định xem đối tượng có chứa thuộc tính được chỉ định hay không
          const value = model.value[key];
          if (Array.isArray(value)) {
-            console.log(key);
-            console.log(value);
             for (const item of value) {
                formData.append(`${key}[]`, item);
             }

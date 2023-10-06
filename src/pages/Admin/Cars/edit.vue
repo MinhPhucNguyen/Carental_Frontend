@@ -32,6 +32,21 @@
                      <li class="nav-item" role="presentation">
                         <button
                            class="nav-link text-success fw-bold"
+                           id="time-tab"
+                           data-bs-toggle="tab"
+                           data-bs-target="#time-tab-pane"
+                           type="button"
+                           role="tab"
+                           aria-controls="time-tab-pane"
+                           aria-selected="true"
+                        >
+                           <i class="fa-regular fa-clock mr-1"></i>
+                           Car Rental Period
+                        </button>
+                     </li>
+                     <li class="nav-item" role="presentation">
+                        <button
+                           class="nav-link text-success fw-bold"
                            id="profile-tab"
                            data-bs-toggle="tab"
                            data-bs-target="#feature-tab-pane"
@@ -72,7 +87,6 @@
                         <div class="row">
                            <div class="col-md-4 mb-3">
                               <label for="brand">Brand</label>
-                              {{ model.brand_id }}
                               <select class="form-control" v-model="model.brand_id">
                                  <option value="">--Select Brand--</option>
                                  <option
@@ -243,6 +257,58 @@
 
                      <div
                         class="tab-pane fade mt-3"
+                        id="time-tab-pane"
+                        role="tabpanel"
+                        aria-labelledby="image-tab"
+                        tabindex="0"
+                     >
+                        <div class="row">
+                           <div class="col-md-6 mb-3">
+                              <h5 class="mb-4">Set rental period</h5>
+                           </div>
+                           <div class="priod-input">
+                              <div
+                                 class="priod-item"
+                                 v-for="period in model.rental_periods"
+                                 :key="period.id"
+                              >
+                                 <div class="from">
+                                    <label for="from">From</label>
+                                    <input
+                                       :id="`from-input-${period.id}`"
+                                       name="from"
+                                       type="datetime-local"
+                                       class="datetime-input fw-bold p-4 text-black"
+                                       v-model="period.from"
+                                    />
+                                 </div>
+                                 <div class="to">
+                                    <label for="to">To</label>
+                                    <input
+                                       :id="`to-input-${period.id}`"
+                                       name="to"
+                                       type="datetime-local"
+                                       class="datetime-input fw-bold p-4 text-black"
+                                       v-model="period.to"
+                                    />
+                                 </div>
+                                 <a class="remove-period" @click.prevent="removePeriod(period.id)"
+                                    ><i class="fa-regular fa-circle-xmark"></i
+                                 ></a>
+                              </div>
+                              <div class="add-period">
+                                 <div class="add-period-wrapper">
+                                    <a @click.prevent="addPeriod"
+                                       ><i class="fa-solid fa-plus"></i
+                                    ></a>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div
+                        class="tab-pane fade mt-3"
                         id="feature-tab-pane"
                         role="tabpanel"
                         aria-labelledby="image-tab"
@@ -360,7 +426,9 @@
 
 <script setup>
 import ckeditorComponent from "@/components/Editor/index.vue";
-import { ref, onBeforeMount, computed, watch } from "vue";
+import { ref, computed, watch, onUpdated } from "vue";
+import flatpickr from "flatpickr";
+import "flatpickr/dist/themes/material_green.css";
 import { useStore } from "vuex";
 import ToastMessage from "@/components/Toast/index.vue";
 import { useRouter } from "vue-router";
@@ -376,6 +444,19 @@ const errors = ref({});
 const isLoading = ref(false);
 const isRemoveImageLoading = ref(false);
 const router = useRouter();
+const carId = router.currentRoute.value.params.id;
+const imagesUrl = ref([]);
+
+const config = {
+   enableTime: true,
+   dateFormat: "Y-m-d H:i",
+   altInput: true,
+   altFormat: "d/m/Y     H:i",
+   allowInput: true,
+   defaultDate: new Date(),
+   defaultHour: new Date().getHours(),
+};
+
 const model = ref({
    brand_id: "",
    car_name: "",
@@ -393,30 +474,84 @@ const model = ref({
    number_of_trip: "",
    featuresId: [],
    car_images: [],
+   rental_periods: [],
 });
-const carId = router.currentRoute.value.params.id;
-const imagesUrl = ref([]);
 
-const formLoadingSuccess = ref(false);
-watch(model.value, () => {
-   formLoadingSuccess.value = true;
+/**
+ * TODO: Add datetime picker to input
+ */
+const fromInput = ref(null);
+const toInput = ref(null);
+
+//onUpdated được chạy sau khi DOM được cập nhật lại, chạy sau khi v-for  của rental_periods được render
+onUpdated(() => {
+   for (const period of model.value.rental_periods) {
+      fromInput.value = document.querySelector(`#from-input-${period.id}`);
+      toInput.value = document.querySelector(`#to-input-${period.id}`);
+
+      flatpickr(fromInput.value, {
+         ...config,
+         defaultDate: period.from,
+      });
+      flatpickr(toInput.value, {
+         ...config,
+         defaultDate: period.to,
+      });
+   }
 });
+
+/**
+ * TODO: Add new rental period
+ */
+const addPeriod = () => {
+   const newPeriod = {
+      id: model.value.rental_periods.length,
+      from: flatpickr.formatDate(new Date(), "Y-m-d H:i"),
+      to: flatpickr.formatDate(new Date(), "Y-m-d H:i"),
+   };
+   model.value.rental_periods.push(newPeriod);
+};
+
+/**
+ * TODO: Remove rental period
+ */
+const removePeriod = (id) => {
+   const idRemove = model.value.rental_periods.findIndex((period) => period.id === id);
+   model.value.rental_periods.splice(idRemove, 1);
+};
+
+// watch(model.value, () => {
+//    console.log(model.value);
+// });
 
 const getCarById = async () => {
    return await axios
       .get(`v2/admin/cars/${carId}/edit`)
-      .then((response) => {
+      .then(({ data }) => {
          for (const key in model.value) {
             if (model.value.hasOwnProperty(key)) {
                if (Array.isArray(model.value[key])) {
                   if (key === "featuresId") {
-                     const features = response.data.car.features;
+                     const features = data.car.features;
                      const getFeaturesIdList = features.map((feature) => feature.id);
                      for (const id of getFeaturesIdList) {
                         model.value[key].push(id);
                      }
-                  } else {
-                     const carImages = response.data.car.car_images;
+                  }
+
+                  if (key === "rental_periods") {
+                     const rentalPeriods = data.car.car_rental_periods;
+                     for (const period of rentalPeriods) {
+                        model.value[key].push({
+                           id: period.id,
+                           from: period.start_datetime,
+                           to: period.end_datetime,
+                        });
+                     }
+                  }
+
+                  if (key === "car_images") {
+                     const carImages = data.car.car_images;
                      const getImagePath = carImages.map((image) => image.image);
                      for (const item of getImagePath) {
                         model.value[key].push(item);
@@ -424,7 +559,7 @@ const getCarById = async () => {
                      }
                   }
                } else {
-                  model.value[key] = response.data.car[key];
+                  model.value[key] = data.car[key];
                }
             }
          }
@@ -435,18 +570,21 @@ const getCarById = async () => {
          }
       });
 };
+getCarById();
 
-onBeforeMount(() => {
-   getCarById();
+const formLoadingSuccess = ref(false);
+watch(model.value, () => {
+   formLoadingSuccess.value = true;
 });
 
-onBeforeMount(() => {
-   store.dispatch("cars/fetchBrands").then(() => {
-      brandsList.value = store.getters["cars/getBrandsList"];
-   });
-   store.dispatch("cars/fetchFeatures").then(() => {
-      featuresList.value = store.getters["cars/getFeaturesList"];
-   });
+/**
+ * TODO: fetch brands and features
+ */
+store.dispatch("cars/fetchBrands").then(() => {
+   brandsList.value = store.getters["cars/getBrandsList"];
+});
+store.dispatch("cars/fetchFeatures").then(() => {
+   featuresList.value = store.getters["cars/getFeaturesList"];
 });
 
 /**
@@ -564,7 +702,16 @@ watch(model.value, () => {
 const updateCar = async () => {
    isLoading.value = true;
    const formData = new FormData();
+
+   model.value.rental_periods.forEach((period, index) => {
+      formData.append(`rental_periods[${index}][id]`, period.id);
+      formData.append(`rental_periods[${index}][from]`, period.from);
+      formData.append(`rental_periods[${index}][to]`, period.to);
+   });
+
    for (const key in model.value) {
+      if (key === "rental_periods") continue;
+
       if (model.value.hasOwnProperty(key)) {
          const value = model.value[key];
          if (Array.isArray(value)) {
@@ -579,9 +726,7 @@ const updateCar = async () => {
 
    imagesUrl.value = [];
    await axios
-      .post(`v2/admin/cars/${carId}/update`, formData, {
-         "Content-Type": "multipart/form-data",
-      })
+      .post(`v2/admin/cars/${carId}/update`, formData)
       .then((response) => {
          if (Array.isArray(response.data.carImages)) {
             for (const item of response.data.carImages) {
@@ -595,11 +740,64 @@ const updateCar = async () => {
       .catch((e) => {
          isLoading.value = false;
          if (e.response) {
-            console.log(e.response.data.errors);
+            console.log(e.response.data);
             errors.value = e.response.data.errors;
          }
       });
 };
 </script>
 
-<style></style>
+<style lang="scss" scope>
+.priod-input {
+   margin-bottom: 30px;
+}
+.priod-item {
+   width: 50%;
+   display: flex;
+   align-items: center;
+   gap: 50px;
+   border-bottom: 1px solid #ddd;
+   margin-bottom: 40px;
+   padding-bottom: 40px;
+
+   .from,
+   .to {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+   }
+
+   .remove-period {
+      font-size: 25px;
+      color: #e74a3b;
+      cursor: pointer;
+   }
+}
+
+.add-period {
+   margin-top: 20px;
+   display: flex;
+   justify-content: center;
+   .add-period-wrapper {
+      width: 50%;
+
+      a {
+         border: 2px solid #1cc88a;
+         color: #1cc88a;
+         cursor: pointer;
+         font-size: 25px;
+         width: 42px;
+         height: 42px;
+         border-radius: 50%;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         text-decoration: none;
+
+         &:hover {
+            color: #1cc88a;
+         }
+      }
+   }
+}
+</style>

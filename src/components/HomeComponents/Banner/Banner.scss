@@ -176,4 +176,10 @@
    margin: 0 20px;
    margin-right: 0;
    padding: 0 20px;
+
+   &:hover {
+      box-shadow: 0 8px 24px 12px rgba(0, 0, 0, 0.08);
+      color: white;
+      transition: all 0.2s ease-in-out;
+   }
 }

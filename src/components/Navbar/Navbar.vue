@@ -77,16 +77,19 @@
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+
 const store = useStore();
 const isAuthenticated = computed(() => store.getters["auth/isAuthenticated"]);
 const navbar = ref(null);
 const user = computed(() => store.getters["users/getUserById"]);
+const router = useRouter();
 
 onMounted(() => {
    navbar.value = document.querySelector(".navbar");
    window.addEventListener("scroll", () => {
-      if (window.scrollY >= 180) {
+      if (window.scrollY >= 50) {
          navbar.value.classList.add("navbar-scroll-down");
       } else {
          navbar.value.classList.remove("navbar-scroll-down");

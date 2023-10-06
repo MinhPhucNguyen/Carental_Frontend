@@ -466,4 +466,8 @@ const selectAllUsers = () => {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.checked-announce {
+   padding: 0 1.5rem;
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-   <div class="finding-wrapper">
+   <div class="finding-filter-wrapper">
       <div class="finding-section">
          <div class="m-container">
             <div class="finding-container">
@@ -341,14 +341,57 @@
    <div>
       <div class="list-car-section">
          <div class="m-container">
-            <div class="list-car">ádsad</div>
+            <div class="car-list">
+               <CarItem
+                  v-for="carItem in randomCars"
+                  :key="carItem.carId"
+                  :carItemProps="carItem"
+                  :imagePath="getImagePath(carItem.carImages)"
+               />
+            </div>
          </div>
       </div>
    </div>
 </template>
 
-<script setup></script>
+<script setup>
+import axios from "axios";
+import { onMounted, ref } from "vue";
+import CarItem from "@/components/HomeComponents/CarItemCard/CarItem.vue";
+const randomCars = ref([]);
 
-<style lang="scss" scoped>
+const getRandomCars = async () => {
+   try {
+      const response = await axios.get("v2/cars");
+      if (response.status === 200) {
+         randomCars.value = response.data.data.cars;
+      }
+   } catch (error) {
+      errorMessage.value = error;
+   }
+};
+getRandomCars();
+
+const getImagePath = (carImages) => {
+   if (carImages.length > 0) {
+      return carImages[0].imagePath;
+   }
+   return null;
+};
+
+const findingFilterBar = ref(null);
+onMounted(() => {
+   findingFilterBar.value = document.querySelector(".finding-filter-wrapper");
+   window.addEventListener("scroll", () => {
+      if (window.scrollY >= 50) {
+         findingFilterBar.value.classList.add("scroll-finding-down");
+      } else {
+         findingFilterBar.value.classList.remove("scroll-finding-down");
+      }
+   });
+});
+</script>
+
+<style scoped>
 @import url("./FindCar.scss");
 </style>
