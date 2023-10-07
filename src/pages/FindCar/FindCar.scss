@@ -16,6 +16,12 @@
    top: 0;
 }
 
+.scroll-finding-down {
+   transition: all 0.3s ease-in-out;
+   background-color: white;
+   top: 0;
+}
+
 .finding-container {
    width: 100%;
    padding: 20px 0;
@@ -63,12 +69,13 @@
    font-size: 16px;
    font-weight: 400;
 
-   .address-form,
+   .location-form,
    .time-form {
       display: flex;
       align-items: center;
       gap: 10px;
       grid-gap: 10px;
+      cursor: pointer;
 
       & > i {
          font-size: 20px;
@@ -146,10 +153,10 @@
 }
 
 .list-car-section {
-   padding-top: 145px;
+   padding-top: 150px;
    background: #f6f6f6;
-   margin-bottom: 50px;
-   height: 1000vh;
+   padding-bottom: 50px;
+   min-height: 100vh;
 }
 
 .swiper-slide.active {
@@ -160,11 +167,27 @@
 .car-list {
    display: flex;
    flex-wrap: wrap;
-   justify-content: space-around;
 }
 
 .car-list .car-item {
    width: 25%;
    margin-bottom: 20px;
    padding: 0 10px;
+}
+
+.non-car {
+   display: flex;
+   justify-content: center;
+   flex-direction: column;
+   align-items: center;
+   font-weight: 500;
+   color: #8f8e8e;
+}
+
+.loading {
+   color: #1cc88a;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   height: 100vh;
 }

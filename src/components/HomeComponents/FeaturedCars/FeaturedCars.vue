@@ -46,7 +46,7 @@ const getImagePath = (carImages) => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 @import "../../../assets/styles/MainStyles/HomeStyles.scss";
 @import "./FeaturedCars.scss";
 </style>
