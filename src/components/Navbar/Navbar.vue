@@ -89,7 +89,7 @@ const router = useRouter();
 onMounted(() => {
    navbar.value = document.querySelector(".navbar");
    window.addEventListener("scroll", () => {
-      if (window.scrollY >= 50) {
+      if (window.scrollY >= 90) {
          navbar.value.classList.add("navbar-scroll-down");
       } else {
          navbar.value.classList.remove("navbar-scroll-down");
