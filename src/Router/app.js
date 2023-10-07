@@ -31,7 +31,7 @@ const app = [
             name: "blogDetail",
          },
          {
-            path: "find",
+            path: "find/filter",
             component: () => import("../pages/FindCar/index.vue"),
             name: "findCar",
             meta: {

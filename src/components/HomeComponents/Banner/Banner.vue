@@ -39,7 +39,7 @@
                            type="text"
                            class="address-input"
                            placeholder="Nhập địa điểm"
-                           v-model="address"
+                           v-model="location"
                         />
                      </div>
                   </div>
@@ -83,7 +83,18 @@
                         </div>
                      </div>
                   </div>
-                  <router-link :to="{ name: 'findCar' }" class="find-car-btn">Tìm xe</router-link>
+                  <router-link
+                     :to="{
+                        name: 'findCar',
+                        query: {
+                           startDate: startDate,
+                           endDate: endDate,
+                           location: location,
+                        },
+                     }"
+                     class="find-car-btn"
+                     >Tìm xe</router-link
+                  >
                </form>
             </div>
          </div>
@@ -97,10 +108,10 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/themes/material_green.css";
 
 const selectedOption = ref("self-drive");
-const address = ref("Hà Nội");
 
-const startDate = ref("");
-const endDate = ref("");
+const startDate = ref(flatpickr.formatDate(new Date(), "d/m/Y H:i"));
+const endDate = ref(flatpickr.formatDate(new Date(), "d/m/Y H:i"));
+const location = ref("Hà Nội");
 
 /**
  * TODO: Add datetime picker to input
@@ -108,16 +119,28 @@ const endDate = ref("");
 onMounted(() => {
    const config = {
       enableTime: true,
-      dateFormat: "d/m/Y    H:i",
+      dateFormat: "d/m/Y H:i",
       altInput: true,
-      altFormat: "d/m/Y    H:i",
+      altFormat: "d/m/Y H:i",
       allowInput: true,
       defaultDate: new Date(),
       defaultHour: new Date().getHours(),
    };
 
-   flatpickr(".flatpickr_start", config);
-   flatpickr(".flatpickr_end", config);
+   flatpickr(".flatpickr_start", {
+      ...config,
+      defaultDate: startDate.value,
+      onChange: (selectedDates) => {
+         startDate.value = selectedDates[0];
+      },
+   });
+   flatpickr(".flatpickr_end", {
+      ...config,
+      defaultDate: endDate.value,
+      onChange: (selectedDates) => {
+         endDate.value = selectedDates[0];
+      },
+   });
 });
 
 const openFlatPickr = (open) => {

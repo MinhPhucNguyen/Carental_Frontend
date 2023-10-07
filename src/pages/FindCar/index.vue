@@ -3,17 +3,30 @@
       <div class="finding-section">
          <div class="m-container">
             <div class="finding-container">
-               <router-link :to="{ name: 'home' }" class="back-btn">
+               <router-link :to="{ name: 'home' }" class="back-btn" v-if="isScrollDown">
                   <i class="fa-solid fa-chevron-left"></i>
                </router-link>
                <div class="finding-info">
                   <div class="address-form">
                      <i class="fa-solid fa-location-dot"></i>
-                     <span>Hồ Chí Minh</span>
+                     <span>{{ periodSearch.location }}</span>
                   </div>
                   <div class="time-form">
                      <i class="fa-regular fa-calendar"></i>
-                     <span> 21:00, 03/10/2023 - 20:00, 04/10/2023</span>
+                     <!-- <span> 21:00, 03/10/2023 - 20:00, 04/10/2023</span> -->
+                     <div class="time-form-container" v-if="periodSearch">
+                        <input
+                           type="datetime-local"
+                           class="datetime-input from-input"
+                           v-model="periodSearch.startDate"
+                        />
+                        <div><i class="fa-solid fa-minus text-dark"></i></div>
+                        <input
+                           type="datetime-local"
+                           class="datetime-input to-input"
+                           v-model="periodSearch.endDate"
+                        />
+                     </div>
                   </div>
                </div>
             </div>
@@ -342,12 +355,12 @@
       <div class="list-car-section">
          <div class="m-container">
             <div class="car-list">
-               <CarItem
+               <!-- <CarItem
                   v-for="carItem in randomCars"
                   :key="carItem.carId"
                   :carItemProps="carItem"
                   :imagePath="getImagePath(carItem.carImages)"
-               />
+               /> -->
             </div>
          </div>
       </div>
@@ -356,40 +369,81 @@
 
 <script setup>
 import axios from "axios";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import CarItem from "@/components/HomeComponents/CarItemCard/CarItem.vue";
+import { useRouter } from "vue-router";
+import flatpickr from "flatpickr";
+import "flatpickr/dist/themes/material_green.css";
+
+const errorMessage = ref({});
+const router = useRouter();
 const randomCars = ref([]);
 
-const getRandomCars = async () => {
-   try {
-      const response = await axios.get("v2/cars");
-      if (response.status === 200) {
-         randomCars.value = response.data.data.cars;
-      }
-   } catch (error) {
-      errorMessage.value = error;
-   }
-};
-getRandomCars();
+const periodSearch = ref({
+   ...router.currentRoute.value.query,
+});
 
-const getImagePath = (carImages) => {
-   if (carImages.length > 0) {
-      return carImages[0].imagePath;
-   }
-   return null;
-};
+watch(periodSearch.value, () => {
+   console.log(periodSearch.value);
+});
 
+const isScrollDown = ref(false);
 const findingFilterBar = ref(null);
 onMounted(() => {
    findingFilterBar.value = document.querySelector(".finding-filter-wrapper");
    window.addEventListener("scroll", () => {
       if (window.scrollY >= 50) {
+         isScrollDown.value = true;
          findingFilterBar.value.classList.add("scroll-finding-down");
       } else {
+         isScrollDown.value = false;
          findingFilterBar.value.classList.remove("scroll-finding-down");
       }
    });
 });
+
+const config = {
+   enableTime: true,
+   dateFormat: "d/m/Y H:i",
+   altInput: true,
+   altFormat: "H:i, d/m/Y",
+   allowInput: true,
+   defaultHour: new Date().getHours(),
+};
+
+const fromInput = ref(null);
+const toInput = ref(null);
+
+onMounted(() => {
+   fromInput.value = document.querySelector(".from-input");
+   toInput.value = document.querySelector(".to-input");
+
+   flatpickr(fromInput.value, {
+      ...config,
+      defaultDate: periodSearch.value.startDate,
+      onChange: (selectedDates) => {
+         periodSearch.value.startDate = selectedDates[0];
+      },
+   });
+   flatpickr(toInput.value, {
+      ...config,
+      defaultDate: periodSearch.value.endDate,
+      onChange: (selectedDates) => {
+         periodSearch.value.endDate = selectedDates[0];
+      },
+   });
+});
+
+const searchResults = async () => {
+   try {
+      console.log({ ...periodSearch.value });
+      const response = await axios.get("v2/search-car", { ...periodSearch.value });
+      console.log(response.data);
+   } catch (error) {
+      errorMessage.value = error;
+   }
+};
+searchResults();
 </script>
 
 <style scoped>

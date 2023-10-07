@@ -1,5 +1,6 @@
 .navbar {
    position: fixed;
+   top: 0;
    width: 100%;
    height: 90px;
    padding: 8px 0;
@@ -21,6 +22,8 @@
 }
 
 .navbar-scroll-down {
+   position: fixed;
+
    box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
    top: 0;
    transition: all 0.3s ease-in-out;
@@ -29,7 +32,8 @@
 }
 
 .navbar-scroll-top {
-   top: 0;
+   position: fixed;
+   top: 90px;
    transition: all 0.3s ease-in-out;
    background-color: white;
 }

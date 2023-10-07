@@ -40,7 +40,6 @@
    align-items: center;
    font-size: 16px;
    text-decoration: none;
-   visibility: hidden;
 }
 
 .filter-container {
@@ -74,6 +73,33 @@
       & > i {
          font-size: 20px;
          color: #8f8e8e;
+      }
+   }
+
+   .time-form-container {
+      display: flex;
+      gap: 5px;
+      grid-gap: 5px;
+      align-items: center;
+
+      .datetime-input {
+         border: 0;
+         padding: 0;
+         color: black;
+
+         &:active {
+            border: 0;
+            outline: 0;
+         }
+      }
+
+      .from-input {
+         text-align: right;
+         width: 150px;
+      }
+
+      .to-input {
+         width: 150px;
       }
    }
 }
