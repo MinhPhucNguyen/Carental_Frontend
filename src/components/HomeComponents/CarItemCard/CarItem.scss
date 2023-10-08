@@ -1,5 +1,6 @@
 .car-item {
    text-decoration: none;
+   width: calc(100% / 4);
 }
 
 .car-item:hover {
@@ -94,14 +95,7 @@
 
 .car-item .card {
    height: 410px;
+   width: 100%;
 }
 
-.car-list .car-item:first-child,
-.car-list .car-item:nth-child(5) {
-   padding-left: 0;
-}
 
-.car-list .car-item:nth-child(4),
-.car-list .car-item:last-child {
-   padding-right: 0;
-}
