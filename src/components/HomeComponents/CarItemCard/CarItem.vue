@@ -12,6 +12,14 @@
       v-if="props.carItemProps.status === 1"
    >
       <div class="card">
+         <div
+            class="mini-fav-btn"
+            :class="{ active: isFavorite }"
+            :id="props.carItemProps.carId"
+            @click.prevent="addCarToFavorite"
+         >
+            <i class="fa-regular fa-heart"></i>
+         </div>
          <img :src="imagePath" class="card-img-top" alt="car_image" />
          <div class="card-body">
             <div class="d-flex align-items-center">
@@ -53,6 +61,8 @@
 
 <script setup>
 import { formatCurrency } from "@/utils/formatCurrency.js";
+import { useStore } from "vuex";
+import { ref, watch } from "vue";
 
 const props = defineProps({
    carItemProps: {
@@ -63,6 +73,50 @@ const props = defineProps({
       type: String,
       required: true,
    },
+});
+
+const isFavorite = ref(false);
+const store = useStore();
+/**
+ * TODO: Add car to favorite
+ */
+const addCarToFavorite = (event) => {
+   const target = event.currentTarget;
+   const carId = target.getAttribute("id");
+
+   if (carId != props.carItemProps.carId) return;
+
+   isFavorite.value = !isFavorite.value;
+   target.classList.toggle("active");
+   if (target.classList.contains("active")) {
+      store
+         .dispatch("favorite/addCar", { id: props.carItemProps.carId })
+         .then((response) => {
+            console.log(response);
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+   } else {
+      store
+         .dispatch("favorite/removeCar", { id: props.carItemProps.carId })
+         .then((response) => {
+            console.log(response);
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+   }
+};
+
+store.getters["favorite/getFavoriteCars"].some((car) => {
+   if (car.carId === props.carItemProps.carId) {
+      isFavorite.value = true;
+      return true;
+   } else {
+      isFavorite.value = false;
+      return false;
+   }
 });
 </script>
 

@@ -20,7 +20,7 @@
                   style="font-size: 60px"
                >
                   <i class="fa-solid fa-users"></i>
-                  <h5 class="mt-3 fw-bold">Users: {{ usersListCount }}</h5>
+                  <h5 class="mt-3 fw-bold">Users: </h5>
                </div>
             </router-link>
          </div>
@@ -35,7 +35,36 @@
                   style="font-size: 60px"
                >
                   <i class="fa-solid fa-car"></i>
-                  <h5 class="mt-3 fw-bold">Cars: {{ carsListCount }}</h5>
+                  <h5 class="mt-3 fw-bold">Cars: </h5>
+               </div>
+            </router-link>
+         </div>
+
+          <div class="mr-3 bg-success bg-gradient rounded-4" style="height: 180px; width: 378px">
+            <router-link
+               :to="{ name: 'admin.brands' }"
+               class="dashboard-card h-100 d-block text-decoration-none"
+            >
+               <div
+                  class="h-100 w-100 d-flex justify-content-center align-items-center text-white flex-column"
+                  style="font-size: 60px"
+               >
+                  <i class="fa-solid fa-car"></i>
+                  <h5 class="mt-3 fw-bold">Brands: </h5>
+               </div>
+            </router-link>
+         </div>
+          <div class="mr-3 bg-success bg-gradient rounded-4" style="height: 180px; width: 378px">
+            <router-link
+               :to="{ name: 'admin.blogs' }"
+               class="dashboard-card h-100 d-block text-decoration-none"
+            >
+               <div
+                  class="h-100 w-100 d-flex justify-content-center align-items-center text-white flex-column"
+                  style="font-size: 60px"
+               >
+                <i class="fa-brands fa-blogger-b"></i>
+                  <h5 class="mt-3 fw-bold">Blogs: </h5>
                </div>
             </router-link>
          </div>
@@ -47,11 +76,6 @@
 import { ref } from "vue";
 import { useStore } from "vuex";
 const store = useStore();
-const usersListCount = ref(store.state["users"].totalUser);
-const carsListCount = ref(0);
-
-store.dispatch("users/fetchUsers");
-store.dispatch("cars/fetchCars");
 </script>
 
 <style></style>

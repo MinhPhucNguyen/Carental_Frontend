@@ -1,24 +1,14 @@
 <template>
-   <div
-      class="car_detail_container"
-      v-if="Object.values(carDetail).length !== 0 && carDetail.constructor === Object"
-   >
+   <div class="car_detail_container" v-if="Object.values(carDetail).length !== 0 && carDetail.constructor === Object">
       <div class="car_image">
          <div class="car_image_container">
             <div class="main_image">
                <div class="cover_car_image">
-                  <img
-                     :src="carDetail.carImages[0].imagePath"
-                     alt="${response.data.carCustomName}"
-                  />
+                  <img :src="carDetail.carImages[0].imagePath" alt="${response.data.carCustomName}" />
                </div>
             </div>
             <div class="sub_image">
-               <div
-                  class="cover_car_image"
-                  v-for="subImage in newCarImageArr"
-                  :key="subImage.imageId"
-               >
+               <div class="cover_car_image" v-for="subImage in newCarImageArr" :key="subImage.imageId">
                   <img :src="subImage.imagePath" alt="sub_car_image" />
                </div>
             </div>
@@ -33,12 +23,8 @@
                      <div class="wrap-ic">
                         <i class="fa-solid fa-share-nodes"></i>
                      </div>
-                     <div
-                        class="wrap-ic fav-btn"
-                        :class="{ active: isFavorite }"
-                        @click="addCarToFavorite"
-                     >
-                        <i class="fa-solid fa-heart"></i>
+                     <div class="wrap-ic fav-btn" :class="{ active: isFavorite }" @click="addCarToFavorite">
+                        <i class="fa-regular fa-heart"></i>
                      </div>
                   </div>
                </div>
@@ -52,9 +38,7 @@
                   <span class="tag-transmission">{{
                      carDetail.transmission == "0" ? "Số tự động" : "Số sàn"
                   }}</span>
-                  <span class="tag-delivery" v-if="carDetail.delivery_enable === 1"
-                     >Giao xe tận nơi</span
-                  >
+                  <span class="tag-delivery" v-if="carDetail.delivery_enable === 1">Giao xe tận nơi</span>
                </div>
             </div>
          </div>
@@ -69,22 +53,14 @@
                   <div class="form-item">
                      <label for="" @click="checkLog">Nhận xe</label>
                      <div class="form-choose">
-                        <input
-                           type="date"
-                           class="calendar-input fw-bold border-0"
-                           ref="startDateTime"
-                        />
+                        <input type="date" class="calendar-input fw-bold border-0" ref="startDateTime" />
                      </div>
                   </div>
                   <div class="line"></div>
                   <div class="form-item">
                      <label for="" ref="traXe">Trả xe</label>
                      <div class="form-choose">
-                        <input
-                           type="date"
-                           class="calendar-input fw-bold border-0"
-                           ref="endDateTime"
-                        />
+                        <input type="date" class="calendar-input fw-bold border-0" ref="endDateTime" />
                      </div>
                   </div>
                </div>
@@ -140,7 +116,7 @@
                      <div class="ic"></div>
                      <div class="title">
                         <div class="sub">Số ghế</div>
-                        <div class="main" id="seat">{{ carDetail.seat + " chỗ" }}</div>
+                        <div class="main" id="seats">{{ carDetail.seats + " chỗ" }}</div>
                      </div>
                   </div>
                   <div class="outstanding-features-item">
@@ -173,11 +149,7 @@
             <div class="line-page"></div>
             <div class="infor-car-desc">
                <h6>Mô tả</h6>
-               <div
-                  class="desc"
-                  :class="{ 'hide gradient': isDescriptionHidden }"
-                  v-html="carDescHTML"
-               ></div>
+               <div class="desc" :class="{ 'hide gradient': isDescriptionHidden }" v-html="carDescHTML"></div>
                <div class="read-more fw-bold d-flex align-items-center" @click="toggleDescription">
                   {{ isDescriptionHidden ? "Đọc thêm..." : "Thu gọn" }}
                   <i v-if="!isDescriptionHidden" class="fa-solid fa-angle-up"></i>
@@ -188,11 +160,7 @@
                <h6>Các tiện nghi khác</h6>
                <div class="feature w-75">
                   <div v-if="carDetail.features.length > 0">
-                     <div
-                        class="feature-item"
-                        v-for="feature in carDetail.features"
-                        :key="feature.featureId"
-                     >
+                     <div class="feature-item" v-for="feature in carDetail.features" :key="feature.featureId">
                         {{ feature.featureName }}
                      </div>
                   </div>
@@ -215,8 +183,7 @@
                         ◦ Khi trả xe, nếu xe bẩn hoặc có mùi trong xe, khách hàng vui lòng vệ sinh xe sạch sẽ hoặc gửi phụ
                         thu phí vệ sinh xe.
                         Trân trọng cảm ơn, chúc quý khách hàng có những chuyến đi tuyệt vời !
-                    </pre
-               >
+                    </pre>
             </div>
             <div class="infor-car-desc">
                <h6>Chính sách hủy chuyến</h6>
@@ -281,7 +248,6 @@
 import { ref, computed, onUpdated } from "vue";
 import axios from "axios";
 import { useRoute } from "vue-router";
-// import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import flatpickr from "flatpickr";
 import { useStore } from "vuex";
