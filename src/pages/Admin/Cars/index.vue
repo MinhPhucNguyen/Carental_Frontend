@@ -6,15 +6,9 @@
          <div class="w-50">
             <div class="mb-3 align-items-center d-inline-block mr-4 w-25">
                <div class="d-flex align-items-center">
-                  <label for="filterByBrand" class="form-label mb-0 fw-bolder"
-                     >Filter by Brand:</label
-                  >
+                  <label for="filterByBrand" class="form-label mb-0 fw-bolder">Filter by Brand:</label>
                </div>
-               <select
-                  name="filterByBrand"
-                  class="form-select mt-2 filter-by"
-                  v-model="filterByBrand"
-               >
+               <select name="filterByBrand" class="form-select mt-2 filter-by" v-model="filterByBrand">
                   <option value="all">All</option>
                   <option v-for="brand in brandsList" :key="brand.brand_id" :value="brand.brand_id">
                      {{ brand.brand_name }}
@@ -24,15 +18,9 @@
 
             <div class="mb-3 align-items-center d-inline-block ml-2 w-25">
                <div class="d-flex align-items-center">
-                  <label for="filterByFuel" class="form-label mb-0 fw-bolder"
-                     >Filter by Fuel:</label
-                  >
+                  <label for="filterByFuel" class="form-label mb-0 fw-bolder">Filter by Fuel:</label>
                </div>
-               <select
-                  v-model="filterByFuel"
-                  name="filterByFuel"
-                  class="form-select mt-2 filter-by-fuel"
-               >
+               <select v-model="filterByFuel" name="filterByFuel" class="form-select mt-2 filter-by-fuel">
                   <option value="all">All fuels</option>
                   <option value="Petrol">Petrol</option>
                   <option value="Diesel">Diesel</option>
@@ -42,13 +30,8 @@
 
          <div class="w-25 mt-3 d-flex align-items-center">
             <i class="fa-solid fa-magnifying-glass fs-5 mr-2"></i>
-            <input
-               type="text"
-               name="search"
-               class="form-control small search-input border border-dark-subtletext-dark"
-               placeholder="Search for..."
-               v-model="searchInput"
-            />
+            <input type="text" name="search" class="form-control small search-input border border-dark-subtletext-dark"
+               placeholder="Search for..." v-model="searchInput" />
          </div>
       </div>
 
@@ -67,72 +50,48 @@
                      <th data-sort="car_id" @click.prevent="changeSort('car_id')">
                         ID
                         <span class="sort-id-icon float-end">
-                           <i
-                              class="fa-solid fa-arrow-down"
-                              :class="{
-                                 'text-success': sort_direction == 'desc' && sort_field == 'car_id',
-                              }"
-                           ></i>
-                           <i
-                              class="fa-solid fa-arrow-up"
-                              :class="{
-                                 'text-success': sort_direction == 'asc' && sort_field == 'car_id',
-                              }"
-                           ></i>
+                           <i class="fa-solid fa-arrow-down" :class="{
+                              'text-success': sort_direction == 'desc' && sort_field == 'car_id',
+                           }"></i>
+                           <i class="fa-solid fa-arrow-up" :class="{
+                              'text-success': sort_direction == 'asc' && sort_field == 'car_id',
+                           }"></i>
                         </span>
                      </th>
                      <th class="text-center">Brand</th>
                      <th class="text-center" @click.prevent="changeSort('car_name')">
                         Name
                         <span class="sort-id-icon float-end">
-                           <i
-                              class="fa-solid fa-arrow-down"
-                              :class="{
-                                 'text-success':
-                                    sort_direction == 'desc' && sort_field == 'car_name',
-                              }"
-                           ></i>
-                           <i
-                              class="fa-solid fa-arrow-up"
-                              :class="{
-                                 'text-success':
-                                    sort_direction == 'asc' && sort_field == 'car_name',
-                              }"
-                           ></i>
+                           <i class="fa-solid fa-arrow-down" :class="{
+                              'text-success':
+                                 sort_direction == 'desc' && sort_field == 'car_name',
+                           }"></i>
+                           <i class="fa-solid fa-arrow-up" :class="{
+                              'text-success':
+                                 sort_direction == 'asc' && sort_field == 'car_name',
+                           }"></i>
                         </span>
                      </th>
                      <th class="text-center" @click.prevent="changeSort('price')">
                         Price (per day)
                         <span class="sort-id-icon float-end">
-                           <i
-                              class="fa-solid fa-arrow-down"
-                              :class="{
-                                 'text-success': sort_direction == 'desc' && sort_field == 'price',
-                              }"
-                           ></i>
-                           <i
-                              class="fa-solid fa-arrow-up"
-                              :class="{
-                                 'text-success': sort_direction == 'asc' && sort_field == 'price',
-                              }"
-                           ></i>
+                           <i class="fa-solid fa-arrow-down" :class="{
+                              'text-success': sort_direction == 'desc' && sort_field == 'price',
+                           }"></i>
+                           <i class="fa-solid fa-arrow-up" :class="{
+                              'text-success': sort_direction == 'asc' && sort_field == 'price',
+                           }"></i>
                         </span>
                      </th>
                      <th class="text-center" @click.prevent="changeSort('seats')">
                         Seats
                         <span class="sort-id-icon float-end">
-                           <i
-                              class="fa-solid fa-arrow-down"
-                              :class="{
-                                 'text-success': sort_direction == 'desc' && sort_field == 'seats',
-                              }"
-                           ></i>
-                           <i
-                              class="fa-solid fa-arrow-up"
-                              :class="{
-                                 'text-success': sort_direction == 'asc' && sort_field == 'seats',
-                              }"
-                           ></i>
+                           <i class="fa-solid fa-arrow-down" :class="{
+                              'text-success': sort_direction == 'desc' && sort_field == 'seats',
+                           }"></i>
+                           <i class="fa-solid fa-arrow-up" :class="{
+                              'text-success': sort_direction == 'asc' && sort_field == 'seats',
+                           }"></i>
                         </span>
                      </th>
                      <th class="text-center">Fuel</th>
@@ -142,20 +101,14 @@
                      <th class="text-center" @click.prevent="changeSort('number_of_trip')">
                         Trip
                         <span class="sort-id-icon float-end">
-                           <i
-                              class="fa-solid fa-arrow-down"
-                              :class="{
-                                 'text-success':
-                                    sort_direction == 'desc' && sort_field == 'number_of_trip',
-                              }"
-                           ></i>
-                           <i
-                              class="fa-solid fa-arrow-up"
-                              :class="{
-                                 'text-success':
-                                    sort_direction == 'asc' && sort_field == 'number_of_trip',
-                              }"
-                           ></i>
+                           <i class="fa-solid fa-arrow-down" :class="{
+                              'text-success':
+                                 sort_direction == 'desc' && sort_field == 'number_of_trip',
+                           }"></i>
+                           <i class="fa-solid fa-arrow-up" :class="{
+                              'text-success':
+                                 sort_direction == 'asc' && sort_field == 'number_of_trip',
+                           }"></i>
                         </span>
                      </th>
                      <th class="text-center">Status</th>
@@ -171,7 +124,7 @@
                         <a href="" class="text-success text-decoration-none">{{ car.carName }}</a>
                      </td>
                      <td class="text-center">{{ car.price }}</td>
-                     <td class="text-center">{{ car.seat }}</td>
+                     <td class="text-center">{{ car.seats }}</td>
                      <td class="text-center">{{ car.fuel }}</td>
                      <td class="text-center">{{ car.fuelConsumption }}</td>
                      <td class="text-center">
@@ -179,37 +132,25 @@
                      </td>
                      <td class="text-center">{{ car.location }}</td>
                      <td class="text-center">{{ car.numberOfTrip }}</td>
-                     <td
-                        class="text-center"
-                        :class="car.status == 1 ? 'text-success' : 'text-danger'"
-                     >
+                     <td class="text-center" :class="car.status == 1 ? 'text-success' : 'text-danger'">
                         {{ car.status == "1" ? "Visibility" : "Unvisibility" }}
                      </td>
                      <td class="text-center">
                         <div class="dropdown">
-                           <button
-                              class="btn btn-success dropdown-toggle"
-                              type="button"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false"
-                           >
+                           <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                              aria-expanded="false">
                               Action
                            </button>
                            <ul class="dropdown-menu">
                               <li>
-                                 <router-link
-                                    :to="{ name: 'cars.edit', params: { id: car.carId } }"
-                                    class="dropdown-item mb-3 fs-6 text-primary bg-white"
-                                 >
+                                 <router-link :to="{ name: 'cars.edit', params: { id: car.carId } }"
+                                    class="dropdown-item mb-3 fs-6 text-primary bg-white">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                     <span class="ml-2">Edit</span>
                                  </router-link>
                               </li>
-                              <button
-                                 type="button"
-                                 class="dropdown-item fs-6 text-danger bg-white"
-                                 @click="deleteCar(car.carId)"
-                              >
+                              <button type="button" class="dropdown-item fs-6 text-danger bg-white"
+                                 @click="deleteCar(car.carId)">
                                  <i class="fa-solid fa-trash"></i>
                                  <span class="ml-2">Delete</span>
                               </button>
@@ -217,22 +158,15 @@
                         </div>
                      </td>
 
-                     <my-modal
-                        @clickTo="handleDeleteCar(car.carId)"
-                        :idModal="`deleteConfirmModal${car.carId}`"
-                        bgColor="danger"
-                     >
+                     <my-modal @clickTo="handleDeleteCar(car.carId)" :idModal="`deleteConfirmModal${car.carId}`"
+                        bgColor="danger">
                         <template v-slot:title>Delete car</template>
                         <h6 class="text-dark text-center fs-5 mt-4">
                            Are you sure, you want to delete this car?
                         </h6>
                         <template v-slot:buttonName>
-                           <div
-                              class="spinner-border"
-                              role="status"
-                              style="width: 24px; height: 24px; margin-right: 10px"
-                              v-if="isLoading"
-                           >
+                           <div class="spinner-border" role="status" style="width: 24px; height: 24px; margin-right: 10px"
+                              v-if="isLoading">
                               <span class="visually-hidden">Loading...</span>
                            </div>
                            Delete

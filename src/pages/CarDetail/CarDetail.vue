@@ -132,7 +132,7 @@
                      <div class="ic"></div>
                      <div class="title">
                         <div class="sub">Nhiên liệu</div>
-                        <div class="main" id="fuel">{{ carDetail.fuel }}</div>
+                        <div class="main" id="fuel">{{ fuelOfCar }}</div>
                      </div>
                   </div>
                   <div class="outstanding-features-item">
@@ -284,6 +284,16 @@ const newCarImageArr = computed(() => {
       return carDetail.value.carImages.slice(1, 4);
    } else {
       return [];
+   }
+});
+
+const fuelOfCar = computed(() => {
+   if (carDetail.value.fuel === "Petrol") {
+      return "Xăng";
+   } else if (carDetail.value.fuel === "Diesel") {
+      return "Dầu";
+   } else {
+      return "Điện";
    }
 });
 

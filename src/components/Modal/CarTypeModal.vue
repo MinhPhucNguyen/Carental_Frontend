@@ -64,7 +64,6 @@ const selectItem = (event) => {
     }
 }
 
-
 const selectCarType = () => {
     $('#carTypeModal').modal('hide');
 };
