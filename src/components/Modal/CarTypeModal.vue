@@ -18,7 +18,7 @@
 
 <script setup>
 import myModal from "@/components/Modal/Modal.vue";
-import { onMounted, ref, watch } from "vue";
+import { ref, toRef, watch } from "vue";
 
 const carTypesArr = [
     {
@@ -48,7 +48,6 @@ const carTypesArr = [
 ];
 
 const carTypesSelected = ref([]);
-const props = defineProps(['isFiltered'])
 const emits = defineEmits(['select-car-types']);
 
 const selectItem = (event) => {
@@ -63,6 +62,7 @@ const selectItem = (event) => {
         emits('select-car-types', carTypesSelected.value);
     }
 }
+
 
 const selectCarType = () => {
     $('#carTypeModal').modal('hide');

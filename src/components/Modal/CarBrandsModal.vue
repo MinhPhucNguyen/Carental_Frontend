@@ -9,7 +9,7 @@
             <div class="car-brands-item" v-for="brand in props.brandsList" :key="brand.brand_id">
                 <input type="radio" name="brand" :id="brand.brand_id" :value="brand.brand_id" v-model="checked">
                 <label :for="brand.brand_id">
-                    <img src="" alt="">
+                    <img :src="brand.logo" :alt="brand.brand_name" class="logo">
                     <p>{{ brand.brand_name }}</p>
                 </label>
             </div>
@@ -54,10 +54,20 @@ const selectCarsBrand = () => {
         height: 60px;
         display: flex;
         align-items: center;
+        margin-bottom: 20px;
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+        }
 
         label {
             display: flex;
-            margin-left: 20px;
+            align-items: center;
+            margin-left: 10px;
+            gap: 10px;
+            grid-gap: 10px;
         }
 
         p,

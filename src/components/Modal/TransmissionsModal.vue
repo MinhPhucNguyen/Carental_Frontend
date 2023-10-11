@@ -23,7 +23,7 @@
 import myModal from "@/components/Modal/Modal.vue";
 import { ref, watch } from "vue";
 
-const transmissionChecked = ref("");
+const transmissionChecked = ref("all");
 const selectTransmission = () => {
     $('#transmissionsModal').modal('hide')
 }
@@ -39,6 +39,10 @@ watch(transmissionChecked, (value) => {
 <style lang="scss" scoped>
 .transmissions-item {
     margin-top: 8px;
+
+    input {
+        cursor: pointer;
+    }
 
     label {
         color: black;

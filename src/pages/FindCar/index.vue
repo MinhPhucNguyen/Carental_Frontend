@@ -39,8 +39,7 @@
                      </i>
                   </div>
                   <div class="swiper-list-filter">
-                     <div class="swiper-slide" :class="{ active: isFiltered && carSearch.carTypes.length > 0 }"
-                        @click="typeCarModal">
+                     <div class="swiper-slide" :class="{ active: carSearch.carTypes.length > 0 }" @click="typeCarModal">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                            <path
                               d="M19.15 15.7199H19.6C20.51 15.7199 21.24 14.8599 21.24 13.8399V12.4499C21.24 11.7199 20.86 11.0399 20.27 10.7399L18.79 9.96995L17.47 7.59994C17.09 6.90994 16.42 6.49994 15.71 6.50994H10.12C9.47 6.50994 8.86 6.84995 8.47 7.42995L6.77 9.93994L3.96 10.7999C3.24 11.0199 2.75 11.7599 2.75 12.5999V13.8299C2.75 14.8499 3.48 15.7099 4.39 15.7099H4.63"
@@ -56,8 +55,7 @@
                         </svg>
                         <span>Loại xe</span>
                      </div>
-                     <div class="swiper-slide " :class="{ active: isFiltered && carSearch.brandChecked > 0 }"
-                        @click="carBrandsModal">
+                     <div class="swiper-slide " :class="{ active: carSearch.brandChecked > 0 }" @click="carBrandsModal">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                            <path
                               d="M21.25 11.9998C21.25 14.3198 20.39 16.4598 18.97 18.0698C17.55 19.6998 15.57 20.8298 13.33 21.1398C12.9 21.2098 12.46 21.2398 12 21.2398C11.54 21.2398 11.11 21.2098 10.67 21.1398C8.43 20.8298 6.45 19.6998 5.03 18.0698C3.61 16.4598 2.75 14.3198 2.75 11.9998C2.75 9.67977 3.61 7.53977 5.03 5.92977C6.45 4.29977 8.43 3.16977 10.67 2.85977C11.1 2.78977 11.54 2.75977 12 2.75977C12.46 2.75977 12.89 2.78977 13.33 2.85977C15.57 3.16977 17.55 4.29977 18.97 5.92977C20.39 7.53977 21.25 9.67977 21.25 11.9998Z"
@@ -70,8 +68,8 @@
                            <path d="M2.75 12H21.25" stroke="black" stroke-linecap="round" stroke-linejoin="round"></path>
                         </svg><span>Hãng xe</span>
                      </div>
-                     <div class="swiper-slide" :class="{ active: isFiltered && isDelivery }" @click="directDelivery">
-                        <input type=" checkbox" id="direct-delivery" v-model="isDelivery">
+                     <div class="swiper-slide" :class="{ active: carSearch.delivery }" @click="directDelivery">
+                        <input type=" checkbox" id="direct-delivery" v-model="carSearch.delivery">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                            <path
                               d="M6.50511 8.86499H4.80511C3.66511 8.86499 2.74512 9.78499 2.74512 10.925V18.115C2.74512 19.255 3.66511 20.175 4.80511 20.175H19.1951C20.3351 20.175 21.2551 19.255 21.2551 18.115V10.925"
@@ -99,7 +97,7 @@
                         </svg>
                         <span>Giao nhận xe tận nơi</span>
                      </div>
-                     <div class="swiper-slide" :class="{ active: isFiltered && Number.isInteger(carSearch.transmission) }"
+                     <div class="swiper-slide" :class="{ active: carSearch.transmission !== 'all' }"
                         @click="transmissionsModal">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                            <circle cx="18" cy="6" r="1.5" stroke="black"></circle>
@@ -114,7 +112,7 @@
                               stroke-linecap="round"></path>
                         </svg><span>Truyền động</span>
                      </div>
-                     <div class="swiper-slide" :class="{ active: isFiltered && isElectricCar }" @click="selectElectricCar">
+                     <div class="swiper-slide" :class="{ active: isElectricCar }" @click="selectElectricCar">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                            <path
                               d="M19.15 19.7199H19.6C20.51 19.7199 21.24 18.8599 21.24 17.8399V16.4499C21.24 15.7199 20.86 15.0399 20.27 14.7399L18.79 13.9699L17.47 11.5999C17.09 10.9099 16.42 10.4999 15.71 10.5099H10.12C9.47 10.5099 8.86 10.8499 8.47 11.4299L6.77 13.9399L3.96 14.7999C3.24 15.0199 2.75 15.7599 2.75 16.5999V17.8299C2.75 18.8499 3.48 19.7099 4.39 19.7099H4.63"
@@ -282,6 +280,7 @@ onMounted(() => {
  */
 const getSearchResults = async () => {
    isLoading.value = true;
+
    await axios
       .post(
          "v2/search-filter-car", { ...carSearch.value }
@@ -289,6 +288,7 @@ const getSearchResults = async () => {
       .then(({ data }) => {
          isLoading.value = false;
          searchResults.value = data.data.cars;
+
       })
       .catch((error) => {
          alert(error);
@@ -300,7 +300,7 @@ getSearchResults();
  * TODO: CALL getSearchResult() WHEN VALUE change 
  */
 watch(carSearch.value, () => {
-   getSearchResults();
+   getSearchResults()
 });
 
 
@@ -339,11 +339,6 @@ const typeCarModal = () => {
 
 const selectCarTypes = (data) => {
    carSearch.value.carTypes = data;
-   if (!data.length > 0) {
-      isFiltered.value = false;
-      return;
-   }
-   isFiltered.value = true;
 }
 
 /**
@@ -356,24 +351,14 @@ const carBrandsModal = () => {
 
 const selectCarBrands = (value) => {
    carSearch.value.brandChecked = value
-   if (value === 0) {
-      isFiltered.value = false;
-      return;
-   }
-   isFiltered.value = true;
+
 }
 
 /**
  * TODO: FILTER BY DIRECT DELIVERY
  */
-const isDelivery = ref(false);
 const directDelivery = () => {
-   isDelivery.value = !isDelivery.value;
-   carSearch.value.delivery = isDelivery.value;
-   if (isDelivery.value) {
-      isFiltered.value = true;
-      return;
-   }
+   carSearch.value.delivery = !carSearch.value.delivery
 }
 
 /**
@@ -385,33 +370,36 @@ const transmissionsModal = () => {
 
 const selectTransmission = (value) => {
    carSearch.value.transmission = value
-   if (value === 'all') {
-      isFiltered.value = false;
-      return;
-   }
-   isFiltered.value = true;
+
 }
 
 /**
  * TODO: FILTER BY ELECTRIC CAR
  */
 const isElectricCar = ref(false);
-const selectElectricCar = (event) => {
+const selectElectricCar = () => {
    isElectricCar.value = !isElectricCar.value;
-   if (isElectricCar.value) {
-      carSearch.value.fuel = "Electric"
-      isFiltered.value = true;
-      return;
+   if (!isElectricCar.value) {
+      carSearch.value.fuel = "";
+      return
    }
-   carSearch.value.fuel = "";
-   isFiltered.value = false;
+   carSearch.value.fuel = "Electric";
+
 }
 
 /**
  * TODO: RESET FILTER
  */
-const resetFilter = (event) => {
-   isFiltered.value = false
+const resetFilter = () => {
+   carSearch.value.location = router.currentRoute.value.query.location;
+   carSearch.value.startDate = carSearch.value.startDate;
+   carSearch.value.endDate = carSearch.value.startDate;
+   carSearch.value.fuel = "";
+   carSearch.value.carTypes = [];
+   carSearch.value.brandChecked = 0;
+   carSearch.value.delivery = false;
+   carSearch.value.transmission = "all";
+   isElectricCar.value = false;
 }
 </script>
 
