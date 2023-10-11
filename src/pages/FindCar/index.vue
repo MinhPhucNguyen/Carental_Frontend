@@ -3,6 +3,7 @@
    <CarTypeModal @select-car-types="selectCarTypes" />
    <CarBrandsModal @select-car-brands="selectCarBrands" :brandsList="brandsList" />
    <TransmissionsModal @select-transmission="selectTransmission" />
+   <AdvancedFilterModal :featuresList="featuresList" />
 
    <div class="finding-filter-wrapper">
       <div class="finding-section">
@@ -136,8 +137,8 @@
                      </div>
                   </div>
                </div>
-               <a class="btn text-black"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
+               <a class="btn text-black" @click.prevent="advancedFilterModal">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                      <path d="M12.7932 3.23242H14.1665" stroke="black" stroke-linecap="round" stroke-linejoin="round">
                      </path>
                      <path d="M1.83325 3.23242H10.0532" stroke="black" stroke-linecap="round" stroke-linejoin="round">
@@ -176,7 +177,8 @@
             </div>
             <div class="non-car" v-else>
                <img src="../../assets/images/car-not-found/car-not-found.svg" alt="car-not-found" />
-               <h2>Không tìm thấy xe nào</h2>
+               <h4 class="text-center">Không tìm thấy xe nào trong khoảng thời gian này </h4>
+               <h4 class="text-center">Bạn hãy chọn khoảng thời gian khác</h4>
             </div>
          </div>
       </div>
@@ -195,6 +197,7 @@ import ChangeLocationModal from "@/components/Modal/ChangeLocationModal.vue";
 import CarTypeModal from "@/components/Modal/CarTypeModal.vue";
 import CarBrandsModal from "@/components/Modal/CarBrandsModal.vue";
 import TransmissionsModal from "@/components/Modal/TransmissionsModal.vue";
+import AdvancedFilterModal from '@/components/Modal/AdvancedFilterModal.vue'
 import { useStore } from "vuex";
 
 const store = useStore();
@@ -217,6 +220,13 @@ onMounted(() => {
    store.dispatch('cars/fetchBrands').then(() => {
       brandsList.value = store.getters['cars/getBrandsList'];
    });
+})
+
+const featuresList = ref([]);
+onMounted(() => {
+   store.dispatch('cars/fetchFeatures').then(() => {
+      featuresList.value = store.getters['cars/getFeaturesList'];
+   })
 })
 
 
@@ -370,7 +380,6 @@ const transmissionsModal = () => {
 
 const selectTransmission = (value) => {
    carSearch.value.transmission = value
-
 }
 
 /**
@@ -385,6 +394,13 @@ const selectElectricCar = () => {
    }
    carSearch.value.fuel = "Electric";
 
+}
+
+/**
+ * TODO: ADVANCED FILTER
+ */
+const advancedFilterModal = () => {
+   $('#advancedFilterModal').modal('show');
 }
 
 /**

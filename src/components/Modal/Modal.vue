@@ -8,7 +8,9 @@
                <button type="button" class="btn-close border border-3 rounded-circle" data-bs-dismiss="modal"
                   aria-label="Close"></button>
             </div>
-            <div class="modal-body text-dark">
+            <div class="modal-body text-dark" :class="{
+               'modal-body-custome': isFilterPage
+            }">
                <h1 class="modal-title fs-3 text-black fw-bold w-100 text-center" id="exampleModalLabel">
                   <slot name="title"></slot>
                </h1>
@@ -80,5 +82,11 @@ export default {
 <style>
 .modal-custom {
    width: 650px;
+}
+
+.modal-body-custome {
+   max-height: 750px;
+   overflow-y: scroll;
+   scrollbar-width: thin;
 }
 </style>
