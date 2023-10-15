@@ -3,7 +3,7 @@
    <CarTypeModal @select-car-types="selectCarTypes" />
    <CarBrandsModal @select-car-brands="selectCarBrands" :brandsList="brandsList" />
    <TransmissionsModal @select-transmission="selectTransmission" />
-   <AdvancedFilterModal :featuresList="featuresList" />
+   <AdvancedFilterModal :featuresList="featuresList" @advanced-filter="advancedFilter" />
 
    <div class="finding-filter-wrapper">
       <div class="finding-section">
@@ -212,8 +212,12 @@ const carSearch = ref({
    brandChecked: 0,
    delivery: false,
    transmission: "all",
-   fuel: ""
+   fuel: "",
 });
+
+watch(carSearch.value, () => {
+   console.log(carSearch.value);
+})
 
 const brandsList = ref([]);
 onMounted(() => {
@@ -313,7 +317,6 @@ watch(carSearch.value, () => {
    getSearchResults()
 });
 
-
 /**
  * TODO: HANDLE WITH IMAGE PATH
  * @param {*} carImages 
@@ -393,7 +396,6 @@ const selectElectricCar = () => {
       return
    }
    carSearch.value.fuel = "Electric";
-
 }
 
 /**
@@ -401,6 +403,23 @@ const selectElectricCar = () => {
  */
 const advancedFilterModal = () => {
    $('#advancedFilterModal').modal('show');
+}
+
+const advancedFilter = (data) => {
+   for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+         const value = data[key];
+         if (key === 'fuel') {
+            carSearch.value.fuel = value;
+         }
+         else if (key === 'features') {
+            carSearch.value[key] = [...value]
+         }
+         else {
+            carSearch.value[value.name] = value;
+         }
+      }
+   }
 }
 
 /**

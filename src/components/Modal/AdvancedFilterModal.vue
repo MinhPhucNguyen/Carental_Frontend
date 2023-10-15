@@ -3,20 +3,21 @@
         <template v-slot:title> <span> Bộ lọc nâng cao </span></template>
         <div class="advanced-filter-wrap">
             <div class="advanced-filter-scroll">
+
                 <div class="advanced-filter-item" v-for="(item, index) in filters" :key="index">
                     <p class="title">{{ item.title }}</p>
                     <div class="slider">
                         <div class="progress"></div>
                     </div>
                     <div class="range-input" v-if="item.hasRange">
-                        <input type="range" class="range-min" :min="item.min" :max="item.max" :value="item.min"
-                            @input="updateProgress(index)">
-                        <input type="range" class="range-max" :min="item.min" :max="item.max" :value="item.max"
-                            @input="updateProgress(index)">
+                        <input type="range" class="range-min" :min="item.min" :max="item.max"
+                            v-model.number="model[index].min" @input="updateProgress(index, $event)">
+                        <input type="range" class="range-max" :min="item.min" :max="item.max"
+                            v-model.number="model[index].max" @input="updateProgress(index, $event)">
                     </div>
                     <div class="range-input" v-else>
-                        <input type="range" class="fuel-consumption-range" :min="item.min" :max="item.max" :value="item.min"
-                            @input="fuelConsumptionProgress(index)">
+                        <input type="range" class="fuel-consumption-range" :min="item.min" :max="item.max"
+                            v-model.number="model[index].fuelConsumption" @input="fuelConsumptionProgress(index, $event)">
                     </div>
                     <div class="range-value" v-if="item.hasRange">
                         <div class="range-value-item">
@@ -39,7 +40,7 @@
                     <p class="title">Tính năng </p>
                     <div class="features-list">
                         <div class="features-item" v-for="feature in props.featuresList" :key="feature.id">
-                            <input type="checkbox">
+                            <input type="checkbox" :value="feature.id" v-model="data.features">
                             <label for="name">{{ feature.name }}</label>
                         </div>
                     </div>
@@ -48,25 +49,25 @@
                     <p class="title">Nhiên liệu </p>
                     <div class="fuels-list">
                         <div class="fuels-item">
-                            <input type="radio" name="fuel">
+                            <input type="radio" name="fuel" value="" v-model="data.fuel">
                             <label for="fuel">
                                 Tất cả
                             </label>
                         </div>
                         <div class="fuels-item">
-                            <input type="radio" name="fuel">
+                            <input type="radio" name="fuel" value="Petrol" v-model="data.fuel">
                             <label for="fuel">
                                 Xăng
                             </label>
                         </div>
                         <div class="fuels-item">
-                            <input type="radio" name="fuel">
+                            <input type="radio" name="fuel" value="Diesel" v-model="data.fuel">
                             <label for="fuel">
                                 Dầu Diesel
                             </label>
                         </div>
                         <div class="fuels-item">
-                            <input type="radio" name="fuel">
+                            <input type="radio" name="fuel" value="Electric" v-model="data.fuel">
                             <label for="fuel">
                                 Điện
                             </label>
@@ -81,7 +82,7 @@
 
 <script setup>
 import {
-    ref, onMounted
+    ref, onMounted, watch
 } from 'vue';
 import myModal from '@/components/Modal/Modal.vue'
 
@@ -128,16 +129,49 @@ const filters = ref([
     }
 ])
 
+const model = ref([
+    {
+        name: 'priceRange',
+        min: 300000,
+        max: 900000,
+    },
+    {
+        name: 'seatRange',
+        min: 2,
+        max: 10,
+    },
+    {
+        name: 'yearRange',
+        min: 2005,
+        max: new Date().getFullYear(),
+    },
+    {
+        name: 'fuelConsumptionRange',
+        fuelConsumption: 0
+    },
+]);
+
+const data = ref({
+    ...model.value,
+    features: [],
+    fuel: ''
+})
+
+const emits = defineEmits(['advanced-filter'])
+onMounted(() => {
+    watch(data.value, (value) => {
+        emits('advanced-filter', value)
+    })
+})
+
 onMounted(() => {
     for (const index in filters.value) {
         updateProgress(index);
-        if (index == 3) {
-            fuelConsumptionProgress(index);
-        }
+        fuelConsumptionProgress(index);
     }
 })
 
-const updateProgress = (index) => {
+const updateProgress = (index, event) => {
     const filter = filters.value[index];
     const rangeInput = document.querySelectorAll('.range-input input');
     const rangeValue = document.querySelectorAll('.range-value input');
@@ -171,13 +205,18 @@ const updateProgress = (index) => {
 };
 
 
-const fuelConsumptionProgress = (index) => {
+const fuelConsumptionProgress = (index, event) => {
+    const filter = filters.value[index];
+
     const rangeInput = document.querySelector('.range-input .fuel-consumption-range');
     const progress = document.querySelectorAll('.slider .progress')[index];
     const rangeValue = document.querySelector('.fuel-consumption p');
 
+    if (filter.hasRange) return;
+
+    let gapValue = 5;
     let valueIsPulling = parseInt(rangeInput.value);
-    console.log(valueIsPulling);
+
     let percent = (valueIsPulling / rangeInput.max) * 100;
     progress.style.right = `${100 - percent}%`;
 
@@ -190,6 +229,7 @@ const fuelConsumptionProgress = (index) => {
 }
 
 </script>
+
 
 <style lang="scss" scoped>
 .advanced-filter-wrap {
@@ -219,7 +259,7 @@ const fuelConsumptionProgress = (index) => {
 
                 & .progress {
                     position: absolute;
-                    left: 0;
+                    left: 0%;
                     right: 25%;
                     height: 5px;
                     background-color: #1cc88a;
@@ -236,6 +276,8 @@ const fuelConsumptionProgress = (index) => {
                     width: 100%;
                     background: none;
                     -webkit-appearance: none;
+                    -moz-appearance: none;
+                    appearance: none;
                     pointer-events: none;
                 }
 
@@ -309,7 +351,7 @@ const fuelConsumptionProgress = (index) => {
     }
 }
 
-.features-list {
+.advanced-filter-item .features-list {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -337,7 +379,7 @@ const fuelConsumptionProgress = (index) => {
     }
 }
 
-.fuels-list {
+.advanced-filter-item .fuels-list {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;

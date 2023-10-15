@@ -18,7 +18,7 @@
 
 <script setup>
 import myModal from "@/components/Modal/Modal.vue";
-import { ref, toRef, watch } from "vue";
+import { ref } from "vue";
 
 const carTypesArr = [
     {
